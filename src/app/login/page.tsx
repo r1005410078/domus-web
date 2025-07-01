@@ -17,9 +17,10 @@ import Stack from "@mui/joy/Stack";
 import DarkModeRoundedIcon from "@mui/icons-material/DarkModeRounded";
 import LightModeRoundedIcon from "@mui/icons-material/LightModeRounded";
 import BadgeRoundedIcon from "@mui/icons-material/BadgeRounded";
+import { useLogin } from "@/hooks/useLogin";
 
 interface FormElements extends HTMLFormControlsCollection {
-  email: HTMLInputElement;
+  username: HTMLInputElement;
   password: HTMLInputElement;
   persistent: HTMLInputElement;
 }
@@ -56,6 +57,16 @@ function ColorSchemeToggle(props: IconButtonProps) {
 const customTheme = extendTheme();
 
 export default function Page() {
+  const login = useLogin();
+
+  const handleSubmit = async (event: React.FormEvent<SignInFormElement>) => {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+    const username = formData.get("username") as string;
+    const password = formData.get("password") as string;
+    login.mutate({ username, password });
+  };
+
   return (
     <CssVarsProvider theme={customTheme} disableTransitionOnChange>
       <CssBaseline />
@@ -100,7 +111,7 @@ export default function Page() {
               <IconButton variant="soft" color="primary" size="sm">
                 <BadgeRoundedIcon />
               </IconButton>
-              <Typography level="title-lg">美大工作台</Typography>
+              <Typography level="title-lg">工作台</Typography>
             </Box>
             <ColorSchemeToggle />
           </Box>
@@ -153,13 +164,7 @@ export default function Page() {
               <form
                 onSubmit={(event: React.FormEvent<SignInFormElement>) => {
                   event.preventDefault();
-                  const formElements = event.currentTarget.elements;
-                  const data = {
-                    email: formElements.email.value,
-                    password: formElements.password.value,
-                    persistent: formElements.persistent.checked,
-                  };
-                  alert(JSON.stringify(data, null, 2));
+                  handleSubmit(event);
                 }}
               >
                 <FormControl required>

@@ -1,5 +1,7 @@
 import * as React from "react";
 import ThemeRegistry from "@/components/theme-registry/ThemeRegistry";
+import QueryProvider from "@/libs/QueryProvider";
+import { ToastProvider } from "@/libs/ToastProvider";
 
 export const metadata = {
   title: "Create Next App",
@@ -10,7 +12,11 @@ export default function RootLayout(props: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <body>
-        <ThemeRegistry>{props.children}</ThemeRegistry>
+        <ToastProvider>
+          <QueryProvider>
+            <ThemeRegistry>{props.children}</ThemeRegistry>
+          </QueryProvider>
+        </ToastProvider>
       </body>
     </html>
   );
