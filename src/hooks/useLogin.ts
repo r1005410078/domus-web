@@ -3,7 +3,6 @@
 import { useToast } from "@/libs/ToastProvider";
 import { login } from "@/services/auth";
 import { useMutation } from "@tanstack/react-query";
-import Router from "next/router";
 
 export function useLogin() {
   const toast = useToast();
@@ -18,7 +17,8 @@ export function useLogin() {
 
       toast.showToast({ message: "登录成功", severity: "success" });
       localStorage.setItem("token", res.data.data.token);
-      Router.replace("/");
+      location.replace("/");
+      console.log("跳转到首页");
     },
     onError: (err) => {},
   });

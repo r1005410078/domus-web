@@ -1,7 +1,6 @@
 "use client";
 
 import axios from "axios";
-import Router from "next/router";
 
 const http = axios.create({
   baseURL: "",
@@ -29,7 +28,7 @@ http.interceptors.response.use(
       // 清除 token（可选）
       localStorage.removeItem("token");
       // 跳转到登录页面
-      Router.replace("/login");
+      location.replace("/login");
     }
     return Promise.reject(error);
   }
