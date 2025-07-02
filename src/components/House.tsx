@@ -66,9 +66,11 @@ function Detail(props: DetailProps) {
         textShadow: "0 2px 4px rgba(0, 0, 0, 0.2)",
         border: 1,
         borderColor: "divider",
-        height: "100%",
+        height: "calc(100vh - 80px)",
+        overflowY: "auto",
         borderRadius: "sm",
         position: "relative",
+        top: "0px",
       }}
     >
       <Card

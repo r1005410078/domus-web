@@ -1,10 +1,10 @@
-import * as React from 'react';
-import Box from '@mui/joy/Box';
-import Button from '@mui/joy/Button';
-import IconButton, { iconButtonClasses } from '@mui/joy/IconButton';
-import Typography from '@mui/joy/Typography';
-import ArrowBackIosRoundedIcon from '@mui/icons-material/ArrowBackIosRounded';
-import ArrowForwardIosRoundedIcon from '@mui/icons-material/ArrowForwardIosRounded';
+import * as React from "react";
+import Box from "@mui/joy/Box";
+import Button from "@mui/joy/Button";
+import IconButton, { iconButtonClasses } from "@mui/joy/IconButton";
+import Typography from "@mui/joy/Typography";
+import ArrowBackIosRoundedIcon from "@mui/icons-material/ArrowBackIosRounded";
+import ArrowForwardIosRoundedIcon from "@mui/icons-material/ArrowForwardIosRounded";
 
 export default function Pagination() {
   return (
@@ -12,8 +12,8 @@ export default function Pagination() {
       <Box
         className="Pagination-mobile"
         sx={{
-          display: { xs: 'flex', md: 'none' },
-          alignItems: 'center',
+          display: { xs: "flex", md: "none" },
+          alignItems: "center",
           mx: 2,
           my: 1,
         }}
@@ -26,8 +26,8 @@ export default function Pagination() {
         >
           <ArrowBackIosRoundedIcon />
         </IconButton>
-        <Typography level="body-sm" sx={{ mx: 'auto' }}>
-          Page 1 of 10
+        <Typography level="body-sm" sx={{ mx: "auto" }}>
+          第 1 页，共 10 页
         </Typography>
         <IconButton
           aria-label="next page"
@@ -42,12 +42,11 @@ export default function Pagination() {
         className="Pagination-laptopUp"
         sx={{
           gap: 1,
-          [`& .${iconButtonClasses.root}`]: { borderRadius: '50%' },
+          [`& .${iconButtonClasses.root}`]: { borderRadius: "50%" },
           display: {
-            xs: 'none',
-            md: 'flex',
+            xs: "none",
+            md: "flex",
           },
-          mx: 4,
           my: 2,
         }}
       >
@@ -56,16 +55,14 @@ export default function Pagination() {
           variant="plain"
           color="neutral"
           startDecorator={<ArrowBackIosRoundedIcon />}
-        >
-          Previous
-        </Button>
+        ></Button>
 
         <Box sx={{ flex: 1 }} />
-        {['1', '2', '3', '…', '8', '9', '10'].map((page) => (
+        {["1", "2", "3", "…", "9", "10", "11"].map((page) => (
           <IconButton
             key={page}
             size="sm"
-            variant={Number(page) ? 'plain' : 'soft'}
+            variant={Number(page) ? "plain" : "soft"}
             color="neutral"
           >
             {page}
@@ -78,9 +75,7 @@ export default function Pagination() {
           variant="plain"
           color="neutral"
           endDecorator={<ArrowForwardIosRoundedIcon />}
-        >
-          Next
-        </Button>
+        ></Button>
       </Box>
     </div>
   );

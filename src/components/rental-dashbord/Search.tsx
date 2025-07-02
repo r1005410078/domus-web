@@ -1,10 +1,10 @@
-import * as React from 'react';
-import Button from '@mui/joy/Button';
-import FormControl from '@mui/joy/FormControl';
-import Input from '@mui/joy/Input';
-import Stack from '@mui/joy/Stack';
-import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
-import Typography from '@mui/joy/Typography';
+import * as React from "react";
+import Button from "@mui/joy/Button";
+import FormControl from "@mui/joy/FormControl";
+import Input from "@mui/joy/Input";
+import Stack from "@mui/joy/Stack";
+import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
+import Typography from "@mui/joy/Typography";
 
 export default function Search() {
   return (
@@ -13,7 +13,7 @@ export default function Search() {
         <FormControl sx={{ flex: 1 }}>
           <Input
             placeholder="Search"
-            value={'Melbourne'}
+            value={"Melbourne"}
             startDecorator={<SearchRoundedIcon />}
             aria-label="Search"
           />
