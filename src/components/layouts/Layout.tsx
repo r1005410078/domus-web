@@ -55,7 +55,7 @@ function Main(props: BoxProps) {
       component="main"
       className="Main"
       {...props}
-      sx={[{ p: 2 }, ...(Array.isArray(props.sx) ? props.sx : [props.sx])]}
+      sx={[{ p: 0 }, ...(Array.isArray(props.sx) ? props.sx : [props.sx])]}
     />
   );
 }

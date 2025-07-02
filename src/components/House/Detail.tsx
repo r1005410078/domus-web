@@ -57,7 +57,7 @@ const bull = (
   </Box>
 );
 // 房源信息
-function Detail(props: DetailProps) {
+export function Detail(props: DetailProps) {
   return (
     <Box
       sx={{
@@ -314,7 +314,3 @@ function Detail(props: DetailProps) {
     </Box>
   );
 }
-
-export default {
-  Detail,
-};
