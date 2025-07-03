@@ -19,6 +19,7 @@ import {
   Textarea,
 } from "@mui/joy";
 import { useState } from "react";
+import { CommunitySelect } from "../CommunitySelect";
 
 interface Relation {
   purpose?: string;
@@ -255,11 +256,7 @@ export function Form() {
               {/* 使用高德地图 */}
               <FormControl required>
                 <FormLabel>小区</FormLabel>
-                <Autocomplete
-                  options={[]}
-                  name="community_address"
-                  placeholder="小区"
-                />
+                <CommunitySelect />
               </FormControl>
 
               <Divider inset="none" />
