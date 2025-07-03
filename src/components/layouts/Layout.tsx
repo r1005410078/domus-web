@@ -1,3 +1,5 @@
+"use client";
+
 import { Box, BoxProps } from "@mui/joy";
 
 function Root(props: BoxProps) {

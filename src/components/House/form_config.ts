@@ -1983,10 +1983,6 @@ export const formConfig = [
         label: "业主可协助过户",
         value: "业主可协助过户",
       },
-      {
-        ref: "用途",
-        value: "别墅",
-      },
     ],
   },
   {
