@@ -2,7 +2,6 @@
 
 import House from "@/components/House";
 import Header from "@/components/Header";
-import Hose from "@/components/House";
 import Layout from "@/components/layouts/Layout";
 
 export default function Page() {
