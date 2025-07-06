@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Autocomplete,
   AutocompleteOption,
@@ -6,7 +8,7 @@ import {
   Typography,
 } from "@mui/joy";
 import "@amap/amap-jsapi-types";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Script from "next/script";
 import { useQuery } from "@tanstack/react-query";
 import MapsHomeWorkIcon from "@mui/icons-material/MapsHomeWork";
@@ -17,7 +19,12 @@ import MapsHomeWorkIcon from "@mui/icons-material/MapsHomeWork";
 // 检索缓存
 const cache = new Map<string, Poi>();
 
-export function CommunitySelect() {
+interface CommunitySelectProps {
+  value?: Poi;
+  onChange: (value: Poi) => void;
+}
+
+export function CommunitySelect({ value, onChange }: CommunitySelectProps) {
   const [placeSearch, setPlaceSearch] = useState<any>(null);
   const [keyword, seKeyword] = useState<string>("");
 
@@ -40,6 +47,13 @@ export function CommunitySelect() {
     },
     enabled: keyword !== "",
   });
+
+  useMemo(() => {
+    const id = value?.id;
+    if (id && !cache.has(id)) {
+      cache.set(id, value);
+    }
+  }, [value]);
 
   useEffect(() => {
     (window as any).initMap = () => {
@@ -72,8 +86,12 @@ export function CommunitySelect() {
         options={poiList ?? cache.values().toArray()}
         placeholder="请输入"
         loading={isRefetching}
+        value={value}
         onInputChange={(event, keyword) => {
           seKeyword(keyword);
+        }}
+        onChange={(_, value) => {
+          onChange(value!);
         }}
         getOptionLabel={(option) => option.name}
         renderOption={(props, option) => {
@@ -110,9 +128,11 @@ export interface Poi {
   id: string;
   name: string;
   type: string;
-  location: number[];
+  location: {
+    pos: number[];
+  };
   address: string;
-  tel: string;
-  distance: any;
-  shopinfo: string;
+  tel?: string;
+  distance?: any;
+  shopinfo?: string;
 }
