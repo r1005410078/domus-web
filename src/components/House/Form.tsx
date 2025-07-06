@@ -283,21 +283,6 @@ export function Form() {
               }}
             />
 
-            <form.Field
-              name="community"
-              children={(field) => {
-                return (
-                  <FormControl required>
-                    <FormLabel>小区</FormLabel>
-                    <CommunityForm
-                      value={field.state.value}
-                      onChange={field.handleChange}
-                    />
-                  </FormControl>
-                );
-              }}
-            />
-
             {isShowRelation([
               { transaction_type: "出售" },
               { transaction_type: "租售" },
@@ -427,6 +412,190 @@ export function Form() {
                 }}
               />
             )}
+
+            <form.Field
+              name="community"
+              children={(field) => {
+                return (
+                  <FormControl required>
+                    <FormLabel>小区</FormLabel>
+                    <CommunityForm
+                      value={field.state.value}
+                      onChange={field.handleChange}
+                    />
+                  </FormControl>
+                );
+              }}
+            />
+
+            <form.Field
+              name="door_number"
+              children={(field) => {
+                return (
+                  <FormControl required>
+                    <FormLabel>门牌号</FormLabel>
+                    <Stack
+                      direction="row"
+                      spacing={2}
+                      useFlexGap
+                      sx={{ flexWrap: "wrap" }}
+                    >
+                      <Stack spacing={1} direction="row">
+                        <FormControl>
+                          <Input
+                            style={{ width: "150px" }}
+                            placeholder="请输入"
+                            value={field.state.value?.building_number}
+                            type="number"
+                            onChange={(e) =>
+                              field.handleChange({
+                                ...((field.state.value ?? {}) as any),
+                                building_number: Number(e.target.value),
+                              })
+                            }
+                            endDecorator={<span>栋</span>}
+                          />
+                        </FormControl>
+                        <Divider orientation="vertical" />
+                        <FormControl>
+                          <Input
+                            style={{ width: "150px" }}
+                            placeholder="请输入"
+                            type="number"
+                            value={field.state.value?.unit_number}
+                            onChange={(e) =>
+                              field.handleChange({
+                                ...((field.state.value ?? {}) as any),
+                                unit_number: Number(e.target.value),
+                              })
+                            }
+                            endDecorator={<span>单元</span>}
+                          />
+                        </FormControl>
+                      </Stack>
+                      <FormControl>
+                        <Input
+                          fullWidth
+                          style={{ width: "150px" }}
+                          placeholder="请输入"
+                          type="number"
+                          value={field.state.value?.door_number}
+                          name="door_number"
+                          onChange={(e) =>
+                            field.handleChange({
+                              ...((field.state.value ?? {}) as any),
+                              door_number: Number(e.target.value),
+                            })
+                          }
+                          endDecorator={<span>门牌号</span>}
+                        />
+                      </FormControl>
+                    </Stack>
+                  </FormControl>
+                );
+              }}
+            />
+
+            {isShowRelation([
+              { purpose: "住宅" },
+              { purpose: "别墅" },
+              { purpose: "公寓" },
+            ]) && (
+              <form.Field
+                name="apartment_type"
+                children={(field) => {
+                  return (
+                    <FormControl>
+                      <FormLabel>户型</FormLabel>
+                      <Stack
+                        spacing={1}
+                        direction="row"
+                        useFlexGap
+                        sx={{ flexWrap: "wrap" }}
+                      >
+                        <FormControl style={{ width: 115 }}>
+                          <Input
+                            placeholder="请输入"
+                            name="room"
+                            type="number"
+                            value={field.state.value?.room}
+                            onChange={(e) =>
+                              field.handleChange({
+                                ...((field.state.value ?? {}) as any),
+                                room: Number(e.target.value),
+                              })
+                            }
+                            endDecorator={<span>室</span>}
+                          />
+                        </FormControl>
+
+                        <FormControl style={{ width: 115 }}>
+                          <Input
+                            placeholder="请输入"
+                            name="hall"
+                            type="number"
+                            value={field.state.value?.hall}
+                            onChange={(e) =>
+                              field.handleChange({
+                                ...((field.state.value ?? {}) as any),
+                                bathroom: Number(e.target.value),
+                              })
+                            }
+                            endDecorator={<span>厅</span>}
+                          />
+                        </FormControl>
+
+                        <FormControl style={{ width: 115 }}>
+                          <Input
+                            placeholder="请输入"
+                            name="bathroom"
+                            type="number"
+                            value={field.state.value?.bathroom}
+                            onChange={(e) => {
+                              field.handleChange({
+                                ...((field.state.value ?? {}) as any),
+                                bathroom: Number(e.target.value),
+                              });
+                            }}
+                            endDecorator={<span>卫</span>}
+                          />
+                        </FormControl>
+                        <FormControl style={{ width: 115 }}>
+                          <Input
+                            placeholder="请输入"
+                            name="bathroom"
+                            type="number"
+                            value={field.state.value?.kitchen}
+                            onChange={(e) => {
+                              field.handleChange({
+                                ...((field.state.value ?? {}) as any),
+                                kitchen: Number(e.target.value),
+                              });
+                            }}
+                            endDecorator={<span>厨</span>}
+                          />
+                        </FormControl>
+                        <FormControl style={{ width: 130 }}>
+                          <Input
+                            placeholder="请输入"
+                            name="balcony"
+                            type="number"
+                            value={field.state.value?.balcony}
+                            onChange={(e) => {
+                              field.handleChange({
+                                ...((field.state.value ?? {}) as any),
+                                balcony: Number(e.target.value),
+                              });
+                            }}
+                            endDecorator={<span>阳台</span>}
+                          />
+                        </FormControl>
+                      </Stack>
+                    </FormControl>
+                  );
+                }}
+              />
+            )}
           </Stack>
           <Stack
             direction="row"
@@ -505,74 +674,6 @@ export function Form() {
                         />
                       </FormControl>
                       <Divider orientation="vertical">楼</Divider>
-                    </Stack>
-                  </FormControl>
-                );
-              }}
-            />
-
-            <form.Field
-              name="door_number"
-              children={(field) => {
-                return (
-                  <FormControl>
-                    <FormLabel>门牌号</FormLabel>
-                    <Stack
-                      direction="row"
-                      spacing={2}
-                      useFlexGap
-                      sx={{ flexWrap: "wrap" }}
-                    >
-                      <Stack spacing={1} direction="row">
-                        <FormControl>
-                          <Input
-                            style={{ width: "150px" }}
-                            placeholder="请输入"
-                            value={field.state.value?.building_number}
-                            type="number"
-                            onChange={(e) =>
-                              field.handleChange({
-                                ...((field.state.value ?? {}) as any),
-                                building_number: Number(e.target.value),
-                              })
-                            }
-                            endDecorator={<span>栋</span>}
-                          />
-                        </FormControl>
-                        <Divider orientation="vertical" />
-                        <FormControl>
-                          <Input
-                            style={{ width: "150px" }}
-                            placeholder="请输入"
-                            type="number"
-                            value={field.state.value?.unit_number}
-                            onChange={(e) =>
-                              field.handleChange({
-                                ...((field.state.value ?? {}) as any),
-                                unit_number: Number(e.target.value),
-                              })
-                            }
-                            endDecorator={<span>单元</span>}
-                          />
-                        </FormControl>
-                      </Stack>
-                      <FormControl>
-                        <Input
-                          fullWidth
-                          style={{ width: "150px" }}
-                          placeholder="请输入"
-                          type="number"
-                          value={field.state.value?.door_number}
-                          name="door_number"
-                          onChange={(e) =>
-                            field.handleChange({
-                              ...((field.state.value ?? {}) as any),
-                              door_number: Number(e.target.value),
-                            })
-                          }
-                          endDecorator={<span>门牌号</span>}
-                        />
-                      </FormControl>
                     </Stack>
                   </FormControl>
                 );
@@ -672,107 +773,6 @@ export function Form() {
                           field.handleChange(Number(e.target.value))
                         }
                       />
-                    </FormControl>
-                  );
-                }}
-              />
-            )}
-
-            {isShowRelation([
-              { purpose: "住宅" },
-              { purpose: "别墅" },
-              { purpose: "公寓" },
-            ]) && (
-              <form.Field
-                name="apartment_type"
-                children={(field) => {
-                  return (
-                    <FormControl>
-                      <FormLabel>户型</FormLabel>
-                      <Stack
-                        spacing={1}
-                        direction="row"
-                        useFlexGap
-                        sx={{ flexWrap: "wrap" }}
-                      >
-                        <FormControl style={{ width: 115 }}>
-                          <Input
-                            placeholder="请输入"
-                            name="room"
-                            type="number"
-                            value={field.state.value?.room}
-                            onChange={(e) =>
-                              field.handleChange({
-                                ...((field.state.value ?? {}) as any),
-                                room: Number(e.target.value),
-                              })
-                            }
-                            endDecorator={<span>室</span>}
-                          />
-                        </FormControl>
-
-                        <FormControl style={{ width: 115 }}>
-                          <Input
-                            placeholder="请输入"
-                            name="hall"
-                            type="number"
-                            value={field.state.value?.hall}
-                            onChange={(e) =>
-                              field.handleChange({
-                                ...((field.state.value ?? {}) as any),
-                                bathroom: Number(e.target.value),
-                              })
-                            }
-                            endDecorator={<span>厅</span>}
-                          />
-                        </FormControl>
-
-                        <FormControl style={{ width: 115 }}>
-                          <Input
-                            placeholder="请输入"
-                            name="bathroom"
-                            type="number"
-                            value={field.state.value?.bathroom}
-                            onChange={(e) => {
-                              field.handleChange({
-                                ...((field.state.value ?? {}) as any),
-                                bathroom: Number(e.target.value),
-                              });
-                            }}
-                            endDecorator={<span>卫</span>}
-                          />
-                        </FormControl>
-                        <FormControl style={{ width: 115 }}>
-                          <Input
-                            placeholder="请输入"
-                            name="bathroom"
-                            type="number"
-                            value={field.state.value?.kitchen}
-                            onChange={(e) => {
-                              field.handleChange({
-                                ...((field.state.value ?? {}) as any),
-                                kitchen: Number(e.target.value),
-                              });
-                            }}
-                            endDecorator={<span>厨</span>}
-                          />
-                        </FormControl>
-                        <FormControl style={{ width: 130 }}>
-                          <Input
-                            placeholder="请输入"
-                            name="balcony"
-                            type="number"
-                            value={field.state.value?.balcony}
-                            onChange={(e) => {
-                              field.handleChange({
-                                ...((field.state.value ?? {}) as any),
-                                balcony: Number(e.target.value),
-                              });
-                            }}
-                            endDecorator={<span>阳台</span>}
-                          />
-                        </FormControl>
-                      </Stack>
                     </FormControl>
                   );
                 }}
