@@ -12,6 +12,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import Script from "next/script";
 import { useQuery } from "@tanstack/react-query";
 import MapsHomeWorkIcon from "@mui/icons-material/MapsHomeWork";
+import { getCommunityList } from "@/services/house";
 
 (global as any)._AMapSecurityConfig = {
   securityJsCode: "643afd6680cc38718fd6892c62f9045c",
@@ -25,9 +26,15 @@ interface CommunitySelectProps {
   onChange: (value: Poi) => void;
 }
 
+/// 如果是高德地图返回的就是 location_id
+/// 如果是本栈数据库返回的就带有 id
 export function CommunitySelect({ value, onChange }: CommunitySelectProps) {
   const placeSearchRef = useRef<any>(null);
   const [keyword, seKeyword] = useState<string>("");
+  const { data } = useQuery({
+    queryKey: ["initMap"],
+    queryFn: getCommunityList,
+  });
 
   const { data: poiList, isRefetching } = useQuery({
     queryKey: [keyword],
@@ -45,7 +52,14 @@ export function CommunitySelect({ value, onChange }: CommunitySelectProps) {
           placeSearch.search(keyword, function (_: any, result: SearchData) {
             // 搜索成功时，result即是对应的匹配数据
             if (result.info === "OK") {
-              resolve(result.poiList?.pois);
+              const pois = result.poiList?.pois;
+              if (pois && pois.length) {
+                resolve(
+                  pois.map(
+                    ({ id, ...item }) => ({ ...item, location_id: id } as Poi)
+                  )
+                );
+              }
             }
           });
         }
@@ -61,6 +75,26 @@ export function CommunitySelect({ value, onChange }: CommunitySelectProps) {
     }
   }, [value]);
 
+  useMemo(() => {
+    if (data) {
+      for (const poi of data) {
+        if (poi.location_id) {
+          // 待id 表示更新
+          cache.set(poi.location_id, {
+            id: poi.location_id!,
+            location_id: poi.location_id!,
+            name: poi.name!,
+            type: poi.community_type!,
+            location: {
+              pos: [poi.location_0, poi.location_1] as [number, number],
+            },
+            address: poi.address!,
+          });
+        }
+      }
+    }
+  }, [data]);
+
   useEffect(() => {
     (global as any).initMap = () => {
       AMap.plugin("AMap.PlaceSearch", function () {
@@ -73,12 +107,6 @@ export function CommunitySelect({ value, onChange }: CommunitySelectProps) {
       });
     };
   }, []);
-
-  useEffect(() => {
-    for (const poi of poiList ?? []) {
-      cache.set(poi.id, poi);
-    }
-  }, [poiList]);
 
   return (
     <>
@@ -104,7 +132,7 @@ export function CommunitySelect({ value, onChange }: CommunitySelectProps) {
         getOptionLabel={(option) => option.name}
         renderOption={(props, option) => {
           return (
-            <AutocompleteOption {...props}>
+            <AutocompleteOption {...props} key={option.location_id}>
               <ListItemDecorator>
                 <MapsHomeWorkIcon color="primary" />
               </ListItemDecorator>
@@ -133,7 +161,8 @@ export interface PoiList {
 }
 
 export interface Poi {
-  id: string;
+  id?: string;
+  location_id: string;
   name: string;
   type: string;
   location: {

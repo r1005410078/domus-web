@@ -25,7 +25,7 @@ export function CommunityForm({
   const poi = useMemo(() => {
     if (propValue?.location_id) {
       return {
-        id: propValue.location_id,
+        location_id: propValue.location_id,
         name: propValue.name,
         type: propValue.community_type,
         location: {
@@ -41,21 +41,23 @@ export function CommunityForm({
     <CommunitySelect
       value={poi}
       onChange={(poi) => {
-        console.log(poi);
-        onChange({
-          location_id: poi.id,
-          // 小区名称
-          name: poi.name,
-          // 小区地址
-          address: poi.address,
-          // 城市
-          city: "安庆",
-          // 小区类型
-          community_type: poi.type,
-          // 位置
-          location_0: poi.location.pos[0],
-          location_1: poi.location.pos[1],
-        });
+        if (poi) {
+          onChange({
+            id: poi.id,
+            location_id: poi.id,
+            // 小区名称
+            name: poi.name,
+            // 小区地址
+            address: poi.address,
+            // 城市
+            city: "安庆",
+            // 小区类型
+            community_type: poi.type,
+            // 位置
+            location_0: poi.location.pos[0],
+            location_1: poi.location.pos[1],
+          });
+        }
       }}
     />
   );
