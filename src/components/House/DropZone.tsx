@@ -13,19 +13,13 @@ import axios from "axios";
 import { useToast } from "@/libs/ToastProvider";
 import { Stack } from "@mui/joy";
 import FileUpload from "./FileUpload";
+import { FileInfo } from "@/models/house";
 
 export interface DropZoneProps {
   icon?: React.ReactElement<any>;
   directory?: string;
   onChange: (value: FileInfo[]) => void;
   value?: FileInfo[];
-}
-
-interface FileInfo {
-  name: string;
-  type: string;
-  size: number;
-  url: string;
 }
 
 export default function DropZone(props: DropZoneProps) {
@@ -71,7 +65,7 @@ export default function DropZone(props: DropZoneProps) {
             imageUrls.push({
               name: file.name,
               type: file.type,
-              size: file.size,
+              size: file.size.toString(),
               url: imageUrl,
             });
           },

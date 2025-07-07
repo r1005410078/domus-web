@@ -192,9 +192,9 @@ export interface HouseForm {
   images?: FileInfo[];
 }
 
-interface FileInfo {
+export interface FileInfo {
   name: string;
   type: string;
-  size: number;
+  size: string;
   url: string;
 }
