@@ -211,19 +211,21 @@ export default function DropZone(props: DropZoneProps) {
       </Card>
       <Grid
         container
-        spacing={8}
+        spacing={2}
         sx={{ flexGrow: 1, justifyContent: "space-between" }}
       >
         {files
           .filter((f) => !f.deleted)
           .map((file, index) => (
-            <FileReview key={index} {...file} />
+            <Grid width={"50%"} key={file.filename}>
+              <FileReview key={index} {...file} />
+            </Grid>
           ))}
       </Grid>
       <Divider />
       <Grid
         container
-        spacing={8}
+        spacing={2}
         sx={{ flexGrow: 1, justifyContent: "space-between" }}
       >
         {onlineFiles
@@ -231,13 +233,15 @@ export default function DropZone(props: DropZoneProps) {
             (f) => files.findIndex((file) => file.filename === f.name) === -1
           )
           .map((file, index) => (
-            <ImageReview
-              key={index}
-              {...file}
-              onRemove={(name) => {
-                onChange(onlineFiles?.filter((f) => f.name !== name));
-              }}
-            />
+            <Grid width={"50%"} key={file.name}>
+              <ImageReview
+                key={index}
+                {...file}
+                onRemove={(name) => {
+                  onChange(onlineFiles?.filter((f) => f.name !== name));
+                }}
+              />
+            </Grid>
           ))}
       </Grid>
     </Stack>
@@ -248,7 +252,7 @@ function FileReview(props: UploadFile) {
   const { file, percent } = props;
   const { removeFile } = useUploadFiles();
   return (
-    <Card component="li" sx={{ width: "49%", height: "200px" }}>
+    <Card component="li" sx={{ width: "100%", height: "200px" }}>
       <CardCover>
         <img src={URL.createObjectURL(file)} alt={file.name} loading="lazy" />
       </CardCover>
@@ -280,7 +284,7 @@ function ImageReview(props: FileInfo & { onRemove: (name: string) => void }) {
   const { url, name, onRemove } = props;
   const { removeFile } = useUploadFiles();
   return (
-    <Card component="li" sx={{ width: "49%", height: "200px" }}>
+    <Card component="li" sx={{ width: "100%", height: "200px" }}>
       <CardCover>
         <img src={url} alt={name} loading="lazy" />
       </CardCover>
