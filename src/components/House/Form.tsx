@@ -21,10 +21,7 @@ import React, { use, useEffect } from "react";
 import { useForm, useStore } from "@tanstack/react-form";
 import { HouseForm } from "@/models/house";
 import { CommunityForm, HouseOwnerForm } from "./common";
-import FileUpload from "./FileUpload";
 import DropZone from "./DropZone";
-import VideocamRoundedIcon from "@mui/icons-material/VideocamRounded";
-import InsertDriveFileRoundedIcon from "@mui/icons-material/InsertDriveFileRounded";
 import { useSaveHouse } from "@/hooks/useHouse";
 
 export interface Relation {
@@ -50,12 +47,16 @@ export function Form({ defaultValues, value }: FormProps) {
     await form.handleSubmit();
   };
 
-  const { purpose, transaction_type } = useStore(form.store, (state) => {
-    return {
-      purpose: state.values.purpose,
-      transaction_type: state.values.transaction_type,
-    };
-  });
+  const { purpose, transaction_type, community_name } = useStore(
+    form.store,
+    (state) => {
+      return {
+        purpose: state.values.purpose,
+        transaction_type: state.values.transaction_type,
+        community_name: state.values.community?.name,
+      };
+    }
+  );
 
   const isShowRelation = (compare: Relation[]) => {
     return compare.some((item) => {
@@ -2504,21 +2505,16 @@ export function Form({ defaultValues, value }: FormProps) {
           </Stack>
         </TabPanel>
         <TabPanel value={2}>
-          <Stack spacing={2} sx={{ my: 1 }}>
-            <DropZone />
-            <FileUpload
-              icon={<InsertDriveFileRoundedIcon />}
-              fileName="Tech design requirements.pdf"
-              fileSize="200 kB"
-              progress={100}
-            />
-            <FileUpload
-              icon={<VideocamRoundedIcon />}
-              fileName="Dashboard prototype recording.mp4"
-              fileSize="16 MB"
-              progress={40}
-            />
-          </Stack>
+          <form.Field
+            name="images"
+            children={(field) => (
+              <DropZone
+                directory={community_name}
+                value={field.state.value}
+                onChange={field.handleChange}
+              />
+            )}
+          />
         </TabPanel>
       </Tabs>
     </Card>

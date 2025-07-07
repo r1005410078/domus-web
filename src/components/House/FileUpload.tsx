@@ -22,6 +22,7 @@ export default function FileUpload(
   }
 ) {
   const { icon, fileName, fileSize, progress, sx, ...other } = props;
+
   return (
     <Card
       variant="outlined"

@@ -188,4 +188,13 @@ export interface HouseForm {
   external_sync?: string;
   // 备注
   remark?: string;
+  // 图片
+  images?: FileInfo[];
+}
+
+interface FileInfo {
+  name: string;
+  type: string;
+  size: number;
+  url: string;
 }

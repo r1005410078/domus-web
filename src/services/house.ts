@@ -37,3 +37,14 @@ export async function getCommunityList() {
     };
   });
 }
+
+// 申请上传房源URL
+export function applyUploadHouseUrl(data: {
+  directory: string;
+  filename: string;
+}) {
+  return apiClient.post<ResponseBody<string>>(
+    `/api/domus/management/house/apply_upload_url`,
+    data
+  );
+}
