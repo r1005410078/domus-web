@@ -5,7 +5,7 @@ import { useEffect } from "react";
 import "@amap/amap-jsapi-types";
 export function MapPage() {
   useEffect(() => {
-    (window as any).initMap = () => {
+    (global as any).initMap = () => {
       // 可选：地图初始化逻辑放这里
       const map = new window.AMap.Map("container", {
         rotateEnable: true,

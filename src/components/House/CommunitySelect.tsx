@@ -8,11 +8,12 @@ import {
   Typography,
 } from "@mui/joy";
 import "@amap/amap-jsapi-types";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Script from "next/script";
 import { useQuery } from "@tanstack/react-query";
 import MapsHomeWorkIcon from "@mui/icons-material/MapsHomeWork";
-(window as any)._AMapSecurityConfig = {
+
+(global as any)._AMapSecurityConfig = {
   securityJsCode: "643afd6680cc38718fd6892c62f9045c",
 };
 
@@ -25,7 +26,7 @@ interface CommunitySelectProps {
 }
 
 export function CommunitySelect({ value, onChange }: CommunitySelectProps) {
-  const [placeSearch, setPlaceSearch] = useState<any>(null);
+  const placeSearchRef = useRef<any>(null);
   const [keyword, seKeyword] = useState<string>("");
 
   const { data: poiList, isRefetching } = useQuery({
@@ -35,14 +36,19 @@ export function CommunitySelect({ value, onChange }: CommunitySelectProps) {
         let isHas = cache.values().some((item) => item.name.includes(keyword));
 
         if (isHas) {
-          resolve(cache.values().toArray());
+          resolve(Array.from(cache.values()));
+          return;
         }
-        placeSearch.search(keyword, function (status: any, result: SearchData) {
-          // 搜索成功时，result即是对应的匹配数据
-          if (result.info === "OK") {
-            resolve(result.poiList?.pois);
-          }
-        });
+
+        const placeSearch = placeSearchRef.current;
+        if (placeSearch) {
+          placeSearch.search(keyword, function (_: any, result: SearchData) {
+            // 搜索成功时，result即是对应的匹配数据
+            if (result.info === "OK") {
+              resolve(result.poiList?.pois);
+            }
+          });
+        }
       });
     },
     enabled: keyword !== "",
@@ -56,15 +62,14 @@ export function CommunitySelect({ value, onChange }: CommunitySelectProps) {
   }, [value]);
 
   useEffect(() => {
-    (window as any).initMap = () => {
+    (global as any).initMap = () => {
       AMap.plugin("AMap.PlaceSearch", function () {
         var autoOptions = {
           city: "安庆",
           type: "住宅",
           pageSize: 20,
         };
-        var placeSearch = new (AMap as any).PlaceSearch(autoOptions);
-        setPlaceSearch(placeSearch);
+        placeSearchRef.current = new (AMap as any).PlaceSearch(autoOptions);
       });
     };
   }, []);
@@ -83,11 +88,14 @@ export function CommunitySelect({ value, onChange }: CommunitySelectProps) {
         strategy="afterInteractive"
       />
       <Autocomplete
-        options={poiList ?? cache.values().toArray()}
+        options={poiList ?? Array.from(cache.values())}
         placeholder="请输入"
         loading={isRefetching}
         value={value}
-        onInputChange={(event, keyword) => {
+        isOptionEqualToValue={(option, value) => {
+          return option.id === value.id;
+        }}
+        onInputChange={(_, keyword) => {
           seKeyword(keyword);
         }}
         onChange={(_, value) => {

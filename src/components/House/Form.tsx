@@ -17,42 +17,37 @@ import {
   tabClasses,
   TabPanel,
 } from "@mui/joy";
-import React from "react";
+import React, { use, useEffect } from "react";
 import { useForm, useStore } from "@tanstack/react-form";
-import { HouseForm } from "./interfaces";
+import { HouseForm } from "@/models/house";
 import { CommunityForm, HouseOwnerForm } from "./common";
 import FileUpload from "./FileUpload";
 import DropZone from "./DropZone";
 import VideocamRoundedIcon from "@mui/icons-material/VideocamRounded";
 import InsertDriveFileRoundedIcon from "@mui/icons-material/InsertDriveFileRounded";
+import { useSaveHouse } from "@/hooks/useHouse";
 
 export interface Relation {
   purpose?: string;
   transaction_type?: string;
 }
 
-const defaultValues: HouseForm = {
-  purpose: "住宅",
-  transaction_type: "出售",
-  house_status: "有效",
-  owner: {
-    name: "",
-    description: "",
-  },
-  community: {},
-};
+interface FormProps {
+  defaultValues?: HouseForm;
+  value?: HouseForm;
+}
 
-export function Form() {
+export function Form({ defaultValues, value }: FormProps) {
+  const { mutate } = useSaveHouse();
   const form = useForm({
-    defaultValues: defaultValues,
+    defaultValues,
     onSubmit: async ({ value }) => {
-      // Do something with form data
-      console.log(value);
+      mutate(value);
     },
   });
 
-  const handleSubmit = () => {
-    form.handleSubmit();
+  const handleSubmit = async () => {
+    await form.handleSubmit();
   };
 
   const { purpose, transaction_type } = useStore(form.store, (state) => {
@@ -76,6 +71,12 @@ export function Form() {
       return isHas;
     });
   };
+
+  useEffect(() => {
+    if (value) {
+      form.reset(value);
+    }
+  }, [value]);
 
   return (
     <Card
@@ -538,7 +539,7 @@ export function Form() {
                             onChange={(e) =>
                               field.handleChange({
                                 ...((field.state.value ?? {}) as any),
-                                bathroom: Number(e.target.value),
+                                hall: Number(e.target.value),
                               })
                             }
                             endDecorator={<span>厅</span>}
@@ -563,7 +564,7 @@ export function Form() {
                         <FormControl style={{ width: 115 }}>
                           <Input
                             placeholder="请输入"
-                            name="bathroom"
+                            name="kitchen"
                             type="number"
                             value={field.state.value?.kitchen}
                             onChange={(e) => {

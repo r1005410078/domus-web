@@ -16,13 +16,13 @@ export interface FloorRange {
 
 export interface ApartmentType {
   // 室
-  room: number;
+  room?: number;
   // 厅
-  hall: number;
+  hall?: number;
   // 卫
-  bathroom: number;
+  bathroom?: number;
   // 厨
-  kitchen: number;
+  kitchen?: number;
   // 阳台
   terrace?: number;
   // 阁楼
@@ -53,6 +53,7 @@ export interface HouseOwner {
 
 export interface Community {
   id?: string;
+  location_id?: string;
   // 小区名称
   name?: string;
   // 小区地址
@@ -73,6 +74,8 @@ export interface Community {
 }
 
 export interface HouseForm {
+  // 房源ID
+  id?: string;
   // 房源标题
   title?: string;
   // 用途

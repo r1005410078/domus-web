@@ -8,7 +8,7 @@ import {
   Select,
   Option,
 } from "@mui/joy";
-import { Community, HouseOwner } from "./interfaces";
+import { Community, HouseOwner } from "@/models/house";
 import { useEffect, useMemo, useRef } from "react";
 import { CommunitySelect, Poi } from "./CommunitySelect";
 import { useState } from "react";
@@ -23,9 +23,9 @@ export function CommunityForm({
   onChange,
 }: CommunityFormProps) {
   const poi = useMemo(() => {
-    if (propValue?.id) {
+    if (propValue?.location_id) {
       return {
-        id: propValue.id,
+        id: propValue.location_id,
         name: propValue.name,
         type: propValue.community_type,
         location: {
@@ -43,7 +43,7 @@ export function CommunityForm({
       onChange={(poi) => {
         console.log(poi);
         onChange({
-          id: poi.id,
+          location_id: poi.id,
           // 小区名称
           name: poi.name,
           // 小区地址
