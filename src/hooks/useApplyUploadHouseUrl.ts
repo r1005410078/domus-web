@@ -12,7 +12,6 @@ export function useApplyUploadHouseUrl() {
         toast.showToast({ message: res.data.msg, severity: "danger" });
         return;
       }
-      toast.showToast({ message: "录入成功", severity: "success" });
     },
     onError: (err) => {
       toast.showToast({ message: `录入失败: ${err}`, severity: "danger" });

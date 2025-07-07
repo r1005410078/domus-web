@@ -69,11 +69,21 @@ export function CommunitySelect({ value, onChange }: CommunitySelectProps) {
   });
 
   useMemo(() => {
-    const id = value?.id;
-    if (id && !cache.has(id)) {
-      cache.set(id, value);
+    const location_id = value?.location_id;
+    if (location_id && !cache.has(location_id)) {
+      cache.set(location_id, value);
     }
   }, [value]);
+
+  useMemo(() => {
+    if (poiList) {
+      for (const poi of poiList) {
+        if (!cache.has(poi.location_id)) {
+          cache.set(poi.location_id, poi);
+        }
+      }
+    }
+  }, [poiList]);
 
   useMemo(() => {
     if (data) {
@@ -108,6 +118,10 @@ export function CommunitySelect({ value, onChange }: CommunitySelectProps) {
     };
   }, []);
 
+  const options = Array.from(cache.values());
+
+  console.log("options", options);
+
   return (
     <>
       <script type="text/javascript"></script>
@@ -116,12 +130,12 @@ export function CommunitySelect({ value, onChange }: CommunitySelectProps) {
         strategy="afterInteractive"
       />
       <Autocomplete
-        options={poiList ?? Array.from(cache.values())}
+        options={options}
         placeholder="请输入"
         loading={isRefetching}
         value={value}
         isOptionEqualToValue={(option, value) => {
-          return option.id === value.id;
+          return option?.location_id === value?.location_id;
         }}
         onInputChange={(_, keyword) => {
           seKeyword(keyword);
@@ -132,7 +146,7 @@ export function CommunitySelect({ value, onChange }: CommunitySelectProps) {
         getOptionLabel={(option) => option.name}
         renderOption={(props, option) => {
           return (
-            <AutocompleteOption {...props} key={option.location_id}>
+            <AutocompleteOption {...props}>
               <ListItemDecorator>
                 <MapsHomeWorkIcon color="primary" />
               </ListItemDecorator>

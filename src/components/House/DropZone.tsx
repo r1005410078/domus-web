@@ -11,9 +11,92 @@ import FileUploadRoundedIcon from "@mui/icons-material/FileUploadRounded";
 import { useApplyUploadHouseUrl } from "@/hooks/useApplyUploadHouseUrl";
 import axios from "axios";
 import { useToast } from "@/libs/ToastProvider";
-import { Stack } from "@mui/joy";
-import FileUpload from "./FileUpload";
+import {
+  Box,
+  Button,
+  CardContent,
+  CardCover,
+  CircularProgress,
+  Divider,
+  Grid,
+  IconButton,
+  Stack,
+} from "@mui/joy";
 import { FileInfo } from "@/models/house";
+import { create } from "zustand";
+import DeleteIcon from "@mui/icons-material/Delete";
+
+export type UploadFile = {
+  file: File;
+  url: string;
+  filename: string;
+  percent: number;
+  deleted?: boolean;
+};
+
+export type Store = {
+  files: UploadFile[];
+  uploads: () => Promise<any>;
+  addFile: (file: File, url: string, filename: string) => void;
+  removeFile: (file: File) => void;
+};
+
+export const useUploadFiles = create<Store>()((set, get) => ({
+  files: [],
+  removeFile: (file) => {
+    set((state) => ({
+      files: state.files.map((f) => {
+        if (f.file === file) {
+          return { ...f, deleted: true };
+        }
+
+        return f;
+      }),
+    }));
+  },
+  uploads: () => {
+    const files = get().files;
+    const promises = files
+      .filter((f) => !f.deleted)
+      .map(({ file, url }) => {
+        return axios.put(url, file, {
+          headers: {
+            "Content-Type": file.type,
+          },
+          onUploadProgress: (progressEvent) => {
+            const percent = Math.round(
+              (progressEvent.loaded * 100) / progressEvent.total!
+            );
+
+            set((state) => ({
+              files: state.files.map((f) => {
+                if (f.url === url) {
+                  return { ...f, percent };
+                }
+                return f;
+              }),
+            }));
+
+            if (percent === 100) {
+              setTimeout(() => {
+                set((state) => ({
+                  files: state.files.filter((f) => f.url !== url),
+                }));
+              }, 300);
+            }
+          },
+        });
+      });
+
+    return Promise.all(promises);
+  },
+
+  addFile: (file, url, filename) => {
+    set((state) => ({
+      files: [...state.files, { file, url, percent: 0, filename }],
+    }));
+  },
+}));
 
 export interface DropZoneProps {
   icon?: React.ReactElement<any>;
@@ -27,7 +110,8 @@ export default function DropZone(props: DropZoneProps) {
   const { mutateAsync } = useApplyUploadHouseUrl();
   const toast = useToast();
 
-  const [newFileItems, setNewFileItems] = React.useState<FileInfo[]>([]);
+  const { value: onlineFiles, onChange } = props;
+  const { addFile, files } = useUploadFiles();
 
   const handleClick = () => {
     inputRef.current?.click();
@@ -44,41 +128,44 @@ export default function DropZone(props: DropZoneProps) {
     }
 
     const directory = props.directory!;
-
     if (files && files.length > 0) {
-      const imageUrls: FileInfo[] = [];
       for (const file of files) {
         const filename = `timestamp_${Date.now()}_${file.name}`;
         const result = await mutateAsync({ filename, directory });
         const url = result.data.data;
-        const res = await axios.put(url, file, {
-          headers: {
-            "Content-Type": file.type,
-          },
-          onUploadProgress: (progressEvent) => {
-            const percent = Math.round(
-              (progressEvent.loaded * 100) / progressEvent.total!
-            );
 
-            const uri = new URL(url);
-            const imageUrl = uri.origin + uri.pathname;
-            imageUrls.push({
-              name: file.name,
-              type: file.type,
-              size: file.size.toString(),
-              url: imageUrl,
-            });
-          },
-        });
-
-        setNewFileItems(imageUrls);
+        addFile(file, url, filename);
       }
     }
   };
 
   React.useEffect(() => {
-    props.onChange(newFileItems);
-  }, [newFileItems]);
+    let unsub = useUploadFiles.subscribe((state) => {
+      const { files } = state;
+      const fileInfos: FileInfo[] = files
+        .filter((f) => !f.deleted)
+        .map((f) => {
+          const url = new URL(f.url);
+          return {
+            name: f.filename,
+            url: url.origin + url.pathname,
+            size: f.file.size.toString(),
+            type: f.file.type,
+          };
+        });
+
+      onChange(
+        fileInfos.concat(
+          (onlineFiles || []).filter(
+            (f) => !files.some((ff) => ff.filename === f.name)
+          )
+        )
+      );
+    });
+    return () => {
+      unsub();
+    };
+  }, [onlineFiles]);
 
   return (
     <Stack spacing={2} sx={{ my: 1 }}>
@@ -122,18 +209,100 @@ export default function DropZone(props: DropZoneProps) {
           onChange={handleFileChange}
         />
       </Card>
-      <FileUpload
-        icon={<InsertDriveFileRoundedIcon />}
-        fileName="Tech design requirements.pdf"
-        fileSize="200 kB"
-        progress={100}
-      />
-      <FileUpload
-        icon={<VideocamRoundedIcon />}
-        fileName="Dashboard prototype recording.mp4"
-        fileSize="16 MB"
-        progress={40}
-      />
+      <Grid
+        container
+        spacing={8}
+        sx={{ flexGrow: 1, justifyContent: "space-between" }}
+      >
+        {files
+          .filter((f) => !f.deleted)
+          .map((file, index) => (
+            <FileReview key={index} {...file} />
+          ))}
+      </Grid>
+      <Divider />
+      <Grid
+        container
+        spacing={8}
+        sx={{ flexGrow: 1, justifyContent: "space-between" }}
+      >
+        {onlineFiles
+          ?.filter(
+            (f) => files.findIndex((file) => file.filename === f.name) === -1
+          )
+          .map((file, index) => (
+            <ImageReview
+              key={index}
+              {...file}
+              onRemove={(name) => {
+                onChange(onlineFiles?.filter((f) => f.name !== name));
+              }}
+            />
+          ))}
+      </Grid>
     </Stack>
+  );
+}
+
+function FileReview(props: UploadFile) {
+  const { file, percent } = props;
+  const { removeFile } = useUploadFiles();
+  return (
+    <Card component="li" sx={{ width: "49%", height: "200px" }}>
+      <CardCover>
+        <img src={URL.createObjectURL(file)} alt={file.name} loading="lazy" />
+      </CardCover>
+      <CardContent
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <CircularProgress determinate value={percent} />
+        <IconButton
+          variant="plain"
+          color="danger"
+          size="lg"
+          style={{ position: "absolute", top: 0, right: 0 }}
+          onClick={() => {
+            removeFile(file);
+          }}
+        >
+          <DeleteIcon />
+        </IconButton>
+      </CardContent>
+    </Card>
+  );
+}
+
+function ImageReview(props: FileInfo & { onRemove: (name: string) => void }) {
+  const { url, name, onRemove } = props;
+  const { removeFile } = useUploadFiles();
+  return (
+    <Card component="li" sx={{ width: "49%", height: "200px" }}>
+      <CardCover>
+        <img src={url} alt={name} loading="lazy" />
+      </CardCover>
+      <CardContent
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <IconButton
+          variant="plain"
+          color="danger"
+          size="lg"
+          style={{ position: "absolute", top: 0, right: 0 }}
+          onClick={() => {
+            onRemove(name);
+          }}
+        >
+          <DeleteIcon />
+        </IconButton>
+      </CardContent>
+    </Card>
   );
 }
