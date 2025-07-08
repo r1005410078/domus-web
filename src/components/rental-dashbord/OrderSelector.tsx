@@ -1,26 +1,22 @@
-import * as React from 'react';
-import MenuButton from '@mui/joy/MenuButton';
-import Menu from '@mui/joy/Menu';
-import MenuItem from '@mui/joy/MenuItem';
-import ArrowDropDown from '@mui/icons-material/ArrowDropDown';
-import Dropdown from '@mui/joy/Dropdown';
+import * as React from "react";
 
-export default function OrderSelector() {
+import { Option, Select } from "@mui/joy";
+
+export interface OrderSelectorProps {
+  value?: string;
+  onChange: (value: string) => void;
+}
+
+export default function OrderSelector({ value, onChange }: OrderSelectorProps) {
   return (
-    <Dropdown>
-      <MenuButton
-        variant="plain"
-        color="primary"
-        endDecorator={<ArrowDropDown />}
-        sx={{ whiteSpace: 'nowrap' }}
-      >
-        Order by
-      </MenuButton>
-      <Menu sx={{ minWidth: 120 }}>
-        <MenuItem>Price</MenuItem>
-        <MenuItem>Date</MenuItem>
-        <MenuItem>Rating</MenuItem>
-      </Menu>
-    </Dropdown>
+    <Select
+      defaultValue="出售"
+      variant="plain"
+      onChange={(_, value) => onChange(value!)}
+      value={value || "出售"}
+    >
+      <Option value="出租">出租</Option>
+      <Option value="出售">出售</Option>
+    </Select>
   );
 }

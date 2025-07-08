@@ -17,7 +17,31 @@ export function saveHouse(data: CreateHouseRequest) {
   ); // 返回 token 等信息
 }
 
+export interface HouseListRequest {
+  page?: number;
+  page_size?: number;
+  transaction_type?: string;
+}
+
 // 获取房源列表
+export function getHouseList({
+  page = 1,
+  page_size = 10,
+  ...params
+}: HouseListRequest) {
+  return apiClient.get<ResponseBody<{ list: HouseForm[]; total: number }>>(
+    "/api/domus/query/house/list",
+    {
+      params: {
+        page,
+        page_size,
+        ...params,
+      },
+    }
+  );
+}
+
+// 根据id 获取房源信息
 export function getHouseDetail(id: string) {
   return apiClient.get<ResponseBody<HouseForm>>(
     `/api/domus/query/house/detail/${id}`

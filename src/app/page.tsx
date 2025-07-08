@@ -4,23 +4,33 @@ import { CssVarsProvider } from "@mui/joy/styles";
 import CssBaseline from "@mui/joy/CssBaseline";
 import Box from "@mui/joy/Box";
 import Stack from "@mui/joy/Stack";
-
-import NavBar from "@/components/rental-dashbord/NavBar";
-import RentalCard, {
-  NavMenuButton,
-} from "@/components/rental-dashbord/RentalCard";
-import HeaderSection from "@/components/rental-dashbord/HeaderSection";
-import Search from "@/components/rental-dashbord/Search";
 import Filters from "@/components/rental-dashbord/Filters";
 import Pagination from "@/components/rental-dashbord/Pagination";
 import { MapPage } from "@/components/AMap";
 import Layout from "@/components/layouts/Layout";
 import Header from "@/components/Header";
-import House from "@/components/House";
-import { List, ListItem, Menu } from "@mui/joy";
+import {
+  AspectRatio,
+  Card,
+  CardContent,
+  Chip,
+  CircularProgress,
+  List,
+  ListItem,
+  Typography,
+} from "@mui/joy";
+import { useHouseList } from "@/hooks/useHouse";
+import { HouseListRequest } from "@/services/house";
+import { ApartmentType } from "@/models/house";
 
 export default function RentalDashboard() {
-  const [menu, setMenu] = React.useState<null | string>(null);
+  const [params, setParams] = React.useState<HouseListRequest>({
+    page: 1,
+    page_size: 10,
+    transaction_type: "出售",
+  });
+
+  const { data, isFetching } = useHouseList(params);
 
   return (
     <CssVarsProvider disableTransitionOnChange>
@@ -47,103 +57,137 @@ export default function RentalDashboard() {
           <MapPage />
         </Box>
         <Stack spacing={2} sx={{ px: { xs: 1, md: 2 }, pt: 2, minHeight: 0 }}>
-          <Filters />
-          <List
-            sx={{
-              "--List-gap": "12px",
-              overflow: "auto",
+          <Filters
+            orderSelectorProps={{
+              onChange: (value) => {
+                setParams({ ...params, transaction_type: value });
+              },
+              value: params.transaction_type,
             }}
-          >
-            <ListItem sx={{ p: 0 }}>
-              <NavMenuButton
-                menu={
-                  <Menu>
-                    <House.Detail />
-                  </Menu>
-                }
-                open={menu === "1"}
-                onOpen={() => setMenu("1")}
-                label="11"
-              >
-                <RentalCard
-                  onClick={() => setMenu("1")}
-                  title="A Stylish Apt, 5 min walk to Queen Victoria Market"
-                  category="Entire apartment rental in Collingwood"
-                  rareFind
-                  image="https://images.unsplash.com/photo-1568605114967-8130f3a36994?auto=format&fit=crop&w=400"
-                />
-              </NavMenuButton>
-            </ListItem>
-            <ListItem sx={{ p: 0 }}>
-              <RentalCard
-                title="Designer NY style loft"
-                category="Entire loft in central business district"
-                liked
-                image="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=400"
-              />
-            </ListItem>
-            <ListItem sx={{ p: 0 }}>
-              <RentalCard
-                title="5 minute walk from University of Melbourne"
-                category="Entire rental unit in Carlton"
-                image="https://images.unsplash.com/photo-1537726235470-8504e3beef77?auto=format&fit=crop&w=400"
-              />
-            </ListItem>
-            <ListItem sx={{ p: 0 }}>
-              <RentalCard
-                title="Magnificent apartment next to public transport"
-                category="Entire apartment rental in Collingwood"
-                image="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=400"
-              />
-            </ListItem>
-            <ListItem sx={{ p: 0 }}>
-              <RentalCard
-                title="Next to shoppng mall and public transport"
-                category="Entire apartment rental in Collingwood"
-                image="https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?auto=format&fit=crop&w=400"
-              />
-            </ListItem>
-            <ListItem sx={{ p: 0 }}>
-              <NavMenuButton
-                menu={
-                  <Menu>
-                    <House.Detail />
-                  </Menu>
-                }
-                open={menu === "2"}
-                onOpen={() => setMenu("2")}
-                label="11"
-              >
-                <RentalCard
-                  title="Endless ocean view"
-                  category="A private room in a shared apartment in Docklands"
-                  image="https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=400"
-                />
-              </NavMenuButton>
-            </ListItem>
-            <ListItem sx={{ p: 0 }}>
-              <RentalCard
-                title="A Stylish Apt, 5 min walk to Queen Victoria Market"
-                category="one bedroom apartment in Collingwood"
-                image="https://images.unsplash.com/photo-1481437156560-3205f6a55735?auto=format&fit=crop&w=400"
-              />
-            </ListItem>
-          </List>
+          />
+          {isFetching ? (
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                height: "100%",
+              }}
+            >
+              <CircularProgress thickness={1} />
+            </Box>
+          ) : (
+            <List
+              sx={{
+                "--List-gap": "12px",
+                overflow: "auto",
+              }}
+            >
+              {data?.list.map((item) => (
+                <ListItem sx={{ p: 0 }}>
+                  <Card
+                    variant="outlined"
+                    orientation="horizontal"
+                    sx={{
+                      width: "100%",
+                      p: 1,
+                      border: "none",
+                      "&:hover": {
+                        boxShadow: "md",
+                        borderColor: "neutral.outlinedHoverBorder",
+                      },
+                    }}
+                  >
+                    <AspectRatio ratio="1.2" sx={{ width: 130 }}>
+                      <img
+                        srcSet={
+                          item.images?.[0].url ?? "/images/shooting.png 2x"
+                        }
+                        loading="lazy"
+                      />
+                    </AspectRatio>
+                    <CardContent>
+                      <Typography level="title-lg" id="card-description">
+                        {item.title ?? item.community?.address ?? "-"}
+                      </Typography>
+                      <Typography
+                        level="body-sm"
+                        aria-describedby="card-description"
+                        sx={{ mb: 1 }}
+                      >
+                        {[
+                          apartmentTypeToString(item.apartment_type),
+                          (item.building_area ?? item.use_area ?? 1) + "㎡",
+                          item.community?.name,
+                        ]
+                          .filter(Boolean)
+                          .join("/")}
+                      </Typography>
+                      <Stack direction="row" spacing={1}>
+                        {item.tags?.map((tag) => (
+                          <Chip
+                            variant="outlined"
+                            color="primary"
+                            size="sm"
+                            sx={{ pointerEvents: "none" }}
+                          >
+                            {tag}
+                          </Chip>
+                        ))}
+                      </Stack>
+                      <Typography
+                        sx={{ fontSize: "lg", fontWeight: "lg" }}
+                        color="danger"
+                      >
+                        {params.transaction_type === "出售"
+                          ? item.sale_price + "万元"
+                          : item.rent_price + "元/月"}
+                        {params.transaction_type === "出售" && (
+                          <Typography level="body-xs" ml={1}>
+                            ¥
+                            {(
+                              (item.sale_price! * 10000) /
+                              (item.building_area ?? item.use_area ?? 1)
+                            ).toFixed(2)}
+                            元/平
+                          </Typography>
+                        )}
+                      </Typography>
+                    </CardContent>
+                  </Card>
+                </ListItem>
+              ))}
+            </List>
+          )}
         </Stack>
         <Pagination />
       </Box>
     </CssVarsProvider>
-
-    // <CssVarsProvider disableTransitionOnChange>
-    //   <CssBaseline />
-    //   <Layout.Root>
-    //     <Layout.Header>
-    //       <Header />
-    //     </Layout.Header>
-    //     <Layout.Main>
-    //       <House.Detail />
-    //     </Layout.Main>
-    //   </Layout.Root>
-    // </CssVarsProvider>
   );
+}
+
+function apartmentTypeToString(data?: ApartmentType) {
+  let str = "";
+
+  if (data?.room) {
+    str += `${data.room}室`;
+  }
+
+  if (data?.hall) {
+    str += `${data.hall}厅`;
+  }
+
+  if (data?.bathroom) {
+    str += `${data.bathroom}卫`;
+  }
+
+  if (data?.kitchen) {
+    str += `${data.kitchen}厨`;
+  }
+
+  if (data?.terrace) {
+    str += `${data.terrace}阳台`;
+  }
+
+  return str;
 }
