@@ -24,6 +24,7 @@ import Avatar from "@mui/joy/Avatar";
 import ListItemContent from "@mui/joy/ListItemContent";
 import CottageTwoToneIcon from "@mui/icons-material/CottageTwoTone";
 import HistoryEduTwoToneIcon from "@mui/icons-material/HistoryEduTwoTone";
+import RateReviewTwoToneIcon from "@mui/icons-material/RateReviewTwoTone";
 
 import {
   Dropdown,
@@ -45,6 +46,7 @@ import timezone from "dayjs/plugin/timezone";
 import ImportContactsTwoToneIcon from "@mui/icons-material/ImportContactsTwoTone";
 import KeyboardArrowRight from "@mui/icons-material/KeyboardArrowRightRounded";
 import UpdateHouse from "./UpdateHouse";
+import HouseComment from "./HouseComment";
 
 // 启用插件
 dayjs.extend(utc);
@@ -1165,6 +1167,23 @@ export function Detail(props: DetailProps) {
                     </ListItemButton>
                   </ListItem>
                 </List>
+              </AccordionDetails>
+            </Accordion>
+
+            <Accordion>
+              <AccordionSummary>
+                <Avatar color="primary">
+                  <RateReviewTwoToneIcon />
+                </Avatar>
+                <ListItemContent>
+                  <Typography level="title-md">房源追踪</Typography>
+                  <Typography textColor="text.tertiary">
+                    房源用户最近动态追踪
+                  </Typography>
+                </ListItemContent>
+              </AccordionSummary>
+              <AccordionDetails>
+                <HouseComment />
               </AccordionDetails>
             </Accordion>
 
