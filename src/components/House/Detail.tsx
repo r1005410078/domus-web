@@ -1,5 +1,5 @@
 "use client";
-
+import useEmblaCarousel from "embla-carousel-react";
 import AspectRatio from "@mui/joy/AspectRatio";
 import Box from "@mui/joy/Box";
 import Card from "@mui/joy/Card";
@@ -9,10 +9,7 @@ import Link from "@mui/joy/Link";
 import IconButton from "@mui/joy/IconButton";
 import MoreHoriz from "@mui/icons-material/MoreHoriz";
 import FavoriteBorder from "@mui/icons-material/FavoriteBorder";
-import ModeCommentOutlined from "@mui/icons-material/ModeCommentOutlined";
-import SendOutlined from "@mui/icons-material/SendOutlined";
-import BookmarkBorderRoundedIcon from "@mui/icons-material/BookmarkBorderRounded";
-
+import ShareTwoToneIcon from "@mui/icons-material/ShareTwoTone";
 import AccordionGroup from "@mui/joy/AccordionGroup";
 import Accordion from "@mui/joy/Accordion";
 import AccordionDetails, {
@@ -21,38 +18,63 @@ import AccordionDetails, {
 import AccordionSummary, {
   accordionSummaryClasses,
 } from "@mui/joy/AccordionSummary";
-import Switch from "@mui/joy/Switch";
 import Stack from "@mui/joy/Stack";
 import Typography from "@mui/joy/Typography";
 import Avatar from "@mui/joy/Avatar";
-import FormControl from "@mui/joy/FormControl";
-import FormLabel from "@mui/joy/FormLabel";
 import ListItemContent from "@mui/joy/ListItemContent";
+import CottageTwoToneIcon from "@mui/icons-material/CottageTwoTone";
+import HistoryEduTwoToneIcon from "@mui/icons-material/HistoryEduTwoTone";
 
-import AirplanemodeActiveRoundedIcon from "@mui/icons-material/AirplanemodeActiveRounded";
-import WifiRoundedIcon from "@mui/icons-material/WifiRounded";
-import BluetoothRoundedIcon from "@mui/icons-material/BluetoothRounded";
-import TapAndPlayRoundedIcon from "@mui/icons-material/TapAndPlayRounded";
-import EditNotificationsRoundedIcon from "@mui/icons-material/EditNotificationsRounded";
-import AdUnitsRoundedIcon from "@mui/icons-material/AdUnitsRounded";
-import MessageRoundedIcon from "@mui/icons-material/MessageRounded";
-import EmailRoundedIcon from "@mui/icons-material/EmailRounded";
-import AccessibilityNewRoundedIcon from "@mui/icons-material/AccessibilityNewRounded";
-import ZoomInRoundedIcon from "@mui/icons-material/ZoomInRounded";
-import SpatialTrackingRoundedIcon from "@mui/icons-material/SpatialTrackingRounded";
-import SettingsVoiceRoundedIcon from "@mui/icons-material/SettingsVoiceRounded";
+import {
+  Dropdown,
+  List,
+  ListItem,
+  ListItemButton,
+  Menu,
+  MenuButton,
+  MenuItem,
+  sheetClasses,
+} from "@mui/joy";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { EmblaCarouselType } from "embla-carousel";
+import MyLocationTwoToneIcon from "@mui/icons-material/MyLocationTwoTone";
+import { ApartmentType, FloorRange, HouseForm } from "@/models/house";
+import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+import timezone from "dayjs/plugin/timezone";
+import ImportContactsTwoToneIcon from "@mui/icons-material/ImportContactsTwoTone";
+import KeyboardArrowRight from "@mui/icons-material/KeyboardArrowRightRounded";
+import UpdateHouse from "./UpdateHouse";
 
-export interface DetailProps {}
-const bull = (
-  <Box
-    component="span"
-    sx={{ display: "inline-block", mx: "2px", transform: "scale(0.8)" }}
-  >
-    •
-  </Box>
-);
+// 启用插件
+dayjs.extend(utc);
+dayjs.extend(timezone);
+
+export interface DetailProps {
+  detail: HouseForm;
+  transactionType?: string;
+}
+
 // 房源信息
 export function Detail(props: DetailProps) {
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: false });
+  const { transactionType, detail } = props;
+  const images = useMemo(
+    () => detail.images || [{ url: "/images/shooting.jpg" }],
+    [detail.images]
+  );
+
+  const onSelect = useCallback((emblaApi: EmblaCarouselType) => {
+    setSelectedIndex(emblaApi.selectedScrollSnap());
+  }, []);
+
+  useEffect(() => {
+    if (!emblaApi) return;
+    onSelect(emblaApi);
+    emblaApi.on("reInit", onSelect).on("select", onSelect);
+  }, [emblaApi, onSelect]);
+
   return (
     <Box
       sx={{
@@ -103,20 +125,40 @@ export function Detail(props: DetailProps) {
               }}
             />
           </Box>
-          <Typography sx={{ fontWeight: "lg" }}>MUI</Typography>
-          <IconButton
-            variant="plain"
-            color="neutral"
-            size="sm"
-            sx={{ ml: "auto" }}
-          >
-            <MoreHoriz />
-          </IconButton>
+          <Dropdown>
+            <MenuButton
+              slots={{ root: IconButton }}
+              variant="plain"
+              color="neutral"
+              size="sm"
+              sx={{ ml: "auto" }}
+              slotProps={{ root: { variant: "plain", color: "neutral" } }}
+            >
+              <MoreHoriz />
+            </MenuButton>
+            <Menu>
+              <MenuItem>编辑</MenuItem>
+            </Menu>
+          </Dropdown>
         </CardContent>
         <CardOverflow>
-          <AspectRatio>
-            <img src="/images/house.png" alt="" loading="lazy" />
-          </AspectRatio>
+          <div className="embla" ref={emblaRef} style={{ overflow: "hidden" }}>
+            <div
+              className="embla__container"
+              style={{ display: "flex", height: "260px" }}
+            >
+              {images.map((image, index) => (
+                <div
+                  className="embla__slide"
+                  style={{ flex: "0 0 100%", minWidth: 0 }}
+                >
+                  <AspectRatio>
+                    <img src={image.url} alt="" loading="lazy" />
+                  </AspectRatio>
+                </div>
+              ))}
+            </div>
+          </div>
         </CardOverflow>
         <CardContent
           orientation="horizontal"
@@ -127,16 +169,13 @@ export function Detail(props: DetailProps) {
               <FavoriteBorder />
             </IconButton>
             <IconButton variant="plain" color="neutral" size="sm">
-              <ModeCommentOutlined />
-            </IconButton>
-            <IconButton variant="plain" color="neutral" size="sm">
-              <SendOutlined />
+              <ShareTwoToneIcon />
             </IconButton>
           </Box>
           <Box
             sx={{ display: "flex", alignItems: "center", gap: 0.5, mx: "auto" }}
           >
-            {[...Array(5)].map((_, index) => (
+            {[...Array(images.length)].map((_, index) => (
               <Box
                 key={index}
                 sx={[
@@ -145,7 +184,7 @@ export function Detail(props: DetailProps) {
                     width: `max(${6 - index}px, 3px)`,
                     height: `max(${6 - index}px, 3px)`,
                   },
-                  index === 0
+                  index === selectedIndex
                     ? { bgcolor: "primary.solidBg" }
                     : { bgcolor: "background.level3" },
                 ]}
@@ -154,25 +193,85 @@ export function Detail(props: DetailProps) {
           </Box>
           <Box sx={{ width: 0, display: "flex", flexDirection: "row-reverse" }}>
             <IconButton variant="plain" color="neutral" size="sm">
-              <BookmarkBorderRoundedIcon />
+              <MyLocationTwoToneIcon />
             </IconButton>
           </Box>
         </CardContent>
+
+        <CardContent>
+          <Stack direction="row" sx={{ justifyContent: "space-between" }}>
+            <Stack
+              direction="column"
+              spacing={1}
+              sx={{
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <Typography level="h3">
+                {apartmentTypeToString(detail.apartment_type)}
+              </Typography>
+              <Typography level="body-md">
+                {floor_rangeToString(detail.floor_range)}
+              </Typography>
+            </Stack>
+            <Stack
+              direction="column"
+              spacing={1}
+              sx={{
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <Typography level="h3">
+                {detail.house_orientation ?? "朝向未知"}
+              </Typography>
+              <Typography level="body-md">
+                {detail.house_decoration ?? "装修未知"}
+              </Typography>
+            </Stack>
+            <Stack
+              direction="column"
+              spacing={1}
+              sx={{
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <Typography level="h3">88.0 ㎡</Typography>
+              <Typography level="body-md">
+                {detail.building_year ?? "未知建筑年限"}/
+                {detail.building_structure ?? "塔楼"}
+              </Typography>
+            </Stack>
+          </Stack>
+        </CardContent>
+
         <CardContent>
           <div>
-            <Typography level="h3">
-              ¥58
-              <Typography textColor="text.tertiary" sx={{ fontSize: "sm" }}>
-                /月
+            <Typography level="h3" color="danger">
+              {transactionType === "出售"
+                ? detail.sale_price
+                : detail.rent_price}
+              <Typography
+                textColor="text.tertiary"
+                sx={{ fontSize: "sm", ml: 0.5 }}
+              >
+                {transactionType === "出售" ? "万元" : "元/月"}
               </Typography>
             </Typography>
           </div>
+
           <CardContent>
-            <Typography level="title-lg">
-              宣陵站 德黑兰大宇I-Ville 3号 两室全选项短期出租
-            </Typography>
+            <Typography level="title-lg">{detail.title}</Typography>
             <Typography level="body-md">
-              现有租户，2025年12月到期，可转让，可进行小额投资。租户姓名可转让，因此可实际入住。由于周边地区正在逐步开发，该房产具有良好的投资价值。此照片与出售时的实际房产相同。
+              {detail.community?.name} {detail.community?.address}
+            </Typography>
+            <Typography
+              level="body-md"
+              sx={{ fontFamily: "monospace", opacity: "70%" }}
+            >
+              {detail.remark}
             </Typography>
           </CardContent>
           <Link
@@ -180,7 +279,13 @@ export function Detail(props: DetailProps) {
             underline="none"
             sx={{ fontSize: "10px", color: "text.tertiary", my: 0.5 }}
           >
-            2 天前更新
+            <span>更新于</span>
+            <span style={{ marginLeft: "4px" }}>
+              {dayjs
+                .utc(detail.updated_at)
+                .tz("Asia/Shanghai")
+                .format("YYYY-MM-DD HH:mm:ss")}
+            </span>
           </Link>
         </CardContent>
 
@@ -202,105 +307,879 @@ export function Detail(props: DetailProps) {
             <Accordion>
               <AccordionSummary>
                 <Avatar color="primary">
-                  <TapAndPlayRoundedIcon />
+                  <CottageTwoToneIcon />
                 </Avatar>
                 <ListItemContent>
-                  <Typography level="title-md">房源信息</Typography>
-                  <Typography level="body-sm">
-                    精装，商品房，住宅，南北
+                  <Typography level="title-md">基本信息</Typography>
+                  <Typography textColor="text.tertiary">
+                    业主/售价/小区
                   </Typography>
                 </ListItemContent>
               </AccordionSummary>
               <AccordionDetails>
-                <Stack spacing={1.5}>
-                  <FormControl orientation="horizontal" sx={{ gap: 1 }}>
-                    <AirplanemodeActiveRoundedIcon
-                      sx={{ mx: 1, fontSize: "xl2" }}
-                    />
-                    <FormLabel>Airplane Mode</FormLabel>
-                    <Switch size="sm" />
-                  </FormControl>
+                <List
+                  sx={{
+                    [`& .${sheetClasses.root}`]: {
+                      p: 0.5,
+                      lineHeight: 0,
+                      borderRadius: "sm",
+                    },
+                  }}
+                >
+                  <ListItem>
+                    <ListItemButton>
+                      <ListItemContent>用途</ListItemContent>
+                      <Typography
+                        textColor="text.tertiary"
+                        sx={{
+                          mr: "calc(-1 * var(--ListItem-gap))",
+                          display: "flex",
+                          alignItems: "center",
+                        }}
+                      >
+                        <span>{detail.purpose}</span>
+                        <KeyboardArrowRight />
+                      </Typography>
+                    </ListItemButton>
+                  </ListItem>
+                  <ListItem>
+                    <ListItemButton>
+                      <ListItemContent>业主姓名</ListItemContent>
+                      <Typography
+                        textColor="text.tertiary"
+                        sx={{
+                          mr: "calc(-1 * var(--ListItem-gap))",
+                          display: "flex",
+                          alignItems: "center",
+                        }}
+                      >
+                        <Empty is={!!detail.owner?.name}>
+                          {detail.owner?.name}
+                        </Empty>
+                        <KeyboardArrowRight />
+                      </Typography>
+                    </ListItemButton>
+                  </ListItem>
+                  <ListItem>
+                    <ListItemButton>
+                      <ListItemContent>联系方式</ListItemContent>
+                      <Typography
+                        textColor="text.tertiary"
+                        sx={{
+                          mr: "calc(-1 * var(--ListItem-gap))",
+                          display: "flex",
+                          alignItems: "center",
+                        }}
+                      >
+                        {detail.owner?.phone}
+                        <KeyboardArrowRight />
+                      </Typography>
+                    </ListItemButton>
+                  </ListItem>
+                  <ListItem>
+                    <ListItemButton>
+                      <ListItemContent>售价</ListItemContent>
+                      <Typography
+                        textColor="text.tertiary"
+                        sx={{
+                          mr: "calc(-1 * var(--ListItem-gap))",
+                          display: "flex",
+                          alignItems: "center",
+                        }}
+                      >
+                        {detail.sale_price}
+                        <KeyboardArrowRight />
+                      </Typography>
+                    </ListItemButton>
+                  </ListItem>
+                  <ListItem>
+                    <ListItemButton>
+                      <ListItemContent>出售低价</ListItemContent>
+                      <Typography
+                        textColor="text.tertiary"
+                        sx={{
+                          mr: "calc(-1 * var(--ListItem-gap))",
+                          display: "flex",
+                          alignItems: "center",
+                        }}
+                      >
+                        {detail.sale_low_price} 万元
+                        <KeyboardArrowRight />
+                      </Typography>
+                    </ListItemButton>
+                  </ListItem>
+                  <ListItem>
+                    <ListItemButton>
+                      <ListItemContent>租价</ListItemContent>
+                      <Typography
+                        textColor="text.tertiary"
+                        sx={{
+                          mr: "calc(-1 * var(--ListItem-gap))",
+                          display: "flex",
+                          alignItems: "center",
+                        }}
+                      >
+                        {detail.rent_price} 元/月
+                        <KeyboardArrowRight />
+                      </Typography>
+                    </ListItemButton>
+                  </ListItem>
+                  <ListItem>
+                    <ListItemButton>
+                      <ListItemContent>出租低价</ListItemContent>
+                      <Typography
+                        textColor="text.tertiary"
+                        sx={{
+                          mr: "calc(-1 * var(--ListItem-gap))",
+                          display: "flex",
+                          alignItems: "center",
+                        }}
+                      >
+                        {detail.rent_low_price} 元/月
+                        <KeyboardArrowRight />
+                      </Typography>
+                    </ListItemButton>
+                  </ListItem>
+                  <ListItem>
+                    <ListItemButton>
+                      <ListItemContent>首付</ListItemContent>
+                      <Typography
+                        textColor="text.tertiary"
+                        sx={{
+                          mr: "calc(-1 * var(--ListItem-gap))",
+                          display: "flex",
+                          alignItems: "center",
+                        }}
+                      >
+                        <Empty is={!!detail.down_payment}>
+                          {detail.down_payment} 万元
+                        </Empty>
+                        <KeyboardArrowRight />
+                      </Typography>
+                    </ListItemButton>
+                  </ListItem>
+                  <ListItem>
+                    <ListItemButton>
+                      <ListItemContent>小区</ListItemContent>
+                      <Typography
+                        textColor="text.tertiary"
+                        sx={{
+                          mr: "calc(-1 * var(--ListItem-gap))",
+                          display: "flex",
+                          alignItems: "center",
+                        }}
+                      >
+                        {detail.community?.name}
+                        <KeyboardArrowRight />
+                      </Typography>
+                    </ListItemButton>
+                  </ListItem>
+                  <ListItem>
+                    <ListItemButton>
+                      <ListItemContent>地址</ListItemContent>
+                      <Typography
+                        textColor="text.tertiary"
+                        sx={{
+                          mr: "calc(-1 * var(--ListItem-gap))",
+                          display: "flex",
+                          alignItems: "center",
+                        }}
+                      >
+                        {detail.community?.address}
+                        <KeyboardArrowRight />
+                      </Typography>
+                    </ListItemButton>
+                  </ListItem>
 
-                  <FormControl orientation="horizontal" sx={{ gap: 1 }}>
-                    <WifiRoundedIcon sx={{ mx: 1, fontSize: "xl2" }} />
-                    <FormLabel>Wi-Fi</FormLabel>
-                    <Switch size="sm" />
-                  </FormControl>
+                  <ListItem>
+                    <ListItemButton>
+                      <ListItemContent>门牌号</ListItemContent>
+                      <Typography
+                        textColor="text.tertiary"
+                        sx={{
+                          mr: "calc(-1 * var(--ListItem-gap))",
+                          display: "flex",
+                          alignItems: "center",
+                        }}
+                      >
+                        <span>
+                          {" "}
+                          {detail.door_number?.building_number}号楼
+                          {detail.door_number?.unit_number}单元
+                          {detail.door_number?.door_number}室
+                        </span>
+                        <KeyboardArrowRight />
+                      </Typography>
+                    </ListItemButton>
+                  </ListItem>
 
-                  <FormControl orientation="horizontal" sx={{ gap: 1 }}>
-                    <BluetoothRoundedIcon sx={{ mx: 1, fontSize: "xl2" }} />
-                    <FormLabel>Bluetooth</FormLabel>
-                    <Switch size="sm" />
-                  </FormControl>
-                </Stack>
+                  <ListItem>
+                    <ListItemButton>
+                      <ListItemContent>户型</ListItemContent>
+                      <Typography
+                        textColor="text.tertiary"
+                        sx={{
+                          mr: "calc(-1 * var(--ListItem-gap))",
+                          display: "flex",
+                          alignItems: "center",
+                        }}
+                      >
+                        {apartmentTypeToStringFull(detail.apartment_type)}
+                        <KeyboardArrowRight />
+                      </Typography>
+                    </ListItemButton>
+                  </ListItem>
+                </List>
               </AccordionDetails>
             </Accordion>
 
             <Accordion>
               <AccordionSummary>
                 <Avatar color="success">
-                  <EditNotificationsRoundedIcon />
+                  <ImportContactsTwoToneIcon />
                 </Avatar>
                 <ListItemContent>
-                  <Typography level="title-md">小区信息</Typography>
-                  <Typography level="body-sm">回祥小区 2022年建成</Typography>
+                  <Typography level="title-md">详细信息</Typography>
+                  <Typography textColor="text.tertiary">
+                    房屋装修/建筑面积/朝向/楼层/学位
+                  </Typography>
                 </ListItemContent>
               </AccordionSummary>
               <AccordionDetails>
-                <Stack spacing={1.5}>
-                  <FormControl orientation="horizontal" sx={{ gap: 1 }}>
-                    <EmailRoundedIcon sx={{ mx: 1, fontSize: "xl2" }} />
-                    <FormLabel>E-mail</FormLabel>
-                    <Switch size="sm" />
-                  </FormControl>
+                <List>
+                  <ListItem>
+                    <ListItemButton>
+                      <ListItemContent>楼层</ListItemContent>
+                      <Typography
+                        textColor="text.tertiary"
+                        sx={{
+                          mr: "calc(-1 * var(--ListItem-gap))",
+                          display: "flex",
+                          alignItems: "center",
+                        }}
+                      >
+                        <Empty
+                          is={
+                            !!detail.floor_range?.door_number_from &&
+                            !!detail.floor_range?.door_number_to
+                          }
+                        >
+                          {detail.floor_range?.door_number_from ?? 0}到
+                          {detail.floor_range?.door_number_to ?? 0}层
+                        </Empty>
+                        <KeyboardArrowRight />
+                      </Typography>
+                    </ListItemButton>
+                  </ListItem>
+                  <ListItem>
+                    <ListItemButton>
+                      <ListItemContent>推荐标签</ListItemContent>
+                      <Typography
+                        textColor="text.tertiary"
+                        sx={{
+                          mr: "calc(-1 * var(--ListItem-gap))",
+                          display: "flex",
+                          alignItems: "center",
+                        }}
+                      >
+                        <span>{detail.tags?.join(" ")}</span>
+                        <KeyboardArrowRight />
+                      </Typography>
+                    </ListItemButton>
+                  </ListItem>
+                  <ListItem>
+                    <ListItemButton>
+                      <ListItemContent>车位高度</ListItemContent>
+                      <Typography
+                        textColor="text.tertiary"
+                        sx={{
+                          mr: "calc(-1 * var(--ListItem-gap))",
+                          display: "flex",
+                          alignItems: "center",
+                        }}
+                      >
+                        <Empty is={!!detail.car_height}>
+                          {detail.car_height}米
+                        </Empty>
+                        <KeyboardArrowRight />
+                      </Typography>
+                    </ListItemButton>
+                  </ListItem>
+                  <ListItem>
+                    <ListItemButton>
+                      <ListItemContent>梯户</ListItemContent>
+                      <Typography
+                        textColor="text.tertiary"
+                        sx={{
+                          mr: "calc(-1 * var(--ListItem-gap))",
+                          display: "flex",
+                          alignItems: "center",
+                        }}
+                      >
+                        <Empty
+                          is={!!detail.stairs?.stairs && !!detail.stairs?.rooms}
+                        >
+                          {detail.stairs?.stairs}梯{detail.stairs?.rooms}户
+                        </Empty>
+                        <KeyboardArrowRight />
+                      </Typography>
+                    </ListItemButton>
+                  </ListItem>
+                  <ListItem>
+                    <ListItemButton>
+                      <ListItemContent>实率</ListItemContent>
+                      <Typography
+                        textColor="text.tertiary"
+                        sx={{
+                          mr: "calc(-1 * var(--ListItem-gap))",
+                          display: "flex",
+                          alignItems: "center",
+                        }}
+                      >
+                        <Empty is={!!detail.actual_rate}>
+                          {detail.actual_rate}
+                        </Empty>
+                        <KeyboardArrowRight />
+                      </Typography>
+                    </ListItemButton>
+                  </ListItem>
+                  <ListItem>
+                    <ListItemButton>
+                      <ListItemContent>级别</ListItemContent>
+                      <Typography
+                        textColor="text.tertiary"
+                        sx={{
+                          mr: "calc(-1 * var(--ListItem-gap))",
+                          display: "flex",
+                          alignItems: "center",
+                        }}
+                      >
+                        <Empty is={!!detail.level}>{detail.level}</Empty>
+                        <KeyboardArrowRight />
+                      </Typography>
+                    </ListItemButton>
+                  </ListItem>
+                  <ListItem>
+                    <ListItemButton>
+                      <ListItemContent>层高</ListItemContent>
+                      <Typography
+                        textColor="text.tertiary"
+                        sx={{
+                          mr: "calc(-1 * var(--ListItem-gap))",
+                          display: "flex",
+                          alignItems: "center",
+                        }}
+                      >
+                        <Empty is={!!detail.floor_height}>
+                          {detail.floor_height}
+                        </Empty>
+                        <KeyboardArrowRight />
+                      </Typography>
+                    </ListItemButton>
+                  </ListItem>
+                  <ListItem>
+                    <ListItemButton>
+                      <ListItemContent>进深</ListItemContent>
+                      <Typography
+                        textColor="text.tertiary"
+                        sx={{
+                          mr: "calc(-1 * var(--ListItem-gap))",
+                          display: "flex",
+                          alignItems: "center",
+                        }}
+                      >
+                        <Empty is={!!detail.progress_depth}>
+                          {detail.progress_depth}
+                        </Empty>
+                        <KeyboardArrowRight />
+                      </Typography>
+                    </ListItemButton>
+                  </ListItem>
+                  <ListItem>
+                    <ListItemButton>
+                      <ListItemContent>门宽</ListItemContent>
+                      <Typography
+                        textColor="text.tertiary"
+                        sx={{
+                          mr: "calc(-1 * var(--ListItem-gap))",
+                          display: "flex",
+                          alignItems: "center",
+                        }}
+                      >
+                        <Empty is={!!detail.door_width}>
+                          {detail.door_width}米
+                        </Empty>
+                        <KeyboardArrowRight />
+                      </Typography>
+                    </ListItemButton>
+                  </ListItem>
+                  <ListItem>
+                    <ListItemButton>
+                      <ListItemContent>建筑面积</ListItemContent>
+                      <Typography
+                        textColor="text.tertiary"
+                        sx={{
+                          mr: "calc(-1 * var(--ListItem-gap))",
+                          display: "flex",
+                          alignItems: "center",
+                        }}
+                      >
+                        <Empty is={!!detail.building_area}>
+                          {detail.building_area}平米
+                        </Empty>
+                        <KeyboardArrowRight />
+                      </Typography>
+                    </ListItemButton>
+                  </ListItem>
+                  <ListItem>
+                    <ListItemButton>
+                      <ListItemContent>使用面积</ListItemContent>
+                      <Typography
+                        textColor="text.tertiary"
+                        sx={{
+                          mr: "calc(-1 * var(--ListItem-gap))",
+                          display: "flex",
+                          alignItems: "center",
+                        }}
+                      >
+                        <Empty is={!!detail.use_area}>
+                          {detail.use_area}平米
+                        </Empty>
+                        <KeyboardArrowRight />
+                      </Typography>
+                    </ListItemButton>
+                  </ListItem>
+                  <ListItem>
+                    <ListItemButton>
+                      <ListItemContent>房屋类型</ListItemContent>
+                      <Typography
+                        textColor="text.tertiary"
+                        sx={{
+                          mr: "calc(-1 * var(--ListItem-gap))",
+                          display: "flex",
+                          alignItems: "center",
+                        }}
+                      >
+                        <Empty is={!!detail.house_type}>
+                          {detail.house_type}
+                        </Empty>
+                        <KeyboardArrowRight />
+                      </Typography>
+                    </ListItemButton>
+                  </ListItem>
+                  <ListItem>
+                    <ListItemButton>
+                      <ListItemContent>朝向</ListItemContent>
+                      <Typography
+                        textColor="text.tertiary"
+                        sx={{
+                          mr: "calc(-1 * var(--ListItem-gap))",
+                          display: "flex",
+                          alignItems: "center",
+                        }}
+                      >
+                        <Empty is={!!detail.house_orientation}>
+                          {detail.house_orientation}
+                        </Empty>
+                        <KeyboardArrowRight />
+                      </Typography>
+                    </ListItemButton>
+                  </ListItem>
+                  <ListItem>
+                    <ListItemButton>
+                      <ListItemContent>装修</ListItemContent>
+                      <Typography
+                        textColor="text.tertiary"
+                        sx={{
+                          mr: "calc(-1 * var(--ListItem-gap))",
+                          display: "flex",
+                          alignItems: "center",
+                        }}
+                      >
+                        <Empty is={!!detail.house_decoration}>
+                          {detail.house_decoration}
+                        </Empty>
+                        <KeyboardArrowRight />
+                      </Typography>
+                    </ListItemButton>
+                  </ListItem>
+                  <ListItem>
+                    <ListItemButton>
+                      <ListItemContent>满减年限</ListItemContent>
+                      <Typography
+                        textColor="text.tertiary"
+                        sx={{
+                          mr: "calc(-1 * var(--ListItem-gap))",
+                          display: "flex",
+                          alignItems: "center",
+                        }}
+                      >
+                        <Empty is={!!detail.discount_year_limit}>
+                          {detail.discount_year_limit}
+                        </Empty>
+                        <KeyboardArrowRight />
+                      </Typography>
+                    </ListItemButton>
+                  </ListItem>
+                  <ListItem>
+                    <ListItemButton>
+                      <ListItemContent>看房方式</ListItemContent>
+                      <Typography
+                        textColor="text.tertiary"
+                        sx={{
+                          mr: "calc(-1 * var(--ListItem-gap))",
+                          display: "flex",
+                          alignItems: "center",
+                        }}
+                      >
+                        <Empty is={!!detail.view_method}>
+                          {detail.view_method}
+                        </Empty>
+                        <KeyboardArrowRight />
+                      </Typography>
+                    </ListItemButton>
+                  </ListItem>
+                  <ListItem>
+                    <ListItemButton>
+                      <ListItemContent>付款方式</ListItemContent>
+                      <Typography
+                        textColor="text.tertiary"
+                        sx={{
+                          mr: "calc(-1 * var(--ListItem-gap))",
+                          display: "flex",
+                          alignItems: "center",
+                        }}
+                      >
+                        <Empty is={!!detail.payment_method}>
+                          {detail.payment_method}
+                        </Empty>
+                        <KeyboardArrowRight />
+                      </Typography>
+                    </ListItemButton>
+                  </ListItem>
+                  <ListItem>
+                    <ListItemButton>
+                      <ListItemContent>房源税费</ListItemContent>
+                      <Typography
+                        textColor="text.tertiary"
+                        sx={{
+                          mr: "calc(-1 * var(--ListItem-gap))",
+                          display: "flex",
+                          alignItems: "center",
+                        }}
+                      >
+                        <Empty is={!!detail.property_tax}>
+                          {detail.property_tax}
+                        </Empty>
+                        <KeyboardArrowRight />
+                      </Typography>
+                    </ListItemButton>
+                  </ListItem>
+                  <ListItem>
+                    <ListItemButton>
+                      <ListItemContent>建筑结构</ListItemContent>
+                      <Typography
+                        textColor="text.tertiary"
+                        sx={{
+                          mr: "calc(-1 * var(--ListItem-gap))",
+                          display: "flex",
+                          alignItems: "center",
+                        }}
+                      >
+                        <Empty is={!!detail.building_structure}>
+                          {detail.building_structure}
+                        </Empty>
+                        <KeyboardArrowRight />
+                      </Typography>
+                    </ListItemButton>
+                  </ListItem>
+                  <ListItem>
+                    <ListItemButton>
+                      <ListItemContent>产权性质</ListItemContent>
+                      <Typography
+                        textColor="text.tertiary"
+                        sx={{
+                          mr: "calc(-1 * var(--ListItem-gap))",
+                          display: "flex",
+                          alignItems: "center",
+                        }}
+                      >
+                        <Empty is={!!detail.property_rights}>
+                          {detail.property_rights}
+                        </Empty>
+                        <KeyboardArrowRight />
+                      </Typography>
+                    </ListItemButton>
+                  </ListItem>
+                  <ListItem>
+                    <ListItemButton>
+                      <ListItemContent>产权年限</ListItemContent>
+                      <Typography
+                        textColor="text.tertiary"
+                        sx={{
+                          mr: "calc(-1 * var(--ListItem-gap))",
+                          display: "flex",
+                          alignItems: "center",
+                        }}
+                      >
+                        <Empty is={!!detail.property_year_limit}>
+                          {detail.property_year_limit}
+                        </Empty>
+                        <KeyboardArrowRight />
+                      </Typography>
+                    </ListItemButton>
+                  </ListItem>
+                  <ListItem>
+                    <ListItemButton>
+                      <ListItemContent>产证日期</ListItemContent>
+                      <Typography
+                        textColor="text.tertiary"
+                        sx={{
+                          mr: "calc(-1 * var(--ListItem-gap))",
+                          display: "flex",
+                          alignItems: "center",
+                        }}
+                      >
+                        <Empty is={!!detail.certificate_date}>
+                          {detail.certificate_date}
+                        </Empty>
+                        <KeyboardArrowRight />
+                      </Typography>
+                    </ListItemButton>
+                  </ListItem>
+                  <ListItem>
+                    <ListItemButton>
+                      <ListItemContent>交房日期</ListItemContent>
+                      <Typography
+                        textColor="text.tertiary"
+                        sx={{
+                          mr: "calc(-1 * var(--ListItem-gap))",
+                          display: "flex",
+                          alignItems: "center",
+                        }}
+                      >
+                        <Empty is={!!detail.handover_date}>
+                          {detail.handover_date}
+                        </Empty>
+                        <KeyboardArrowRight />
+                      </Typography>
+                    </ListItemButton>
+                  </ListItem>
 
-                  <FormControl orientation="horizontal" sx={{ gap: 1 }}>
-                    <MessageRoundedIcon sx={{ mx: 1, fontSize: "xl2" }} />
-                    <FormLabel>Messages</FormLabel>
-                    <Switch size="sm" />
-                  </FormControl>
+                  <ListItem>
+                    <ListItemButton>
+                      <ListItemContent>学位</ListItemContent>
+                      <Typography
+                        textColor="text.tertiary"
+                        sx={{
+                          mr: "calc(-1 * var(--ListItem-gap))",
+                          display: "flex",
+                          alignItems: "center",
+                        }}
+                      >
+                        <Empty is={!!detail.degree}>{detail.degree}</Empty>
+                        <KeyboardArrowRight />
+                      </Typography>
+                    </ListItemButton>
+                  </ListItem>
 
-                  <FormControl orientation="horizontal" sx={{ gap: 1 }}>
-                    <AdUnitsRoundedIcon sx={{ mx: 1, fontSize: "xl2" }} />
-                    <FormLabel>Push</FormLabel>
-                    <Switch size="sm" />
-                  </FormControl>
-                </Stack>
+                  <ListItem>
+                    <ListItemButton>
+                      <ListItemContent>户口</ListItemContent>
+                      <Typography
+                        textColor="text.tertiary"
+                        sx={{
+                          mr: "calc(-1 * var(--ListItem-gap))",
+                          display: "flex",
+                          alignItems: "center",
+                        }}
+                      >
+                        <Empty is={!!detail.household}>
+                          {detail.household}
+                        </Empty>
+                        <KeyboardArrowRight />
+                      </Typography>
+                    </ListItemButton>
+                  </ListItem>
+
+                  <ListItem>
+                    <ListItemButton>
+                      <ListItemContent>来源</ListItemContent>
+                      <Typography
+                        textColor="text.tertiary"
+                        sx={{
+                          mr: "calc(-1 * var(--ListItem-gap))",
+                          display: "flex",
+                          alignItems: "center",
+                        }}
+                      >
+                        <Empty is={!!detail.source}>{detail.source}</Empty>
+                        <KeyboardArrowRight />
+                      </Typography>
+                    </ListItemButton>
+                  </ListItem>
+
+                  <ListItem>
+                    <ListItemButton>
+                      <ListItemContent>唯一住房</ListItemContent>
+                      <Typography
+                        textColor="text.tertiary"
+                        sx={{
+                          mr: "calc(-1 * var(--ListItem-gap))",
+                          display: "flex",
+                          alignItems: "center",
+                        }}
+                      >
+                        <Empty is={!!detail.unique_housing}>
+                          {detail.unique_housing}
+                        </Empty>
+                        <KeyboardArrowRight />
+                      </Typography>
+                    </ListItemButton>
+                  </ListItem>
+
+                  <ListItem>
+                    <ListItemButton>
+                      <ListItemContent>全款</ListItemContent>
+                      <Typography
+                        textColor="text.tertiary"
+                        sx={{
+                          mr: "calc(-1 * var(--ListItem-gap))",
+                          display: "flex",
+                          alignItems: "center",
+                        }}
+                      >
+                        <Empty is={!!detail.full_payment}>
+                          {detail.full_payment}
+                        </Empty>
+                        <KeyboardArrowRight />
+                      </Typography>
+                    </ListItemButton>
+                  </ListItem>
+
+                  <ListItem>
+                    <ListItemButton>
+                      <ListItemContent>抵押</ListItemContent>
+                      <Typography
+                        textColor="text.tertiary"
+                        sx={{
+                          mr: "calc(-1 * var(--ListItem-gap))",
+                          display: "flex",
+                          alignItems: "center",
+                        }}
+                      >
+                        <Empty is={!!detail.mortgage}>{detail.mortgage}</Empty>
+                        <KeyboardArrowRight />
+                      </Typography>
+                    </ListItemButton>
+                  </ListItem>
+
+                  <ListItem>
+                    <ListItemButton>
+                      <ListItemContent>急切</ListItemContent>
+                      <Typography
+                        textColor="text.tertiary"
+                        sx={{
+                          mr: "calc(-1 * var(--ListItem-gap))",
+                          display: "flex",
+                          alignItems: "center",
+                        }}
+                      >
+                        <Empty is={!!detail.urgent}>{detail.urgent}</Empty>
+                        <KeyboardArrowRight />
+                      </Typography>
+                    </ListItemButton>
+                  </ListItem>
+
+                  <ListItem>
+                    <ListItemButton>
+                      <ListItemContent>配套</ListItemContent>
+                      <Typography
+                        textColor="text.tertiary"
+                        sx={{
+                          mr: "calc(-1 * var(--ListItem-gap))",
+                          display: "flex",
+                          alignItems: "center",
+                        }}
+                      >
+                        <Empty is={!!detail.support}>{detail.support}</Empty>
+                        <KeyboardArrowRight />
+                      </Typography>
+                    </ListItemButton>
+                  </ListItem>
+
+                  <ListItem>
+                    <ListItemButton>
+                      <ListItemContent>现状</ListItemContent>
+                      <Typography
+                        textColor="text.tertiary"
+                        sx={{
+                          mr: "calc(-1 * var(--ListItem-gap))",
+                          display: "flex",
+                          alignItems: "center",
+                        }}
+                      >
+                        <Empty is={!!detail.present_state}>
+                          {detail.present_state}
+                        </Empty>
+                        <KeyboardArrowRight />
+                      </Typography>
+                    </ListItemButton>
+                  </ListItem>
+
+                  <ListItem>
+                    <ListItemButton>
+                      <ListItemContent>外网同步</ListItemContent>
+                      <Typography
+                        textColor="text.tertiary"
+                        sx={{
+                          mr: "calc(-1 * var(--ListItem-gap))",
+                          display: "flex",
+                          alignItems: "center",
+                        }}
+                      >
+                        <Empty is={!!detail.external_sync}>
+                          {detail.external_sync}
+                        </Empty>
+                        <KeyboardArrowRight />
+                      </Typography>
+                    </ListItemButton>
+                  </ListItem>
+
+                  <ListItem>
+                    <ListItemButton>
+                      <ListItemContent sx={{ width: 150 }}>
+                        备注
+                      </ListItemContent>
+                      <Typography
+                        textColor="text.tertiary"
+                        sx={{
+                          mr: "calc(-1 * var(--ListItem-gap))",
+                          display: "flex",
+                          alignItems: "center",
+                        }}
+                      >
+                        <Empty is={!!detail.remark}>{detail.remark}</Empty>
+                        <KeyboardArrowRight />
+                      </Typography>
+                    </ListItemButton>
+                  </ListItem>
+                </List>
               </AccordionDetails>
             </Accordion>
 
             <Accordion>
               <AccordionSummary>
-                <Avatar color="danger">
-                  <AccessibilityNewRoundedIcon />
+                <Avatar color="primary">
+                  <HistoryEduTwoToneIcon />
                 </Avatar>
                 <ListItemContent>
-                  <Typography level="title-md">跟进信息</Typography>
-                  <Typography level="body-sm">没有跟进信息</Typography>
+                  <Typography level="title-md">历史记录</Typography>
+                  <Typography textColor="text.tertiary">修改记录</Typography>
                 </ListItemContent>
               </AccordionSummary>
               <AccordionDetails>
-                <Stack spacing={1.5}>
-                  <FormControl orientation="horizontal" sx={{ gap: 1 }}>
-                    <ZoomInRoundedIcon sx={{ mx: 1, fontSize: "xl2" }} />
-                    <FormLabel>Zoom</FormLabel>
-                    <Switch size="sm" />
-                  </FormControl>
-
-                  <FormControl orientation="horizontal" sx={{ gap: 1 }}>
-                    <SpatialTrackingRoundedIcon
-                      sx={{ mx: 1, fontSize: "xl2" }}
-                    />
-                    <FormLabel>Audio Descriptions</FormLabel>
-                    <Switch size="sm" />
-                  </FormControl>
-
-                  <FormControl orientation="horizontal" sx={{ gap: 1 }}>
-                    <SettingsVoiceRoundedIcon sx={{ mx: 1, fontSize: "xl2" }} />
-                    <FormLabel>Voice Control</FormLabel>
-                    <Switch size="sm" />
-                  </FormControl>
-                </Stack>
+                <UpdateHouse />
               </AccordionDetails>
             </Accordion>
           </AccordionGroup>
@@ -308,4 +1187,74 @@ export function Detail(props: DetailProps) {
       </Card>
     </Box>
   );
+}
+
+function apartmentTypeToString(data?: ApartmentType) {
+  let str = "";
+
+  if (data?.room) {
+    str += `${data.room}室`;
+  }
+
+  if (data?.hall) {
+    str += `${data.hall}厅`;
+  }
+
+  if (data?.bathroom) {
+    str += `${data.bathroom}卫`;
+  }
+
+  return str;
+}
+
+function apartmentTypeToStringFull(data?: ApartmentType) {
+  let str = "";
+
+  if (data?.room) {
+    str += `${data.room}室`;
+  }
+
+  if (data?.hall) {
+    str += `${data.hall}厅`;
+  }
+
+  if (data?.bathroom) {
+    str += `${data.bathroom}卫`;
+  }
+
+  if (data?.kitchen) {
+    str += `${data.kitchen}厨`;
+  }
+
+  if (data?.terrace) {
+    str += `${data.terrace}阳台`;
+  }
+
+  return str;
+}
+
+function floor_rangeToString(data?: FloorRange) {
+  let sum = (data?.door_number_to ?? 0) - (data?.door_number_from ?? 0);
+  let str = "";
+
+  if (data?.floor_type) {
+    str += `${data.floor_type}`;
+  } else {
+    str += `中间楼层`;
+  }
+
+  if (sum > 0) {
+    str += `/${sum}层`;
+  } else {
+    str += `/楼层未知`;
+  }
+
+  return str;
+}
+
+function Empty(props: { children: React.ReactNode; is?: boolean }) {
+  if (props.is) {
+    return <>{props.children}</>;
+  }
+  return <>未知</>;
 }

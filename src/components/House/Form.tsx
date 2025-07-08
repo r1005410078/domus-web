@@ -17,8 +17,6 @@ import {
   tabClasses,
   TabPanel,
   Box,
-  Typography,
-  ButtonGroup,
 } from "@mui/joy";
 import React, { use, useEffect } from "react";
 import { useForm, useStore } from "@tanstack/react-form";
@@ -376,14 +374,14 @@ export function Form({ defaultValues, value }: FormProps) {
                 { transaction_type: "租售" },
               ]) && (
                 <form.Field
-                  name="rent_price"
+                  name="rent_low_price"
                   children={(field) => {
                     return (
                       <FormControl required>
                         <FormLabel>出租低价</FormLabel>
                         <Input
                           placeholder="请输入"
-                          name="rent_price"
+                          name="rent_low_price"
                           type="number"
                           endDecorator={<span>元</span>}
                           value={field.state.value}
@@ -463,7 +461,7 @@ export function Form({ defaultValues, value }: FormProps) {
                                   building_number: Number(e.target.value),
                                 })
                               }
-                              endDecorator={<span>栋</span>}
+                              endDecorator={<span>号楼</span>}
                             />
                           </FormControl>
                           <Divider orientation="vertical" />
@@ -497,7 +495,7 @@ export function Form({ defaultValues, value }: FormProps) {
                                 door_number: Number(e.target.value),
                               })
                             }
-                            endDecorator={<span>门牌号</span>}
+                            endDecorator={<span>号</span>}
                           />
                         </FormControl>
                       </Stack>
@@ -670,7 +668,7 @@ export function Form({ defaultValues, value }: FormProps) {
                             }
                           />
                         </FormControl>
-                        <Divider orientation="vertical">楼</Divider>
+                        <Divider orientation="vertical">层</Divider>
                       </Stack>
                     </FormControl>
                   );
@@ -769,6 +767,7 @@ export function Form({ defaultValues, value }: FormProps) {
                           onChange={(e) =>
                             field.handleChange(Number(e.target.value))
                           }
+                          endDecorator={<span>米</span>}
                         />
                       </FormControl>
                     );
@@ -2395,7 +2394,7 @@ export function Form({ defaultValues, value }: FormProps) {
               )}
 
               <form.Field
-                name="remark"
+                name="present_state"
                 children={(field) => (
                   <FormControl>
                     <FormLabel>现状</FormLabel>

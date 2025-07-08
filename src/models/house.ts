@@ -12,6 +12,10 @@ export interface FloorRange {
   door_number_from: number;
   // 最大楼层
   door_number_to: number;
+  // 缺少楼层
+  floor: number;
+  // 是中间楼层 还是低楼层还是高楼层
+  floor_type: string;
 }
 
 export interface ApartmentType {
@@ -190,6 +194,9 @@ export interface HouseForm {
   remark?: string;
   // 图片
   images?: FileInfo[];
+
+  // 更新时间
+  updated_at?: string;
 }
 
 export interface FileInfo {

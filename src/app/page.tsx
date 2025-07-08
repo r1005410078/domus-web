@@ -166,7 +166,7 @@ export default function RentalDashboard() {
   );
 }
 
-function apartmentTypeToString(data?: ApartmentType) {
+export function apartmentTypeToString(data?: ApartmentType) {
   let str = "";
 
   if (data?.room) {
