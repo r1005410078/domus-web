@@ -23,7 +23,7 @@ const cache = new Map<string, Poi>();
 
 interface CommunitySelectProps {
   value?: Poi;
-  onChange: (value: Poi) => void;
+  onChange: (value: Poi | null) => void;
 }
 
 /// 如果是高德地图返回的就是 location_id
@@ -31,59 +31,11 @@ interface CommunitySelectProps {
 export function CommunitySelect({ value, onChange }: CommunitySelectProps) {
   const placeSearchRef = useRef<any>(null);
   const [keyword, seKeyword] = useState<string>("");
+  const [options, setOptions] = useState<Poi[]>([]);
   const { data } = useQuery({
     queryKey: ["initMap"],
     queryFn: getCommunityList,
   });
-
-  const { data: poiList, isRefetching } = useQuery({
-    queryKey: [keyword],
-    queryFn: () => {
-      return new Promise<Poi[]>((resolve) => {
-        let isHas = cache.values().some((item) => item.name.includes(keyword));
-
-        if (isHas) {
-          resolve(Array.from(cache.values()));
-          return;
-        }
-
-        const placeSearch = placeSearchRef.current;
-        if (placeSearch) {
-          placeSearch.search(keyword, function (_: any, result: SearchData) {
-            // 搜索成功时，result即是对应的匹配数据
-            if (result.info === "OK") {
-              const pois = result.poiList?.pois;
-              if (pois && pois.length) {
-                resolve(
-                  pois.map(
-                    ({ id, ...item }) => ({ ...item, location_id: id } as Poi)
-                  )
-                );
-              }
-            }
-          });
-        }
-      });
-    },
-    enabled: keyword !== "",
-  });
-
-  useMemo(() => {
-    const location_id = value?.location_id;
-    if (location_id && !cache.has(location_id)) {
-      cache.set(location_id, value);
-    }
-  }, [value]);
-
-  useMemo(() => {
-    if (poiList) {
-      for (const poi of poiList) {
-        if (!cache.has(poi.location_id)) {
-          cache.set(poi.location_id, poi);
-        }
-      }
-    }
-  }, [poiList]);
 
   useMemo(() => {
     if (data) {
@@ -94,9 +46,13 @@ export function CommunitySelect({ value, onChange }: CommunitySelectProps) {
             id: poi.location_id!,
             location_id: poi.location_id!,
             name: poi.name!,
-            type: poi.community_type!,
+            typecode: poi.typecode!,
+            district: poi.district!,
+            adcode: poi.adcode!,
+            city: [poi.city ?? "安庆"],
             location: {
-              pos: [poi.location_0, poi.location_1] as [number, number],
+              lat: poi.lat,
+              lng: poi.lng,
             },
             address: poi.address!,
           });
@@ -106,21 +62,56 @@ export function CommunitySelect({ value, onChange }: CommunitySelectProps) {
   }, [data]);
 
   useEffect(() => {
+    if (keyword) {
+      let isHas = cache.values().some((item) => item.name.includes(keyword));
+      if (!isHas) {
+        const placeSearch = placeSearchRef.current;
+        if (placeSearch) {
+          placeSearch.search(keyword, function (_: any, result: SearchData) {
+            // 搜索成功时，result即是对应的匹配数据
+            if (result.info === "OK") {
+              const pois = result.tips;
+              if (pois && pois.length) {
+                const poiList = pois.map(
+                  ({ id, ...item }) =>
+                    ({ ...item, location_id: id, city: ["安庆"] } as Poi)
+                );
+
+                for (let poi of poiList) {
+                  if (!cache.has(poi.location_id)) {
+                    cache.set(poi.location_id, poi);
+                  }
+                }
+              }
+              setOptions(Array.from(cache.values()));
+            }
+          });
+        }
+      }
+    }
+  }, [keyword]);
+
+  useEffect(() => {
+    const location_id = value?.location_id;
+    if (location_id && !cache.has(location_id)) {
+      cache.set(location_id, value);
+    }
+    setOptions(Array.from(cache.values()));
+  }, [value]);
+
+  useEffect(() => {
     (global as any).initMap = () => {
-      AMap.plugin("AMap.PlaceSearch", function () {
+      AMap.plugin("AMap.AutoComplete", function () {
         var autoOptions = {
           city: "安庆",
-          type: "住宅",
+          type: "12",
           pageSize: 20,
+          citylimit: true,
         };
-        placeSearchRef.current = new (AMap as any).PlaceSearch(autoOptions);
+        placeSearchRef.current = new (AMap as any).AutoComplete(autoOptions);
       });
     };
   }, []);
-
-  const options = Array.from(cache.values());
-
-  console.log("options", options);
 
   return (
     <>
@@ -132,7 +123,6 @@ export function CommunitySelect({ value, onChange }: CommunitySelectProps) {
       <Autocomplete
         options={options}
         placeholder="请输入"
-        loading={isRefetching}
         value={value}
         isOptionEqualToValue={(option, value) => {
           return option?.location_id === value?.location_id;
@@ -141,7 +131,7 @@ export function CommunitySelect({ value, onChange }: CommunitySelectProps) {
           seKeyword(keyword);
         }}
         onChange={(_, value) => {
-          onChange(value!);
+          onChange(value);
         }}
         getOptionLabel={(option) => option.name}
         renderOption={(props, option) => {
@@ -164,26 +154,26 @@ export function CommunitySelect({ value, onChange }: CommunitySelectProps) {
 
 export interface SearchData {
   info: string;
-  poiList: PoiList;
-}
-
-export interface PoiList {
-  pois: Poi[];
   count: number;
-  pageIndex: number;
-  pageSize: number;
+  tips: Poi[];
 }
 
 export interface Poi {
-  id?: string;
-  location_id: string;
-  name: string;
-  type: string;
+  id?: string; // POI（地点）的唯一标识 ID（比如可以用于查询详情）
+  name: string; // 地点名称（如“朝阳大悦城”）
+  district: string; // 所属行政区（如“朝阳区”）
+  adcode: string; // 所属行政区划代码（如“110105”，代表朝阳区）
   location: {
-    pos: number[];
+    // 坐标和位置信息（部分字段是内部属性）
+    KL?: number; // 内部属性（可能是高德用于计算或缓存的值，可忽略）
+    className?: string; // 类型标识（如 "AMap.LngLat"）
+    kT?: string; // 内部属性，通常表示经纬度字符串（"lng,lat" 格式）
+    lat: string; // 纬度（如 "39.9235"）
+    lng: string; // 经度（如 "116.428"）
+    pos?: [number, number]; // 坐标数组：[经度, 纬度]，用于直接在地图上定位
   };
-  address: string;
-  tel?: string;
-  distance?: any;
-  shopinfo?: string;
+  address: string; // 详细地址（如“北京市朝阳区朝阳北路101号”）
+  typecode: string; // POI 类型编码（如 "060100" 表示“汽车服务”）
+  city?: string[]; // 所属城市（可能为空数组或 ["北京"]，注意是数组）
+  location_id: string; // 衍生字段，可能是 location 对象的标识（不一定总返回）
 }

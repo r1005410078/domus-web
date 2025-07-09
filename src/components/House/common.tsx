@@ -9,7 +9,7 @@ import {
   Option,
 } from "@mui/joy";
 import { Community, HouseOwner } from "@/models/house";
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo } from "react";
 import { CommunitySelect, Poi } from "./CommunitySelect";
 import { useState } from "react";
 
@@ -27,11 +27,15 @@ export function CommunityForm({
       return {
         location_id: propValue.location_id,
         name: propValue.name,
-        type: propValue.community_type,
         location: {
-          pos: [propValue.location_0, propValue.location_1] as [number, number],
+          lat: propValue.lat,
+          lng: propValue.lng,
         },
         address: propValue.address,
+        typecode: propValue.typecode,
+        city: [propValue.city],
+        district: propValue.district,
+        adcode: propValue.adcode,
       } as Poi;
     }
     return;
@@ -43,19 +47,23 @@ export function CommunityForm({
       onChange={(poi) => {
         if (poi) {
           onChange({
-            id: poi.id,
-            location_id: poi.id,
+            id: poi.id, // 如果是服务器取的定有id，就更新
+            location_id: poi.location_id, // 是地图检索的
             // 小区名称
             name: poi.name,
             // 小区地址
             address: poi.address,
             // 城市
             city: "安庆",
-            // 小区类型
-            community_type: poi.type,
             // 位置
-            location_0: poi.location.pos[0],
-            location_1: poi.location.pos[1],
+            lat: poi.location.lat,
+            lng: poi.location.lng,
+            // 区域
+            district: poi.district,
+            // 区域编码
+            adcode: poi.adcode,
+            // 小区类型
+            typecode: poi.typecode,
           });
         }
       }}

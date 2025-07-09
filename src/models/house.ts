@@ -66,15 +66,20 @@ export interface Community {
   city?: string;
   // 小区年限
   year_built?: string[];
-  // 小区类型
-  community_type?: string;
   // 小区描述
   description?: string;
   // 小区图片
   image?: string;
+
+  // 小区类型
+  typecode?: string;
   // 位置
-  location_0?: number;
-  location_1?: number;
+  lat: string; // 纬度（如 "39.9235"）
+  lng: string; // 经度（如 "116.428"）
+  // 所属行政区（如“朝阳区”）
+  district: string;
+  // 所属行政区划代码（如“110105”，代表朝阳区）
+  adcode: string;
 }
 
 export interface HouseForm {
