@@ -1,6 +1,13 @@
 "use client";
 
 import { Box, BoxProps } from "@mui/joy";
+import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+import timezone from "dayjs/plugin/timezone";
+
+// 启用插件
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
 function Root(props: BoxProps) {
   return (

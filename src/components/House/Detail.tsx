@@ -41,16 +41,10 @@ import { EmblaCarouselType } from "embla-carousel";
 import MyLocationTwoToneIcon from "@mui/icons-material/MyLocationTwoTone";
 import { ApartmentType, FloorRange, HouseForm } from "@/models/house";
 import dayjs from "dayjs";
-import utc from "dayjs/plugin/utc";
-import timezone from "dayjs/plugin/timezone";
 import ImportContactsTwoToneIcon from "@mui/icons-material/ImportContactsTwoTone";
 import KeyboardArrowRight from "@mui/icons-material/KeyboardArrowRightRounded";
 import UpdateHouse from "./UpdateHouse";
 import HouseComment from "./HouseComment";
-
-// 启用插件
-dayjs.extend(utc);
-dayjs.extend(timezone);
 
 export interface DetailProps {
   detail: HouseForm;
