@@ -205,7 +205,7 @@ export function Detail(props: DetailProps) {
               }}
             >
               <Typography level="h3">
-                {apartmentTypeToString(detail.apartment_type)}
+                {apartmentTypeToString(detail.apartment_type) || "未知户型"}
               </Typography>
               <Typography level="body-md">
                 {floor_rangeToString(detail.floor_range)}

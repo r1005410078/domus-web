@@ -54,7 +54,56 @@ export default function RentalDashboard() {
             display: { xs: "none", md: "flex" },
           }}
         >
-          <MapPage />
+          <MapPage
+            data={[
+              // 小区
+              {
+                id: "1",
+                // 小区名称
+                name: "回祥小区",
+                // 小区地址
+                address: "安徽省安庆市宜秀区",
+                // 所属区域
+                district: "朝阳区",
+                // 所属行政区划代码（如“110105”，代表朝阳区）
+                adcode: "110105",
+                // 小区坐标
+                lng: 117.065439,
+                lat: 30.537141,
+                // 个数
+                house_count: 2,
+              },
+              {
+                id: "2",
+                // 小区名称
+                name: "红旗小区",
+                // 小区地址
+                address: "安徽省安庆市迎江区",
+                // 所属区域
+                district: "朝阳区",
+                // 所属行政区划代码（如“110105”，代表朝阳区）
+                adcode: "340802",
+                // 小区坐标
+                lng: 117.081381,
+                lat: 30.512622,
+                // 个数
+                house_count: 7,
+              },
+              {
+                id: "B022C05S27",
+                name: "月亮城小区",
+                district: "安徽省安庆市大观区",
+                // 所属行政区划代码（如“110105”，代表朝阳区）
+                address: "玉虹街",
+                adcode: "340803",
+                // 小区坐标
+                lng: 117.034372,
+                lat: 30.506398,
+                // 个数
+                house_count: 11,
+              },
+            ]}
+          />
         </Box>
         <Stack spacing={2} sx={{ px: { xs: 1, md: 2 }, pt: 2, minHeight: 0 }}>
           <Filters

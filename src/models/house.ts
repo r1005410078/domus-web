@@ -57,6 +57,7 @@ export interface HouseOwner {
 
 export interface Community {
   id?: string;
+  // 小区ID
   location_id?: string;
   // 小区名称
   name?: string;
@@ -70,12 +71,11 @@ export interface Community {
   description?: string;
   // 小区图片
   image?: string;
-
   // 小区类型
-  typecode?: string;
+  typecode: string;
   // 位置
-  lat: string; // 纬度（如 "39.9235"）
-  lng: string; // 经度（如 "116.428"）
+  lat: number; // 纬度（如 "39.9235"）
+  lng: number; // 经度（如 "116.428"）
   // 所属行政区（如“朝阳区”）
   district: string;
   // 所属行政区划代码（如“110105”，代表朝阳区）
