@@ -23,9 +23,9 @@ export function CommunityForm({
   onChange,
 }: CommunityFormProps) {
   const poi = useMemo(() => {
-    if (propValue?.location_id) {
+    if (propValue?.id) {
       return {
-        location_id: propValue.location_id,
+        id: propValue.id,
         name: propValue.name,
         location: {
           lat: propValue.lat,
@@ -48,7 +48,6 @@ export function CommunityForm({
         if (poi) {
           onChange({
             id: poi.id, // 如果是服务器取的定有id，就更新
-            location_id: poi.location_id, // 是地图检索的
             // 小区名称
             name: poi.name,
             // 小区地址

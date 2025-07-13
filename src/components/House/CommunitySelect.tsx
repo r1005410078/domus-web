@@ -168,8 +168,8 @@ export interface Poi {
     KL?: number; // 内部属性（可能是高德用于计算或缓存的值，可忽略）
     className?: string; // 类型标识（如 "AMap.LngLat"）
     kT?: string; // 内部属性，通常表示经纬度字符串（"lng,lat" 格式）
-    lat: string; // 纬度（如 "39.9235"）
-    lng: string; // 经度（如 "116.428"）
+    lat: number; // 纬度（如 "39.9235"）
+    lng: number; // 经度（如 "116.428"）
     pos?: [number, number]; // 坐标数组：[经度, 纬度]，用于直接在地图上定位
   };
   address: string; // 详细地址（如“北京市朝阳区朝阳北路101号”）

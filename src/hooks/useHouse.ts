@@ -35,10 +35,6 @@ export function useGetHouseDetail(id: string) {
 
       const data = res.data.data;
 
-      if (data.community) {
-        data.community.location_id = data.community.id;
-      }
-
       return data;
     },
     enabled: id !== "",
