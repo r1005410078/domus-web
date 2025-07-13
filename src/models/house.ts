@@ -12,10 +12,6 @@ export interface FloorRange {
   door_number_from: number;
   // 最大楼层
   door_number_to: number;
-  // 缺少楼层
-  floor: number;
-  // 是中间楼层 还是低楼层还是高楼层
-  floor_type: string;
 }
 
 export interface ApartmentType {
@@ -57,8 +53,6 @@ export interface HouseOwner {
 
 export interface Community {
   id?: string;
-  // 小区ID
-  location_id?: string;
   // 小区名称
   name?: string;
   // 小区地址
@@ -66,11 +60,11 @@ export interface Community {
   // 城市
   city?: string;
   // 小区年限
-  year_built?: string[];
+  year_built?: string;
   // 小区描述
   description?: string;
   // 小区图片
-  image?: string;
+  images?: string;
   // 小区类型
   typecode: string;
   // 位置
@@ -88,11 +82,11 @@ export interface HouseForm {
   // 房源标题
   title?: string;
   // 用途
-  purpose: String;
+  purpose: string;
   // 交易类型
-  transaction_type: String;
+  transaction_type: string;
   // 状态
-  house_status: String;
+  house_status: string;
   // 楼层
   floor_range?: FloorRange;
 
@@ -110,7 +104,7 @@ export interface HouseForm {
   // 层高
   floor_height?: number;
   // 装修
-  house_decoration?: String;
+  house_decoration?: string;
 
   //// 销售租赁信息
   // 售价
@@ -209,4 +203,98 @@ export interface FileInfo {
   type: string;
   size: string;
   url: string;
+}
+
+export function communityToString(data?: Community) {
+  let str = "";
+
+  if (data?.name) {
+    str += `${data.name}`;
+  }
+
+  if (data?.address) {
+    str += `/${data.address}`;
+  }
+
+  return str;
+}
+
+export function ownerToString(data?: HouseOwner) {
+  let str = "";
+
+  if (data?.name) {
+    str += `${data.name}`;
+  }
+
+  if (data?.phone) {
+    str += `/${data.phone}`;
+  }
+
+  return str;
+}
+
+export function stairsToString(data?: Stairs) {
+  let str = "";
+
+  if (data?.stairs) {
+    str += `${data.stairs}梯`;
+  }
+
+  if (data?.rooms) {
+    str += `${data.rooms}户`;
+  }
+
+  return str;
+}
+
+export function apartmentTypeToString(data?: ApartmentType) {
+  let str = "";
+
+  if (data?.room) {
+    str += `${data.room}室`;
+  }
+
+  if (data?.hall) {
+    str += `${data.hall}厅`;
+  }
+
+  if (data?.bathroom) {
+    str += `${data.bathroom}卫`;
+  }
+
+  if (data?.kitchen) {
+    str += `${data.kitchen}厨`;
+  }
+
+  if (data?.terrace) {
+    str += `${data.terrace}阳台`;
+  }
+
+  return str;
+}
+
+export function floor_rangeToString(data?: FloorRange) {
+  if (!data?.door_number_from || !data?.door_number_to) {
+    return `未知楼层`;
+  }
+
+  return `${data?.door_number_from}-${data?.door_number_to}层`;
+}
+
+export function door_numberToString(data?: DoorNumber) {
+  let str = "";
+
+  if (data?.building_number) {
+    str += `${data.building_number}号楼`;
+  }
+
+  if (data?.unit_number) {
+    str += `/${data.unit_number}单元`;
+  }
+
+  if (data?.door_number) {
+    str += `/${data.door_number}室`;
+  }
+
+  return str;
 }

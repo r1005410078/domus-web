@@ -1,53 +1,466 @@
 "use client";
 
-import House from "@/components/House";
-import Header from "@/components/Header";
-import Layout from "@/components/layouts/Layout";
+import * as React from "react";
+import { HouseContent } from "@/components/HouseContent";
+import LayoutFrame from "@/components/LayoutFrame";
+import MapsHomeWorkTwoToneIcon from "@mui/icons-material/MapsHomeWorkTwoTone";
+import OutboxRoundedIcon from "@mui/icons-material/OutboxRounded";
+import DeckTwoToneIcon from "@mui/icons-material/DeckTwoTone";
+import TableViewTwoToneIcon from "@mui/icons-material/TableViewTwoTone";
+import { Box, DialogTitle, Drawer, ModalClose, Sheet } from "@mui/joy";
+import Layout from "@/components/Layout";
+import { HouseList } from "@/components/HouseList";
 import { HouseForm } from "@/models/house";
+import House from "@/components/House";
+import { CommunityTable } from "@/components/CommunityTable";
+import { HouseTable } from "@/components/HouseTable";
 
-const defaultValues: HouseForm = {
-  purpose: "住宅",
-  transaction_type: "出售",
-  house_status: "有效",
-  owner: {
-    name: "taosheng rong:本人",
-    description: "",
-    phone: "18626891229:本人",
+const tabBarItems = [
+  {
+    label: "出售",
+    key: "出售",
+    icon: <OutboxRoundedIcon />,
+  },
+  {
+    label: "出租",
+    key: "出租",
+    icon: <DeckTwoToneIcon />,
+  },
+  {
+    label: "房源",
+    key: "house",
+    icon: <TableViewTwoToneIcon />,
+  },
+  {
+    label: "小区",
+    key: "community",
+    icon: <MapsHomeWorkTwoToneIcon />,
+  },
+];
+
+const gridTemplateColumns = {
+  出售: {
+    xs: "1fr",
+    md: "minmax(160px, 260px) minmax(260px, 430px) minmax(430px, 1fr)",
+  },
+  出租: {
+    xs: "1fr",
+    md: "minmax(160px, 260px) minmax(260px, 430px) minmax(430px, 1fr)",
+  },
+  house: {
+    xs: "1fr",
+    md: "160px 1fr",
   },
   community: {
-    location_id: "B0FFGA9AAU",
-    name: "东安花园",
-    address: "华中路与港华路交叉口东北100米",
-    city: "安庆",
-    community_type: "商务住宅;住宅区;住宅小区",
-    location_0: 13034149.153408082,
-    location_1: 3569425.7594842236,
-  },
-  sale_price: 12,
-  sale_low_price: 11,
-  down_payment: 2,
-  door_number: {
-    building_number: 1,
-    unit_number: 1,
-    door_number: 1,
-  },
-  apartment_type: {
-    room: 1,
-    bathroom: 1,
-    kitchen: 1,
-    balcony: 1,
+    xs: "1fr",
+    md: "160px 1fr",
   },
 };
 
-export default function Page() {
+export default function Home() {
+  const [value, onChange] =
+    React.useState<keyof typeof gridTemplateColumns>("出售");
+  const [drawerAddOpen, setDrawerAddOpen] = React.useState(false);
+
   return (
-    <Layout.Root>
-      <Layout.Header>
-        <Header />
-      </Layout.Header>
-      <Layout.Main>
-        <House.Form defaultValues={defaultValues} />
-      </Layout.Main>
-    </Layout.Root>
+    <>
+      <LayoutFrame
+        rootProps={{
+          sx: {
+            gridTemplateColumns: gridTemplateColumns[value],
+          },
+        }}
+        onAdd={() => {
+          console.log("onAdd");
+          setDrawerAddOpen(true);
+        }}
+        tabBar={{
+          items: tabBarItems,
+          value,
+          onChange,
+          tags: [
+            {
+              label: "带看的",
+              key: "view",
+              color: "primary.500",
+            },
+            {
+              label: "待联系的",
+              key: "contact",
+              color: "danger.500",
+            },
+          ],
+        }}
+      >
+        {(() => {
+          switch (value) {
+            case "出售":
+              return (
+                <HouseList
+                  data={sale}
+                  transactionType="出售"
+                  aMapData={aMapData}
+                />
+              );
+            case "出租":
+              return (
+                <HouseList
+                  data={sale}
+                  transactionType="出售"
+                  aMapData={aMapData}
+                />
+              );
+            case "house":
+              return (
+                <Layout.Main sx={{ p: 2, position: "relative" }}>
+                  <HouseTable rowData={sale} onChangeRowData={() => {}} />
+                </Layout.Main>
+              );
+            case "community":
+              return (
+                <Layout.Main sx={{ p: 2, position: "relative" }}>
+                  <CommunityTable />
+                </Layout.Main>
+              );
+            default:
+              return null;
+          }
+        })()}
+      </LayoutFrame>
+      <Drawer
+        anchor="bottom"
+        sx={{
+          zIndex: 99999,
+        }}
+        slotProps={{
+          content: {
+            sx: {
+              height: "100vh",
+              width: { xs: "100%", md: "430px" },
+              top: 0,
+              left: { xs: 0, md: "calc(50% - 215px)" },
+              borderRadius: 0,
+              boxShadow: "lg",
+              p: 0,
+              backgroundColor: "background.body",
+              overflow: "auto",
+            },
+          },
+        }}
+        open={drawerAddOpen}
+        onClose={() => setDrawerAddOpen(false)}
+      >
+        <ModalClose />
+        <DialogTitle>添加房源</DialogTitle>
+        <Box sx={{ height: "100%", width: { xs: "100%", md: "430px" } }}>
+          <House.Form />
+        </Box>
+      </Drawer>
+    </>
   );
 }
+
+const aMapData = [
+  // 小区
+  {
+    id: "1",
+    // 小区名称
+    name: "回祥小区",
+    // 小区地址
+    address: "安徽省安庆市宜秀区",
+    // 所属区域
+    district: "朝阳区",
+    // 所属行政区划代码（如“110105”，代表朝阳区）
+    adcode: "110105",
+    // 小区坐标
+    lng: 117.065439,
+    lat: 30.537141,
+    // 个数
+    house_count: 2,
+  },
+  {
+    id: "2",
+    // 小区名称
+    name: "红旗小区",
+    // 小区地址
+    address: "安徽省安庆市迎江区",
+    // 所属区域
+    district: "朝阳区",
+    // 所属行政区划代码（如“110105”，代表朝阳区）
+    adcode: "340802",
+    // 小区坐标
+    lng: 117.081381,
+    lat: 30.512622,
+    // 个数
+    house_count: 7,
+  },
+  {
+    id: "B022C05S27",
+    name: "月亮城小区",
+    district: "安徽省安庆市大观区",
+    // 所属行政区划代码（如“110105”，代表朝阳区）
+    address: "玉虹街",
+    adcode: "340803",
+    // 小区坐标
+    lng: 117.034372,
+    lat: 30.506398,
+    // 个数
+    house_count: 11,
+  },
+];
+
+// 出售
+const sale: HouseForm[] = [
+  {
+    purpose: "住宅",
+    transaction_type: "出售",
+    house_status: "在售",
+    title: "这是一个出售房源",
+    sale_price: 120,
+    sale_low_price: 11,
+    down_payment: 2,
+    building_area: 125,
+    apartment_type: {
+      room: 2,
+      hall: 1,
+      bathroom: 1,
+      kitchen: 1,
+      terrace: 1,
+      balcony: 1,
+    },
+    tags: ["近地铁", "近公交", "学区好"],
+    community: {
+      name: "东安花园",
+      typecode: "",
+      lat: 0,
+      lng: 0,
+      address: "华中路与港华路交叉口东北100米",
+      district: "华中路与港华路交叉口东北100米",
+      adcode: "",
+    },
+  },
+  {
+    purpose: "住宅",
+    transaction_type: "出售",
+    house_status: "在售",
+    title: "这是一个出售房源",
+    sale_price: 120,
+    sale_low_price: 11,
+    down_payment: 2,
+    building_area: 125,
+    apartment_type: {
+      room: 2,
+      hall: 1,
+      bathroom: 1,
+      kitchen: 1,
+      terrace: 1,
+      balcony: 1,
+    },
+    tags: ["近地铁", "近公交", "学区好"],
+    community: {
+      name: "东安花园",
+      typecode: "",
+      lat: 0,
+      lng: 0,
+      address: "华中路与港华路交叉口东北100米",
+      district: "华中路与港华路交叉口东北100米",
+      adcode: "",
+    },
+  },
+  {
+    purpose: "住宅",
+    transaction_type: "出售",
+    house_status: "在售",
+    title: "这是一个出售房源",
+    sale_price: 120,
+    sale_low_price: 11,
+    down_payment: 2,
+    building_area: 125,
+    apartment_type: {
+      room: 2,
+      hall: 1,
+      bathroom: 1,
+      kitchen: 1,
+      terrace: 1,
+      balcony: 1,
+    },
+    tags: ["近地铁", "近公交", "学区好"],
+    community: {
+      name: "东安花园",
+      typecode: "",
+      lat: 0,
+      lng: 0,
+      address: "华中路与港华路交叉口东北100米",
+      district: "华中路与港华路交叉口东北100米",
+      adcode: "",
+    },
+  },
+  {
+    purpose: "住宅",
+    transaction_type: "出售",
+    house_status: "在售",
+    title: "这是一个出售房源",
+    sale_price: 120,
+    sale_low_price: 11,
+    down_payment: 2,
+    building_area: 125,
+    apartment_type: {
+      room: 2,
+      hall: 1,
+      bathroom: 1,
+      kitchen: 1,
+      terrace: 1,
+      balcony: 1,
+    },
+    tags: ["近地铁", "近公交", "学区好"],
+    community: {
+      name: "东安花园",
+      typecode: "",
+      lat: 0,
+      lng: 0,
+      address: "华中路与港华路交叉口东北100米",
+      district: "华中路与港华路交叉口东北100米",
+      adcode: "",
+    },
+  },
+  {
+    purpose: "住宅",
+    transaction_type: "出售",
+    house_status: "在售",
+    title: "这是一个出售房源",
+    sale_price: 120,
+    sale_low_price: 11,
+    down_payment: 2,
+    building_area: 125,
+    apartment_type: {
+      room: 2,
+      hall: 1,
+      bathroom: 1,
+      kitchen: 1,
+      terrace: 1,
+      balcony: 1,
+    },
+    tags: ["近地铁", "近公交", "学区好"],
+    community: {
+      name: "东安花园",
+      typecode: "",
+      lat: 0,
+      lng: 0,
+      address: "华中路与港华路交叉口东北100米",
+      district: "华中路与港华路交叉口东北100米",
+      adcode: "",
+    },
+  },
+  {
+    purpose: "住宅",
+    transaction_type: "出售",
+    house_status: "在售",
+    title: "这是一个出售房源",
+    sale_price: 120,
+    sale_low_price: 11,
+    down_payment: 2,
+    building_area: 125,
+    apartment_type: {
+      room: 2,
+      hall: 1,
+      bathroom: 1,
+      kitchen: 1,
+      terrace: 1,
+      balcony: 1,
+    },
+    tags: ["近地铁", "近公交", "学区好"],
+    community: {
+      name: "东安花园",
+      typecode: "",
+      lat: 0,
+      lng: 0,
+      address: "华中路与港华路交叉口东北100米",
+      district: "华中路与港华路交叉口东北100米",
+      adcode: "",
+    },
+  },
+  {
+    purpose: "住宅",
+    transaction_type: "出售",
+    house_status: "在售",
+    title: "这是一个出售房源",
+    sale_price: 120,
+    sale_low_price: 11,
+    down_payment: 2,
+    building_area: 125,
+    apartment_type: {
+      room: 2,
+      hall: 1,
+      bathroom: 1,
+      kitchen: 1,
+      terrace: 1,
+      balcony: 1,
+    },
+    tags: ["近地铁", "近公交", "学区好"],
+    community: {
+      name: "东安花园",
+      typecode: "",
+      lat: 0,
+      lng: 0,
+      address: "华中路与港华路交叉口东北100米",
+      district: "华中路与港华路交叉口东北100米",
+      adcode: "",
+    },
+  },
+  {
+    purpose: "住宅",
+    transaction_type: "出售",
+    house_status: "在售",
+    title: "这是一个出售房源",
+    sale_price: 120,
+    sale_low_price: 11,
+    down_payment: 2,
+    building_area: 125,
+    apartment_type: {
+      room: 2,
+      hall: 1,
+      bathroom: 1,
+      kitchen: 1,
+      terrace: 1,
+      balcony: 1,
+    },
+    tags: ["近地铁", "近公交", "学区好"],
+    community: {
+      name: "东安花园",
+      typecode: "",
+      lat: 0,
+      lng: 0,
+      address: "华中路与港华路交叉口东北100米",
+      district: "华中路与港华路交叉口东北100米",
+      adcode: "",
+    },
+  },
+  {
+    purpose: "住宅",
+    transaction_type: "出售",
+    house_status: "在售",
+    title: "这是一个出售房源",
+    sale_price: 120,
+    sale_low_price: 11,
+    down_payment: 2,
+    building_area: 125,
+    apartment_type: {
+      room: 2,
+      hall: 1,
+      bathroom: 1,
+      kitchen: 1,
+      terrace: 1,
+      balcony: 1,
+    },
+    tags: ["近地铁", "近公交", "学区好"],
+    community: {
+      name: "东安花园",
+      typecode: "",
+      lat: 0,
+      lng: 0,
+      address: "华中路与港华路交叉口东北100米",
+      district: "华中路与港华路交叉口东北100米",
+      adcode: "",
+    },
+  },
+];

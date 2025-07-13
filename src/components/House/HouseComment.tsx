@@ -51,7 +51,7 @@ export default function HouseComment() {
   };
 
   return (
-    <Card variant="outlined" sx={{ maxWidth: 600, margin: "auto", p: 2 }}>
+    <Card variant="plain" sx={{ width: "100%", margin: "auto", p: 0 }}>
       <Typography level="h4" gutterBottom>
         评论
       </Typography>

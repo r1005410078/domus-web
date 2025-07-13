@@ -32,6 +32,7 @@ export default function Filters({ orderSelectorProps }: FiltersProps) {
         justifyContent: { xs: "space-between" },
         flexWrap: "wrap",
         minWidth: 0,
+        px: 2,
       }}
     >
       <Button

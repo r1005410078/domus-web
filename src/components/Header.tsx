@@ -1,5 +1,4 @@
 "use client";
-
 import * as React from "react";
 import { useColorScheme } from "@mui/joy/styles";
 import Box from "@mui/joy/Box";
@@ -18,7 +17,6 @@ import ListDivider from "@mui/joy/ListDivider";
 import Drawer from "@mui/joy/Drawer";
 import ModalClose from "@mui/joy/ModalClose";
 import DialogTitle from "@mui/joy/DialogTitle";
-
 import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
 import DarkModeRoundedIcon from "@mui/icons-material/DarkModeRounded";
 import LightModeRoundedIcon from "@mui/icons-material/LightModeRounded";
@@ -29,8 +27,9 @@ import HelpRoundedIcon from "@mui/icons-material/HelpRounded";
 import OpenInNewRoundedIcon from "@mui/icons-material/OpenInNewRounded";
 import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
 import MenuRoundedIcon from "@mui/icons-material/MenuRounded";
-
-import Navigation from "./Navigation";
+import Navigation, { NavigationProps } from "./Navigation";
+import { usePathname } from "next/navigation";
+import Add from "@mui/icons-material/Add";
 
 function ColorSchemeToggle() {
   const { mode, setMode } = useColorScheme();
@@ -63,8 +62,15 @@ function ColorSchemeToggle() {
   );
 }
 
-export default function Header() {
+interface HeaderProps {
+  tabBar: NavigationProps;
+  onAdd?: () => void;
+}
+
+export default function Header({ tabBar, onAdd }: HeaderProps) {
   const [open, setOpen] = React.useState(false);
+  const pathname = usePathname();
+
   return (
     <Box sx={{ display: "flex", flexGrow: 1, justifyContent: "space-between" }}>
       <Stack
@@ -91,34 +97,29 @@ export default function Header() {
           variant="plain"
           color="neutral"
           component="a"
-          href="/joy-ui/getting-started/templates/email/"
+          aria-pressed={pathname.indexOf("/house") === 0}
+          href="/"
           size="sm"
           sx={{ alignSelf: "center" }}
         >
-          Email
+          房源
         </Button>
         <Button
           variant="plain"
           color="neutral"
           component="a"
-          href="/joy-ui/getting-started/templates/team/"
+          href="/user"
+          aria-pressed={pathname.indexOf("/user") === 0}
           size="sm"
           sx={{ alignSelf: "center" }}
         >
-          Team
+          用户
         </Button>
-        <Button
-          variant="plain"
-          color="neutral"
-          aria-pressed="true"
-          component="a"
-          href="/joy-ui/getting-started/templates/files/"
-          size="sm"
-          sx={{ alignSelf: "center" }}
-        >
-          Files
-        </Button>
+        <IconButton variant="solid" color="primary" size="sm" onClick={onAdd}>
+          <Add />
+        </IconButton>
       </Stack>
+
       <Box sx={{ display: { xs: "inline-flex", sm: "none" } }}>
         <IconButton
           variant="plain"
@@ -127,15 +128,18 @@ export default function Header() {
         >
           <MenuRoundedIcon />
         </IconButton>
+        <IconButton variant="soft" color="primary" size="sm" onClick={onAdd}>
+          <Add />
+        </IconButton>
         <Drawer
           sx={{ display: { xs: "inline-flex", sm: "none" } }}
           open={open}
           onClose={() => setOpen(false)}
         >
           <ModalClose />
-          <DialogTitle>Acme Co.</DialogTitle>
+          <DialogTitle>MEIDA</DialogTitle>
           <Box sx={{ px: 1 }}>
-            <Navigation />
+            <Navigation {...tabBar} />
           </Box>
         </Drawer>
       </Box>
@@ -182,18 +186,6 @@ export default function Header() {
         >
           <SearchRoundedIcon />
         </IconButton>
-        <Tooltip title="Joy UI overview" variant="outlined">
-          <IconButton
-            size="sm"
-            variant="plain"
-            color="neutral"
-            component="a"
-            href="/blog/first-look-at-joy/"
-            sx={{ alignSelf: "center" }}
-          >
-            <BookRoundedIcon />
-          </IconButton>
-        </Tooltip>
         <ColorSchemeToggle />
         <Dropdown>
           <MenuButton

@@ -1,4 +1,4 @@
-import { Detail } from "./Detail";
+import { Detail } from "@/components/Detail";
 import { Form } from "./Form";
 
 export default {

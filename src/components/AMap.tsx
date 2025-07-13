@@ -3,8 +3,9 @@
 import Script from "next/script";
 import { useEffect } from "react";
 import "@amap/amap-jsapi-types";
+import { useColorScheme } from "@mui/joy";
 
-interface CommunityWithHouseCount {
+export interface CommunityWithHouseCount {
   // 小区
   id: string;
   // 小区名称
@@ -26,51 +27,77 @@ interface MapPageProps {
   data: CommunityWithHouseCount[];
 }
 
-export function MapPage({ data }: MapPageProps) {
+export function AMap({ data }: MapPageProps) {
+  const { mode } = useColorScheme();
   useEffect(() => {
-    (global as any).initMap = () => {
-      const AMap = (window as any).AMap as any;
-      // 可选：地图初始化逻辑放这里
-      const map = new AMap.Map("container", {
-        zoom: 10,
-        center: [117.060496, 30.507077],
-      });
+    const existing = document.getElementById("amap-script");
+    if (existing) existing.remove();
 
-      const scale = new AMap.Scale({
-        visible: true,
-      });
+    const script = document.createElement("script");
+    script.src =
+      "https://webapi.amap.com/maps?v=2.0&key=7a4a5bf23ff36a44e4ffb04bbbf77e01&plugin=AMap.MarkerCluster,AMap.Scale,AMap.ToolBar,AMap.ControlBar";
+    script.id = "amap-script";
+    script.async = true;
+    script.onload = initMap;
 
-      const toolBar = new AMap.ToolBar({
-        visible: true,
-        position: {
-          top: "110px",
-          right: "40px",
-        },
-      });
+    document.body.appendChild(script);
 
-      const controlBar = new AMap.ControlBar({
-        visible: true,
-        position: {
-          top: "10px",
-          right: "10px",
-        },
-      });
+    return () => {
+      console.log("卸载", document.getElementById("amap-script"));
+      document.getElementById("amap-script")?.remove();
+    };
+  }, []);
 
-      map.addControl(scale);
-      map.addControl(toolBar);
-      map.addControl(controlBar);
+  return <div id="container" style={{ width: "100%", height: "100%" }} />;
 
-      var points = data.map((item) => {
-        return {
-          lnglat: [item.lng, item.lat],
-          item,
-        };
-      });
+  function initMap() {
+    console.log(111);
+    const style =
+      mode === "dark" ? "amap://styles/darkblue" : "amap://styles/normal";
 
-      var _renderMarker = function (context: any) {
-        for (var i = 0; i < context.data.length; i++) {
-          const item = context.data[i].item;
-          const content = `
+    const AMap = (window as any).AMap as any;
+    // 可选：地图初始化逻辑放这里
+    const map = new AMap.Map("container", {
+      zoom: 10,
+      center: [117.060496, 30.507077],
+      mapStyle: style,
+    });
+
+    const scale = new AMap.Scale({
+      visible: true,
+    });
+
+    const toolBar = new AMap.ToolBar({
+      visible: true,
+      position: {
+        top: "110px",
+        right: "40px",
+      },
+    });
+
+    const controlBar = new AMap.ControlBar({
+      visible: true,
+      position: {
+        top: "10px",
+        right: "10px",
+      },
+    });
+
+    map.addControl(scale);
+    map.addControl(toolBar);
+    map.addControl(controlBar);
+
+    var points = data.map((item) => {
+      return {
+        lnglat: [item.lng, item.lat],
+        item,
+      };
+    });
+
+    var _renderMarker = function (context: any) {
+      for (var i = 0; i < context.data.length; i++) {
+        const item = context.data[i].item;
+        const content = `
    <div style="position: relative; display: inline-block;">
   <div style="
      display: inline-flex;
@@ -102,24 +129,24 @@ export function MapPage({ data }: MapPageProps) {
 </div>
           `;
 
-          var offset = new AMap.Pixel(-9, -9);
+        var offset = new AMap.Pixel(-9, -9);
 
-          context.marker.setContent(content);
-          context.marker.setOffset(offset);
-        }
-      };
+        context.marker.setContent(content);
+        context.marker.setOffset(offset);
+      }
+    };
 
-      var cluster = new AMap.MarkerCluster(map, points, {
-        gridSize: 10, // 设置网格像素大小
-        // renderClusterMarker: _renderClusterMarker, // 自定义聚合点样式
-        renderMarker: _renderMarker, // 自定义非聚合点样式
-        renderClusterMarker: function (context: any) {
-          const count = context.clusterData.reduce(
-            (a: number, b: any) => a + b.item.house_count,
-            0
-          );
-          const div = document.createElement("div");
-          div.innerHTML = `
+    var cluster = new AMap.MarkerCluster(map, points, {
+      gridSize: 10, // 设置网格像素大小
+      // renderClusterMarker: _renderClusterMarker, // 自定义聚合点样式
+      renderMarker: _renderMarker, // 自定义非聚合点样式
+      renderClusterMarker: function (context: any) {
+        const count = context.clusterData.reduce(
+          (a: number, b: any) => a + b.item.house_count,
+          0
+        );
+        const div = document.createElement("div");
+        div.innerHTML = `
       <div style="
   display: inline-flex;
   align-items: center;
@@ -150,26 +177,15 @@ export function MapPage({ data }: MapPageProps) {
 </div>
     `;
 
-          context.marker.setContent(div);
-        },
-      });
+        context.marker.setContent(div);
+      },
+    });
 
-      cluster.on("click", function (e: any) {
-        const clusterCenter = e.lnglat;
-        map.setZoomAndCenter(map.getZoom() + 1, clusterCenter);
-      });
+    cluster.on("click", function (e: any) {
+      const clusterCenter = e.lnglat;
+      map.setZoomAndCenter(map.getZoom() + 1, clusterCenter);
+    });
 
-      map.setFitView();
-    };
-  }, []);
-
-  return (
-    <>
-      <Script
-        src="https://webapi.amap.com/maps?v=2.0&key=7a4a5bf23ff36a44e4ffb04bbbf77e01&callback=initMap&plugin=AMap.MarkerCluster,AMap.Scale,AMap.ToolBar,AMap.ControlBar"
-        strategy="afterInteractive"
-      />
-      <div id="container" style={{ width: "100%", height: "100%" }} />
-    </>
-  );
+    map.setFitView();
+  }
 }

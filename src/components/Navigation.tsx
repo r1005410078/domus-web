@@ -8,122 +8,97 @@ import ListItem from "@mui/joy/ListItem";
 import ListItemButton from "@mui/joy/ListItemButton";
 import ListItemDecorator from "@mui/joy/ListItemDecorator";
 import ListItemContent from "@mui/joy/ListItemContent";
+import { IconButton } from "@mui/joy";
+import AddTwoToneIcon from "@mui/icons-material/AddTwoTone";
+export interface NavigationProps {
+  value: string;
+  onChange: (value: any) => void;
+  items: NavigationItem[];
+  tags?: TagItem[];
+}
 
-import FolderRoundedIcon from "@mui/icons-material/FolderRounded";
-import ShareRoundedIcon from "@mui/icons-material/ShareRounded";
-import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
+export interface TagItem {
+  label: string;
+  key: string;
+  color: string;
+}
 
-export default function Navigation() {
+export interface NavigationItem {
+  label: string;
+  key: string;
+  icon: React.ReactNode;
+}
+
+export default function Navigation({
+  value,
+  onChange,
+  items,
+  tags,
+}: NavigationProps) {
   return (
     <List size="sm" sx={{ "--ListItem-radius": "8px", "--List-gap": "4px" }}>
       <ListItem nested>
         <ListSubheader sx={{ letterSpacing: "2px", fontWeight: "800" }}>
-          Browse
+          菜单
         </ListSubheader>
-        <List
-          aria-labelledby="nav-list-browse"
-          sx={{ "& .JoyListItemButton-root": { p: "8px" } }}
-        >
-          <ListItem>
-            <ListItemButton selected>
-              <ListItemDecorator>
-                <FolderRoundedIcon fontSize="small" />
-              </ListItemDecorator>
-              <ListItemContent>My files</ListItemContent>
-            </ListItemButton>
-          </ListItem>
-          <ListItem>
-            <ListItemButton>
-              <ListItemDecorator>
-                <ShareRoundedIcon fontSize="small" />
-              </ListItemDecorator>
-              <ListItemContent>Shared files</ListItemContent>
-            </ListItemButton>
-          </ListItem>
-          <ListItem>
-            <ListItemButton>
-              <ListItemDecorator>
-                <DeleteRoundedIcon fontSize="small" />
-              </ListItemDecorator>
-              <ListItemContent>Trash</ListItemContent>
-            </ListItemButton>
-          </ListItem>
+        <List aria-labelledby="nav-list-browse">
+          {items.map((item) => (
+            <ListItem key={item.key}>
+              <ListItemButton
+                selected={value === item.key}
+                onClick={() => onChange(item.key)}
+              >
+                <ListItemDecorator>{item.icon}</ListItemDecorator>
+                <ListItemContent>{item.label}</ListItemContent>
+              </ListItemButton>
+            </ListItem>
+          ))}
         </List>
       </ListItem>
-      <ListItem nested sx={{ mt: 2 }}>
-        <ListSubheader sx={{ letterSpacing: "2px", fontWeight: "800" }}>
-          Tags
-        </ListSubheader>
-        <List
-          aria-labelledby="nav-list-tags"
-          size="sm"
-          sx={{
-            "--ListItemDecorator-size": "32px",
-            "& .JoyListItemButton-root": { p: "8px" },
-          }}
-        >
-          <ListItem>
-            <ListItemButton>
-              <ListItemDecorator>
-                <Box
-                  sx={{
-                    width: "10px",
-                    height: "10px",
-                    borderRadius: "99px",
-                    bgcolor: "primary.500",
-                  }}
-                />
-              </ListItemDecorator>
-              <ListItemContent>Personal</ListItemContent>
-            </ListItemButton>
-          </ListItem>
-          <ListItem>
-            <ListItemButton>
-              <ListItemDecorator>
-                <Box
-                  sx={{
-                    width: "10px",
-                    height: "10px",
-                    borderRadius: "99px",
-                    bgcolor: "danger.500",
-                  }}
-                />
-              </ListItemDecorator>
-              <ListItemContent>Work</ListItemContent>
-            </ListItemButton>
-          </ListItem>
-          <ListItem>
-            <ListItemButton>
-              <ListItemDecorator>
-                <Box
-                  sx={{
-                    width: "10px",
-                    height: "10px",
-                    borderRadius: "99px",
-                    bgcolor: "warning.400",
-                  }}
-                />
-              </ListItemDecorator>
-              <ListItemContent>Travels</ListItemContent>
-            </ListItemButton>
-          </ListItem>
-          <ListItem>
-            <ListItemButton>
-              <ListItemDecorator>
-                <Box
-                  sx={{
-                    width: "10px",
-                    height: "10px",
-                    borderRadius: "99px",
-                    bgcolor: "success.400",
-                  }}
-                />
-              </ListItemDecorator>
-              <ListItemContent>Concert tickets</ListItemContent>
-            </ListItemButton>
-          </ListItem>
-        </List>
-      </ListItem>
+
+      {tags != undefined && (
+        <ListItem nested sx={{ mt: 2 }}>
+          <ListSubheader
+            sx={{
+              letterSpacing: "2px",
+              fontWeight: "800",
+              display: "flex",
+              justifyContent: "space-between",
+            }}
+          >
+            <span>收藏</span>
+            <IconButton variant="plain" size="sm">
+              <AddTwoToneIcon />
+            </IconButton>
+          </ListSubheader>
+          <List
+            aria-labelledby="nav-list-tags"
+            size="sm"
+            sx={{ "--ListItemDecorator-size": "32px" }}
+          >
+            {tags.map((tag) => (
+              <ListItem key={tag.label}>
+                <ListItemButton
+                  selected={value === tag.key}
+                  onClick={() => onChange(tag.key)}
+                >
+                  <ListItemDecorator>
+                    <Box
+                      sx={{
+                        width: "10px",
+                        height: "10px",
+                        borderRadius: "99px",
+                        bgcolor: tag.color,
+                      }}
+                    />
+                  </ListItemDecorator>
+                  <ListItemContent>{tag.label}</ListItemContent>
+                </ListItemButton>
+              </ListItem>
+            ))}
+          </List>
+        </ListItem>
+      )}
     </List>
   );
 }

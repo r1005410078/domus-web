@@ -10,35 +10,6 @@ export default function Pagination() {
   return (
     <div>
       <Box
-        className="Pagination-mobile"
-        sx={{
-          display: { xs: "flex", md: "none" },
-          alignItems: "center",
-          mx: 2,
-          my: 1,
-        }}
-      >
-        <IconButton
-          aria-label="previous page"
-          variant="outlined"
-          color="neutral"
-          size="sm"
-        >
-          <ArrowBackIosRoundedIcon />
-        </IconButton>
-        <Typography level="body-sm" sx={{ mx: "auto" }}>
-          第 1 页，共 10 页
-        </Typography>
-        <IconButton
-          aria-label="next page"
-          variant="outlined"
-          color="neutral"
-          size="sm"
-        >
-          <ArrowForwardIosRoundedIcon />
-        </IconButton>
-      </Box>
-      <Box
         className="Pagination-laptopUp"
         sx={{
           gap: 1,
@@ -47,7 +18,8 @@ export default function Pagination() {
             xs: "none",
             md: "flex",
           },
-          my: 2,
+          px: 2,
+          py: 1,
         }}
       >
         <Button
@@ -69,7 +41,6 @@ export default function Pagination() {
           </IconButton>
         ))}
         <Box sx={{ flex: 1 }} />
-
         <Button
           size="sm"
           variant="plain"
