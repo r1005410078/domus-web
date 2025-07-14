@@ -11,18 +11,19 @@ import Stack from "@mui/joy/Stack";
 import Slider, { sliderClasses } from "@mui/joy/Slider";
 import FilterAltOutlined from "@mui/icons-material/FilterAltOutlined";
 import CountrySelector from "./CountrySelector";
-import OrderSelector, { OrderSelectorProps } from "./OrderSelector";
+import PurposeSelector, { PurposeSelectorProps } from "./PurposeSelector";
 
 function valueText(value: number) {
   return `$${value.toLocaleString("en-US")}`;
 }
 
 export interface FiltersProps {
-  orderSelectorProps: OrderSelectorProps;
+  purposeSelectorProps: PurposeSelectorProps;
 }
 
-export default function Filters({ orderSelectorProps }: FiltersProps) {
+export default function Filters({ purposeSelectorProps }: FiltersProps) {
   const [open, setOpen] = React.useState(false);
+
   return (
     <Stack
       useFlexGap
@@ -43,7 +44,7 @@ export default function Filters({ orderSelectorProps }: FiltersProps) {
       >
         过滤
       </Button>
-      <OrderSelector {...orderSelectorProps} />
+      <PurposeSelector {...purposeSelectorProps} />
       <Drawer open={open} onClose={() => setOpen(false)}>
         <Stack useFlexGap spacing={3} sx={{ p: 2 }}>
           <DialogTitle>Filters</DialogTitle>

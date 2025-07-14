@@ -1,26 +1,21 @@
 import { Community, HouseForm } from "@/models/house";
 import apiClient, { ResponseBody } from "./http";
+import { AmapBounds, CommunityWithHouseCount } from "@/components/AMap";
 
 type CreateHouseRequest = HouseForm;
 // 创建房源
 export function saveHouse(data: CreateHouseRequest) {
-  if (data.id) {
-    return apiClient.post<ResponseBody<any>>(
-      "/api/domus/management/house/update",
-      data
-    ); // 返回 token 等信息
-  }
-
   return apiClient.post<ResponseBody<any>>(
-    "/api/domus/management/house/create",
+    "/api/domus/management/house/save",
     data
-  ); // 返回 token 等信息
+  );
 }
 
 export interface HouseListRequest {
-  page?: number;
-  page_size?: number;
+  page: number;
+  page_size: number;
   transaction_type?: string;
+  amap_bounds?: AmapBounds;
 }
 
 // 获取房源列表
@@ -29,14 +24,12 @@ export function getHouseList({
   page_size = 10,
   ...params
 }: HouseListRequest) {
-  return apiClient.get<ResponseBody<{ list: HouseForm[]; total: number }>>(
+  return apiClient.post<ResponseBody<{ list: HouseForm[]; total: number }>>(
     "/api/domus/query/house/list",
     {
-      params: {
-        page,
-        page_size,
-        ...params,
-      },
+      page,
+      page_size,
+      ...params,
     }
   );
 }
@@ -53,13 +46,7 @@ export async function getCommunityList() {
   const res = await apiClient.get<ResponseBody<{ list: Community[] }>>(
     "/api/domus/query/community/list?page=1&page_size=10000"
   );
-  const data = res.data.data.list;
-  return data.map((item) => {
-    return {
-      ...item,
-      location_id: item.id,
-    };
-  });
+  return res.data.data.list;
 }
 
 // 申请上传房源URL
@@ -70,5 +57,12 @@ export function applyUploadHouseUrl(data: {
   return apiClient.post<ResponseBody<string>>(
     `/api/domus/management/house/apply_upload_url`,
     data
+  );
+}
+
+// 根据小区分组
+export function getCommunityByCommunity() {
+  return apiClient.get<ResponseBody<CommunityWithHouseCount[]>>(
+    "/api/domus/query/house/group_by_community"
   );
 }

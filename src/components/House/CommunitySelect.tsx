@@ -26,8 +26,6 @@ interface CommunitySelectProps {
   onChange: (value: Poi | null) => void;
 }
 
-/// 如果是高德地图返回的就是 location_id
-/// 如果是本栈数据库返回的就带有 id
 export function CommunitySelect({ value, onChange }: CommunitySelectProps) {
   const placeSearchRef = useRef<any>(null);
   const [keyword, seKeyword] = useState<string>("");
@@ -40,11 +38,10 @@ export function CommunitySelect({ value, onChange }: CommunitySelectProps) {
   useMemo(() => {
     if (data) {
       for (const poi of data) {
-        if (poi.location_id) {
+        if (poi.id) {
           // 待id 表示更新
-          cache.set(poi.location_id, {
-            id: poi.location_id!,
-            location_id: poi.location_id!,
+          cache.set(poi.id, {
+            id: poi.id!,
             name: poi.name!,
             typecode: poi.typecode!,
             district: poi.district!,
@@ -73,13 +70,12 @@ export function CommunitySelect({ value, onChange }: CommunitySelectProps) {
               const pois = result.tips;
               if (pois && pois.length) {
                 const poiList = pois.map(
-                  ({ id, ...item }) =>
-                    ({ ...item, location_id: id, city: ["安庆"] } as Poi)
+                  ({ ...item }) => ({ ...item, city: ["安庆"] } as Poi)
                 );
 
                 for (let poi of poiList) {
-                  if (!cache.has(poi.location_id)) {
-                    cache.set(poi.location_id, poi);
+                  if (!cache.has(poi.id)) {
+                    cache.set(poi.id, poi);
                   }
                 }
               }
@@ -92,9 +88,9 @@ export function CommunitySelect({ value, onChange }: CommunitySelectProps) {
   }, [keyword]);
 
   useEffect(() => {
-    const location_id = value?.location_id;
-    if (location_id && !cache.has(location_id)) {
-      cache.set(location_id, value);
+    const id = value?.id;
+    if (id && !cache.has(id)) {
+      cache.set(id, value);
     }
     setOptions(Array.from(cache.values()));
   }, [value]);
@@ -125,7 +121,7 @@ export function CommunitySelect({ value, onChange }: CommunitySelectProps) {
         placeholder="请输入"
         value={value}
         isOptionEqualToValue={(option, value) => {
-          return option?.location_id === value?.location_id;
+          return option?.id === value?.id;
         }}
         onInputChange={(_, keyword) => {
           seKeyword(keyword);
@@ -159,7 +155,7 @@ export interface SearchData {
 }
 
 export interface Poi {
-  id?: string; // POI（地点）的唯一标识 ID（比如可以用于查询详情）
+  id: string; // POI（地点）的唯一标识 ID（比如可以用于查询详情）
   name: string; // 地点名称（如“朝阳大悦城”）
   district: string; // 所属行政区（如“朝阳区”）
   adcode: string; // 所属行政区划代码（如“110105”，代表朝阳区）
@@ -175,5 +171,4 @@ export interface Poi {
   address: string; // 详细地址（如“北京市朝阳区朝阳北路101号”）
   typecode: string; // POI 类型编码（如 "060100" 表示“汽车服务”）
   city?: string[]; // 所属城市（可能为空数组或 ["北京"]，注意是数组）
-  location_id: string; // 衍生字段，可能是 location 对象的标识（不一定总返回）
 }

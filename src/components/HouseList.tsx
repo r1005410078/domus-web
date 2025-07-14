@@ -5,6 +5,7 @@ import {
   Card,
   CardContent,
   Chip,
+  CircularProgress,
   Drawer,
   List,
   ListItem,
@@ -15,9 +16,13 @@ import {
 import Layout from "./Layout";
 import { apartmentTypeToString, HouseForm } from "@/models/house";
 import Filters from "./Filters";
-import Pagination from "./Pagination";
+import Pagination, { PaginationProps } from "./Pagination";
 import ReplayCircleFilledTwoToneIcon from "@mui/icons-material/ReplayCircleFilledTwoTone";
-import { AMap, CommunityWithHouseCount } from "@/components/AMap";
+import {
+  AmapBounds,
+  AMapComponent,
+  CommunityWithHouseCount,
+} from "@/components/AMap";
 import { Detail } from "./Detail";
 import React from "react";
 
@@ -25,10 +30,27 @@ export interface HouseListProps {
   data: HouseForm[];
   transactionType?: string;
   aMapData: CommunityWithHouseCount[];
+  onMapBoundsChange?: (bounds: AmapBounds) => void;
+  loading?: boolean;
+  onPullLoadMore?: () => void;
+  pagination: PaginationProps;
 }
 
-export function HouseList({ data, transactionType, aMapData }: HouseListProps) {
+interface FilterForm {
+  purpose?: string[];
+}
+
+export function HouseList({
+  data,
+  transactionType,
+  aMapData,
+  loading,
+  pagination,
+  onMapBoundsChange,
+  onPullLoadMore,
+}: HouseListProps) {
   const [detail, setDetail] = React.useState<HouseForm>();
+  const [filterFrom, setFilterFrom] = React.useState<FilterForm>({});
 
   return (
     <>
@@ -38,6 +60,15 @@ export function HouseList({ data, transactionType, aMapData }: HouseListProps) {
           sx={{
             overflow: "auto",
           }}
+          onScroll={(event) => {
+            const target = event.currentTarget;
+            const { scrollTop, scrollHeight, clientHeight } = target;
+            const isBottom = scrollTop + clientHeight >= scrollHeight - 10; // 留一点误差
+            if (isBottom) {
+              // 触发加载更多数据等逻辑
+              onPullLoadMore?.();
+            }
+          }}
         >
           <List
             sx={{
@@ -45,14 +76,20 @@ export function HouseList({ data, transactionType, aMapData }: HouseListProps) {
               "--ListItem-paddingY": "8px",
 
               height: {
-                xs: "calc(100vh - 150px)",
-                md: "calc(100vh - 112px)",
+                xs: "calc(100vh - 200px)",
+                md: "calc(100vh - 110px)",
               },
             }}
           >
             <Filters
-              orderSelectorProps={{
-                onChange: (value) => {},
+              purposeSelectorProps={{
+                value: filterFrom.purpose,
+                onChange: (value) => {
+                  setFilterFrom({
+                    ...filterFrom,
+                    purpose: value,
+                  });
+                },
               }}
             />
             {data.map((item) => (
@@ -73,7 +110,9 @@ export function HouseList({ data, transactionType, aMapData }: HouseListProps) {
                 >
                   <AspectRatio ratio="1.2" sx={{ width: 140 }}>
                     <img
-                      srcSet={item.images?.[0].url ?? "/images/shooting.png 2x"}
+                      srcSet={
+                        item.images?.[0]?.url ?? "/images/shooting.png 2x"
+                      }
                       loading="lazy"
                     />
                   </AspectRatio>
@@ -128,7 +167,7 @@ export function HouseList({ data, transactionType, aMapData }: HouseListProps) {
                 </Card>
               </ListItem>
             ))}
-            <Box
+            {/* <Box
               className="Pagination-mobile"
               sx={{
                 display: { xs: "flex", md: "none" },
@@ -148,13 +187,13 @@ export function HouseList({ data, transactionType, aMapData }: HouseListProps) {
               >
                 加载更多
               </Button>
-            </Box>
+            </Box> */}
           </List>
         </Stack>
-        <Pagination />
+        <Pagination {...pagination} />
       </Layout.SidePane>
       <Layout.Main sx={{ p: 0, position: "relative" }}>
-        <AMap data={aMapData} />
+        <AMapComponent data={aMapData} onMapBoundsChange={onMapBoundsChange} />
 
         {detail && (
           <Sheet
@@ -180,7 +219,6 @@ export function HouseList({ data, transactionType, aMapData }: HouseListProps) {
       <Drawer
         anchor="bottom"
         sx={{
-          zIndex: 99999,
           display: { xs: "initial", md: "none" },
         }}
         slotProps={{

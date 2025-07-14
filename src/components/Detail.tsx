@@ -68,7 +68,8 @@ export function Detail({ transactionType, detail, onClose }: DetailProps) {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: false });
   const images = useMemo(
-    () => detail.images || [{ url: "/images/shooting.png" }],
+    () =>
+      detail.images?.length ? detail.images : [{ url: "/images/shooting.png" }],
     [detail.images]
   );
 

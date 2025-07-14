@@ -4,6 +4,7 @@ import {
   getHouseDetail,
   getHouseList,
   HouseListRequest,
+  getCommunityByCommunity,
 } from "@/services/house";
 import { useMutation, useQuery } from "@tanstack/react-query";
 
@@ -29,7 +30,7 @@ export function useSaveHouse() {
 // 根据id 获取房源信息
 export function useGetHouseDetail(id: string) {
   return useQuery({
-    queryKey: [id],
+    queryKey: ["useGetHouseDetail", id],
     queryFn: async () => {
       const res = await getHouseDetail(id);
 
@@ -42,12 +43,27 @@ export function useGetHouseDetail(id: string) {
 }
 
 // 获取房源列表
-export function useHouseList(params: HouseListRequest) {
+export function useHouseList(params: HouseListRequest, enabled?: boolean) {
   return useQuery({
-    queryKey: Object.values(params),
+    queryKey: ["useHouseList", Object.values(params)],
     queryFn: async () => {
       const res = await getHouseList(params);
       return res.data.data;
     },
+    enabled,
   });
+}
+
+// 根据小区获取房源
+export function useGetCommunityByCommunity() {
+  return useQuery({
+    queryKey: ["useGetCommunityByCommunity"],
+    queryFn: async () => {
+      const res = await getCommunityByCommunity();
+      return res.data.data;
+    },
+  });
+}
+function useDebounce(text: any, arg1: number): [any] {
+  throw new Error("Function not implemented.");
 }

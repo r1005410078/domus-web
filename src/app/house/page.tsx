@@ -1,7 +1,6 @@
 "use client";
 
 import * as React from "react";
-import { HouseContent } from "@/components/HouseContent";
 import LayoutFrame from "@/components/LayoutFrame";
 import MapsHomeWorkTwoToneIcon from "@mui/icons-material/MapsHomeWorkTwoTone";
 import OutboxRoundedIcon from "@mui/icons-material/OutboxRounded";
@@ -14,6 +13,10 @@ import { HouseForm } from "@/models/house";
 import House from "@/components/House";
 import { CommunityTable } from "@/components/CommunityTable";
 import { HouseTable } from "@/components/HouseTable";
+import { useGetCommunityByCommunity, useHouseList } from "@/hooks/useHouse";
+import { HouseListRequest } from "@/services/house";
+import { useDebouncedCallback } from "use-debounce";
+import { PaginationProps } from "@/components/Pagination";
 
 const tabBarItems = [
   {
@@ -58,26 +61,57 @@ const gridTemplateColumns = {
 };
 
 export default function Home() {
-  const [value, onChange] =
+  const [transaction_type, onChangeTransactionType] =
     React.useState<keyof typeof gridTemplateColumns>("出售");
   const [drawerAddOpen, setDrawerAddOpen] = React.useState(false);
+  const [houseListRequest, setHouseListRequest] =
+    React.useState<HouseListRequest>({
+      page: 1,
+      page_size: 10,
+      transaction_type,
+    });
+
+  const { data, isFetching } = useHouseList(
+    houseListRequest,
+    ["出售", "出租"].includes(transaction_type)
+  );
+
+  const houseList = data?.list || [];
+  const pagination: PaginationProps = {
+    count: data?.total || 0,
+    page: houseListRequest.page,
+    pageSize: houseListRequest.page_size,
+    onChange: (page) => {
+      setHouseListRequest({
+        ...houseListRequest,
+        page,
+      });
+    },
+  };
+
+  const { data: aMapData = [] } = useGetCommunityByCommunity();
+  const setHouseListRequestDebounced = useDebouncedCallback((value) => {
+    setHouseListRequest({
+      ...houseListRequest,
+      ...value,
+    });
+  }, 300);
 
   return (
     <>
       <LayoutFrame
         rootProps={{
           sx: {
-            gridTemplateColumns: gridTemplateColumns[value],
+            gridTemplateColumns: gridTemplateColumns[transaction_type],
           },
         }}
         onAdd={() => {
-          console.log("onAdd");
           setDrawerAddOpen(true);
         }}
         tabBar={{
           items: tabBarItems,
-          value,
-          onChange,
+          value: transaction_type,
+          onChange: onChangeTransactionType,
           tags: [
             {
               label: "带看的",
@@ -93,21 +127,22 @@ export default function Home() {
         }}
       >
         {(() => {
-          switch (value) {
+          switch (transaction_type) {
             case "出售":
-              return (
-                <HouseList
-                  data={sale}
-                  transactionType="出售"
-                  aMapData={aMapData}
-                />
-              );
             case "出租":
               return (
                 <HouseList
-                  data={sale}
-                  transactionType="出售"
+                  loading={isFetching}
+                  data={houseList}
+                  pagination={pagination}
+                  transactionType={transaction_type}
                   aMapData={aMapData}
+                  onMapBoundsChange={(amap_bounds) => {
+                    setHouseListRequestDebounced({
+                      ...houseListRequest,
+                      amap_bounds,
+                    });
+                  }}
                 />
               );
             case "house":
@@ -129,9 +164,7 @@ export default function Home() {
       </LayoutFrame>
       <Drawer
         anchor="bottom"
-        sx={{
-          zIndex: 99999,
-        }}
+        sx={{}}
         slotProps={{
           content: {
             sx: {
