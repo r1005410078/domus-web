@@ -25,8 +25,38 @@ import {
   stairsToString,
 } from "@/models/house";
 import { darkTheme, lightTheme } from "./agGridTheme";
-import Add from "@mui/icons-material/Add";
 import SettingsIcon from "@mui/icons-material/Settings";
+import { createCollection } from "@tanstack/react-db";
+
+import { localStorageCollectionOptions } from "@tanstack/db-collections";
+import * as z from "zod";
+
+global.crypto.randomUUID = function () {
+  return Date.now().toString();
+};
+
+const todoSchema = z.object({
+  id: z.string(),
+  title: z.string(),
+  completed: z.boolean(),
+});
+
+const todos = createCollection({
+  schema: todoSchema,
+  getKey: (todo) => todo.id,
+  sync: {
+    sync: () => {
+      console.log(111);
+    },
+  },
+});
+
+// todos.insert({
+//   id: "1",
+//   title: "Learn React",
+//   completed: false,
+// });
+
 ModuleRegistry.registerModules([AllCommunityModule]);
 
 // Row Data Interface
