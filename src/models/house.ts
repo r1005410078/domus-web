@@ -52,13 +52,13 @@ export interface HouseOwner {
 }
 
 export interface Community {
-  id?: string;
+  id: string;
   // 小区名称
-  name?: string;
+  name: string;
   // 小区地址
-  address?: string;
+  address: string;
   // 城市
-  city?: string;
+  city: string;
   // 小区年限
   year_built?: string;
   // 小区描述
@@ -74,6 +74,8 @@ export interface Community {
   district: string;
   // 所属行政区划代码（如“110105”，代表朝阳区）
   adcode: string;
+  // 更新时间
+  updated_at?: string;
 }
 
 export interface HouseForm {

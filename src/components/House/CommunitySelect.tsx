@@ -32,7 +32,7 @@ export function CommunitySelect({ value, onChange }: CommunitySelectProps) {
   const [options, setOptions] = useState<Poi[]>([]);
   const { data } = useQuery({
     queryKey: ["initMap"],
-    queryFn: getCommunityList,
+    queryFn: () => getCommunityList({ page: 1, page_size: 10000 }),
   });
 
   useMemo(() => {

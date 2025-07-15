@@ -1,20 +1,21 @@
 "use client";
-import React, { useState } from "react";
-import type {
-  CellClickedEvent,
-  CellDoubleClickedEvent,
-  ColDef,
-} from "ag-grid-community";
-import {
-  AllCommunityModule,
-  ModuleRegistry,
-  themeQuartz,
-} from "ag-grid-community";
+
+import React, { use, useState } from "react";
+import type { CellDoubleClickedEvent, ColDef } from "ag-grid-community";
+import { AllCommunityModule, ModuleRegistry } from "ag-grid-community";
 import { AgGridReact } from "ag-grid-react";
 import { AG_GRID_LOCALE_CN } from "@ag-grid-community/locale";
 import { Box, Stack, Typography, useColorScheme } from "@mui/joy";
 import { Community } from "@/models/house";
 import { darkTheme, lightTheme } from "./agGridTheme";
+import { useCommunityDB } from "@/hooks/useCommunityDB";
+import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+import timezone from "dayjs/plugin/timezone";
+
+// 插件注册
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -23,30 +24,10 @@ type IRow = Partial<Community>;
 
 // Create new GridExample component
 export function CommunityTable() {
+  const { communitys: rowData } = useCommunityDB();
   const { mode } = useColorScheme();
 
   // Row Data: The data to be displayed.
-  const [rowData, setRowData] = useState<IRow[]>([
-    {
-      id: "1",
-      name: "小区名称",
-      address: "小区地址",
-      year_built: "小区年限",
-      typecode: "小区类型",
-      district: "所属行政区",
-      images: "小区图片",
-    },
-    {
-      id: "1",
-      name: "小区名称",
-      address: "小区地址",
-      year_built: "小区年限",
-      typecode: "小区描述",
-      district: "所属行政区",
-      images: "小区图片",
-    },
-  ]);
-
   // Column Definitions: Defines & controls grid columns.
   const [colDefs, setColDefs] = useState<ColDef<IRow>[]>([
     { field: "name", headerName: "小区名称", pinned: "left" },
@@ -55,17 +36,22 @@ export function CommunityTable() {
     { field: "typecode", headerName: "小区描述" },
     { field: "district", headerName: "所属行政区" },
     {
-      field: "images",
-      headerName: "小区图片",
-      cellRenderer: (params: any) => {
-        return params.value === "active" ? "✅ 启用" : "❌ 禁用";
-      },
-    },
-    {
       field: "description",
       headerName: "小区描述",
       minWidth: 200,
       initialFlex: 1,
+    },
+    {
+      field: "updated_at",
+      headerName: "更新时间",
+      minWidth: 200,
+      initialFlex: 1,
+      cellRenderer: (params: any) => {
+        return dayjs
+          .utc(params.value)
+          .tz("Asia/Shanghai")
+          .format("YYYY-MM-DD HH:mm:ss");
+      },
     },
   ]);
 

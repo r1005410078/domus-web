@@ -41,10 +41,19 @@ export function getHouseDetail(id: string) {
   ); // 返回 token 等信息
 }
 
+interface CommunityListRequest {
+  page: number;
+  page_size: number;
+  updated_at?: string | null;
+}
+
 // 获取小区列表
-export async function getCommunityList() {
-  const res = await apiClient.get<ResponseBody<{ list: Community[] }>>(
-    "/api/domus/query/community/list?page=1&page_size=10000"
+export async function getCommunityList(
+  data: CommunityListRequest = { page: 1, page_size: 10 }
+) {
+  const res = await apiClient.post<ResponseBody<{ list: Community[] }>>(
+    "/api/domus/query/community/list",
+    data
   );
   return res.data.data.list;
 }
