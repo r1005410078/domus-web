@@ -26,14 +26,12 @@ import {
 } from "@/models/house";
 import { darkTheme, lightTheme } from "./agGridTheme";
 import SettingsIcon from "@mui/icons-material/Settings";
+import "@/utils/crypto-polyfill";
+
 import { createCollection } from "@tanstack/react-db";
 
 import { localStorageCollectionOptions } from "@tanstack/db-collections";
 import * as z from "zod";
-
-global.crypto.randomUUID = function () {
-  return Date.now().toString();
-};
 
 const todoSchema = z.object({
   id: z.string(),
@@ -41,21 +39,56 @@ const todoSchema = z.object({
   completed: z.boolean(),
 });
 
-const todos = createCollection({
-  schema: todoSchema,
-  getKey: (todo) => todo.id,
-  sync: {
-    sync: () => {
-      console.log(111);
+const todos = createCollection(
+  localStorageCollectionOptions({
+    id: "user-preferences",
+    storageKey: "app-user-prefs",
+    schema: todoSchema,
+    getKey: (todo) => todo.id,
+    storageEventApi: {
+      addEventListener: (
+        type: `storage`,
+        listener: (e: StorageEvent) => void
+      ) => {
+        console.log(111);
+      },
+      removeEventListener: (
+        type: `storage`,
+        listener: (event: StorageEvent) => void
+      ) => {
+        console.log(222);
+      },
     },
-  },
-});
+    onInsert: ({ transaction, collection }) => {
+      console.log("Item inserted:", transaction.mutations[0].modified);
+      return Promise.resolve({ success: true });
+    },
+    onUpdate: ({ transaction, collection }) => {
+      console.log(222, transaction, collection);
+      return Promise.resolve({ success: true });
+    },
+  })
+);
 
-// todos.insert({
-//   id: "1",
-//   title: "Learn React",
-//   completed: false,
+// todos.insert([
+//   {
+//     id: "1",
+//     title: "Learn React",
+//     completed: false,
+//   },
+//   {
+//     id: "2",
+//     title: "Learn React",
+//     completed: false,
+//   },
+// ]);
+
+// todos.update("1", (draft) => {
+//   draft.title = "Learn React2";
 // });
+// const unsubscribe = todos.subscribeChanges(() => {});
+console.log(todos.map((todo) => todo.title));
+// unsubscribe();
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
