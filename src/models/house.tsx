@@ -285,7 +285,7 @@ export function apartmentTypeToString(data?: ApartmentType) {
 
 export function floor_rangeToString(data?: FloorRange) {
   if (!data?.door_number_from || !data?.door_number_to) {
-    return "";
+    return "未知楼层";
   }
 
   return `${data?.door_number_from}-${data?.door_number_to}层`;
