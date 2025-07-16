@@ -1,3 +1,11 @@
+import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+import timezone from "dayjs/plugin/timezone";
+
+// 插件注册
+dayjs.extend(utc);
+dayjs.extend(timezone);
+
 export interface DoorNumber {
   // 座栋
   building_number: number;
@@ -9,9 +17,9 @@ export interface DoorNumber {
 
 export interface FloorRange {
   // 最小楼层
-  door_number_from: number;
+  door_number_from?: number;
   // 最大楼层
-  door_number_to: number;
+  door_number_to?: number;
 }
 
 export interface ApartmentType {
@@ -215,7 +223,7 @@ export function communityToString(data?: Community) {
   }
 
   if (data?.address) {
-    str += `/${data.address}`;
+    str += ` / ${data.address}`;
   }
 
   return str;
@@ -225,11 +233,11 @@ export function ownerToString(data?: HouseOwner) {
   let str = "";
 
   if (data?.name) {
-    str += `${data.name}`;
+    str += `${data.name.split(":")[0]}`;
   }
 
   if (data?.phone) {
-    str += `/${data.phone}`;
+    str += `/${data.phone.split(":")[0]}`;
   }
 
   return str;
@@ -277,7 +285,7 @@ export function apartmentTypeToString(data?: ApartmentType) {
 
 export function floor_rangeToString(data?: FloorRange) {
   if (!data?.door_number_from || !data?.door_number_to) {
-    return `未知楼层`;
+    return "";
   }
 
   return `${data?.door_number_from}-${data?.door_number_to}层`;
@@ -299,4 +307,18 @@ export function door_numberToString(data?: DoorNumber) {
   }
 
   return str;
+}
+
+export function emptyToString<T>(data?: null | T, util?: string) {
+  if (data) {
+    if (util) {
+      return `${data}${util}`;
+    }
+    return data;
+  }
+  return "";
+}
+
+export function dateToString(date?: string) {
+  return dayjs.utc(date).tz("Asia/Shanghai").format("YYYY-MM-DD HH:mm:ss");
 }

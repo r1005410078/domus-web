@@ -4,17 +4,17 @@ import { createCollection, useLiveQuery } from "@tanstack/react-db";
 import { localStorageCollectionOptions } from "@tanstack/db-collections";
 import * as z from "zod";
 import { useEffect, useRef, useState } from "react";
-import { getCommunityList } from "@/services/house";
+import { getHouseList } from "@/services/house";
 import "@/utils/crypto-polyfill";
-import { communitySchema } from "@/schema/house";
+import { houseFormSchema } from "@/schema/house";
 
-const communityCollection = createCollection(
+const houseCollection = createCollection(
   localStorageCollectionOptions({
-    id: "communitys",
-    storageKey: "communitys",
+    id: "house",
+    storageKey: "house",
     storage: globalThis.localStorage,
-    schema: communitySchema,
-    getKey: (todo) => todo.id,
+    schema: houseFormSchema,
+    getKey: (house) => house.id!,
     onInsert: ({ transaction, collection }) => {
       return Promise.resolve({ success: true });
     },
@@ -24,36 +24,37 @@ const communityCollection = createCollection(
   })
 );
 
-export function useCommunityDB() {
-  const { data: communitys } = useLiveQuery((q) =>
+export function useHouseDB() {
+  const { data: houseDataSource } = useLiveQuery((q) =>
     q
-      .from({ community: communityCollection })
-      .orderBy(({ community }) => community.updated_at, "desc")
+      .from({ house: houseCollection })
+      .orderBy(({ house }) => house.updated_at, "desc")
   );
 
-  const initCommunityRef = useRef(communitys);
+  const initHouseRef = useRef(houseDataSource);
 
   useEffect(() => {
-    const updated_at = initCommunityRef.current[0]?.updated_at;
-    syncCommunity(updated_at, 1);
+    const updated_at = initHouseRef.current[0]?.updated_at;
+    syncHouse(updated_at, 1);
   }, []);
 
-  return { communitys };
+  return { houseDataSource };
 }
 
-// 同步小区数据
+// 同步房源数据
 const PAGE_SIZE = 100;
-export async function syncCommunity(updated_at?: string | null, page = 1) {
-  const list = await getCommunityList({
+export async function syncHouse(updated_at?: string | null, page = 1) {
+  const { list } = await getHouseList({
     updated_at,
     page,
     page_size: PAGE_SIZE,
   });
 
   let newItems = [];
+
   for (const item of list) {
-    if (communityCollection.has(item.id)) {
-      communityCollection.update(item.id, (drafts) => {
+    if (houseCollection.has(item.id!)) {
+      houseCollection.update(item.id, (drafts) => {
         for (const key in item) {
           // @ts-ignore
           drafts[key] = item[key];
@@ -64,12 +65,12 @@ export async function syncCommunity(updated_at?: string | null, page = 1) {
     }
   }
 
-  communityCollection.insert(newItems as any);
+  houseCollection.insert(newItems as any);
   if (list.length < PAGE_SIZE) {
     return;
   }
 
   requestAnimationFrame(() => {
-    syncCommunity(updated_at, page + 1);
+    syncHouse(updated_at, page + 1);
   });
 }

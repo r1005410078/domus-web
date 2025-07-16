@@ -62,7 +62,7 @@ const gridTemplateColumns = {
 
 export default function Home() {
   const [transaction_type, onChangeTransactionType] =
-    React.useState<keyof typeof gridTemplateColumns>("community");
+    React.useState<keyof typeof gridTemplateColumns>("house");
   const [drawerAddOpen, setDrawerAddOpen] = React.useState(false);
   const [houseListRequest, setHouseListRequest] =
     React.useState<HouseListRequest>({
@@ -151,7 +151,7 @@ export default function Home() {
             case "house":
               return (
                 <Layout.Main sx={{ p: 2, position: "relative" }}>
-                  <HouseTable rowData={sale} onChangeRowData={() => {}} />
+                  <HouseTable />
                 </Layout.Main>
               );
             case "community":

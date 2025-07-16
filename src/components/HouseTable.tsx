@@ -7,6 +7,7 @@ import { AgGridReact } from "ag-grid-react";
 import { AG_GRID_LOCALE_CN } from "@ag-grid-community/locale";
 import {
   Box,
+  Button,
   Checkbox,
   Dropdown,
   MenuButton,
@@ -18,7 +19,10 @@ import {
 import {
   apartmentTypeToString,
   Community,
+  communityToString,
+  dateToString,
   door_numberToString,
+  emptyToString,
   floor_rangeToString,
   HouseForm,
   ownerToString,
@@ -27,6 +31,7 @@ import {
 import { darkTheme, lightTheme } from "./agGridTheme";
 import SettingsIcon from "@mui/icons-material/Settings";
 import "@/utils/crypto-polyfill";
+import { useHouseDB } from "@/hooks/useHouseDB";
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -42,14 +47,13 @@ const chacheColDefs: { [key in keyof IRow]: boolean } = (() => {
   }
 })();
 
-interface HouseTable {
-  rowData: IRow[];
-  onChangeRowData: (rowData: IRow[]) => void;
-}
+interface HouseTable {}
 
 // Create new GridExample component
-export function HouseTable({ rowData, onChangeRowData }: HouseTable) {
+export function HouseTable({}: HouseTable) {
+  const gridRef = React.useRef<AgGridReact>(null);
   const { mode } = useColorScheme();
+  const { houseDataSource: rowData } = useHouseDB();
 
   // Column Definitions: Defines & controls grid columns.
   const [colDefs, setColDefs] = useState<ColDef<IRow>[]>(
@@ -57,73 +61,92 @@ export function HouseTable({ rowData, onChangeRowData }: HouseTable) {
       {
         headerName: "序号",
         valueGetter: (params: any) => params.node!.rowIndex! + 1,
-        width: 80,
+        width: 100,
         pinned: "left",
         suppressMovable: true,
         cellClass: "ag-cell-center",
       },
       { field: "title", headerName: "房源标题", pinned: "left" },
-      { field: "purpose", headerName: "用途" },
-      { field: "transaction_type", headerName: "交易类型" },
-      { field: "house_status", headerName: "状态" },
-      {
-        field: "floor_range",
-        headerName: "楼层",
-        cellRenderer: (params: any) => {
-          return floor_rangeToString(params.data);
-        },
-      },
+      { field: "purpose", width: 100, headerName: "用途" },
+      { field: "transaction_type", width: 100, headerName: "交易类型" },
+      { field: "house_status", width: 100, headerName: "状态" },
       {
         field: "door_number",
         headerName: "门牌号结构",
-        cellRenderer: (params: any) => {
-          return door_numberToString(params.data);
+        valueGetter: (params: any) => {
+          return door_numberToString(params.data.door_number);
         },
       },
       {
         field: "apartment_type",
         headerName: "户型结构",
-        cellRenderer: (params: any) => {
-          return apartmentTypeToString(params.data);
-        },
+        valueGetter: (params: any) =>
+          apartmentTypeToString(params.data.apartment_type),
       },
+      {
+        field: "owner",
+        headerName: "业主",
+        width: 300,
+        valueGetter: (params: any) => ownerToString(params.data.owner),
+      },
+      {
+        field: "community",
+        headerName: "小区",
+        width: 500,
+        valueGetter: (params: any) => communityToString(params.data.community),
+      },
+
       {
         field: "building_area",
         headerName: "建筑面积",
-        cellRenderer: (params: any) => {
-          return `${params.data.building_area}平方米`;
-        },
+        valueGetter: (params: any) =>
+          emptyToString(params.data?.building_area, "平方米"),
       },
       {
         field: "use_area",
         headerName: "使用面积",
-        cellRenderer: (params: any) => {
-          return `${params.data.building_area}平方米`;
+        valueGetter: (params: any) => {
+          return emptyToString(params.data.use_area, "平方米");
         },
       },
+      {
+        field: "floor_range",
+        headerName: "楼层",
+        valueGetter: (params: any) =>
+          floor_rangeToString(params.data.floor_range),
+      },
+
       { field: "house_decoration", headerName: "装修" },
       {
         field: "sale_price",
         headerName: "售价",
-        cellRenderer: (params: any) => {
-          return `${params.data.building_area} 万元`;
-        },
+        valueGetter: (params: any) =>
+          emptyToString(params.data?.sale_price, "万元"),
+      },
+      {
+        field: "sale_low_price",
+        headerName: "出售低价",
+        valueGetter: (params: any) =>
+          emptyToString(params.data?.sale_low_price, "万元"),
       },
       {
         field: "rent_price",
         headerName: "租价",
-        cellRenderer: (params: any) => {
-          return `${params.data.building_area} 元/月`;
-        },
+        valueGetter: (params: any) =>
+          emptyToString(params.data?.rent_price, "元/月"),
       },
       {
         field: "rent_low_price",
         headerName: "出租低价",
-        cellRenderer: (params: any) => {
-          return `${params.data.building_area} 元/月`;
-        },
+        valueGetter: (params: any) =>
+          emptyToString(params.data?.building_area, "元/月"),
       },
-      { field: "down_payment", headerName: "首付" },
+      {
+        field: "down_payment",
+        headerName: "首付",
+        valueGetter: (params: any) =>
+          emptyToString(params.data?.down_payment, "%"),
+      },
       { field: "house_type", headerName: "房屋类型" },
       { field: "house_orientation", headerName: "朝向" },
       { field: "building_structure", headerName: "建筑结构" },
@@ -142,25 +165,7 @@ export function HouseTable({ rowData, onChangeRowData }: HouseTable) {
       {
         field: "stairs",
         headerName: "梯户",
-        cellRenderer: (params: any) => stairsToString(params),
-      },
-
-      {
-        field: "owner",
-        headerName: "业主",
-        cellRenderer: (params: any) => ownerToString(params),
-      },
-      {
-        field: "community",
-        headerName: "小区",
-        cellRenderer: (params: any) => ownerToString(params),
-      },
-      {
-        field: "sale_low_price",
-        headerName: "出售低价",
-        cellRenderer: (params: any) => {
-          return `${params.data.building_area} 万元`;
-        },
+        valueGetter: (params: any) => stairsToString(params.data.stairs),
       },
       { field: "view_method", headerName: "看房方式" },
       { field: "payment_method", headerName: "付款方式" },
@@ -178,11 +183,22 @@ export function HouseTable({ rowData, onChangeRowData }: HouseTable) {
       { field: "external_sync", headerName: "外网同步" },
       { field: "remark", headerName: "备注" },
       { field: "images", headerName: "图片" },
-      { field: "updated_at", headerName: "更新时间" },
+      {
+        field: "updated_at",
+        headerName: "更新时间",
+        cellRenderer: (params: any) => dateToString(params.data.updated_at),
+      },
     ].map((item: any) => {
       const newItem: ColDef<IRow> = item;
       const field = newItem.field! as keyof typeof chacheColDefs;
       newItem.hide = chacheColDefs[field!];
+
+      if (newItem.cellRenderer === undefined) {
+        newItem.cellRenderer = (params: any) => {
+          return emptyToString(params.value);
+        };
+      }
+
       return newItem;
     })
   );
@@ -212,73 +228,85 @@ export function HouseTable({ rowData, onChangeRowData }: HouseTable) {
         direction="row"
         sx={{ justifyContent: "flex-end", alignItems: "flex-start" }}
       >
-        <Dropdown>
-          <MenuButton
-            color="primary"
-            variant="solid"
-            startDecorator={<SettingsIcon />}
+        <Stack direction="row" spacing={2}>
+          <Button
+            color="warning"
+            onClick={() => {
+              gridRef.current?.api.exportDataAsCsv();
+            }}
           >
-            列设置
-          </MenuButton>
-          <Menu>
-            <MenuItem
-              slots={{ root: "div" }}
-              sx={{ hoverBg: "transparent", width: "300px" }}
+            备份导出
+          </Button>
+          <Dropdown>
+            <MenuButton
+              color="primary"
+              variant="outlined"
+              startDecorator={<SettingsIcon />}
             >
-              <Stack
-                spacing={1}
-                direction="row"
-                useFlexGap
-                sx={{ p: 2, flexWrap: "wrap", width: 520 }}
+              列设置
+            </MenuButton>
+            <Menu>
+              <MenuItem
+                slots={{ root: "div" }}
+                sx={{ hoverBg: "transparent", width: "300px" }}
               >
-                {colDefs
-                  .filter((item) => !!item.field)
-                  .map((item) => {
-                    return (
-                      <Box
-                        key={item.field}
-                        sx={{ width: 140 }}
-                        onClick={(e) => e.stopPropagation()}
-                      >
-                        <Checkbox
-                          size="sm"
-                          label={item.headerName}
-                          value={item.field}
-                          checked={!item.hide}
-                          onChange={(e) => {
-                            e.stopPropagation();
-                            const newColDefs = colDefs.map((col) => {
-                              if (col.field === item.field) {
-                                const filed =
-                                  col.field! as keyof typeof chacheColDefs;
+                <Stack
+                  spacing={1}
+                  direction="row"
+                  useFlexGap
+                  sx={{ p: 2, flexWrap: "wrap", width: 520 }}
+                >
+                  {colDefs
+                    .filter((item) => !!item.field)
+                    .map((item) => {
+                      return (
+                        <Box
+                          key={item.field}
+                          sx={{ width: 140 }}
+                          onClick={(e) => e.stopPropagation()}
+                        >
+                          <Checkbox
+                            size="sm"
+                            label={item.headerName}
+                            value={item.field}
+                            checked={!item.hide}
+                            onChange={(e) => {
+                              e.stopPropagation();
+                              const newColDefs = colDefs.map((col) => {
+                                if (col.field === item.field) {
+                                  const filed =
+                                    col.field! as keyof typeof chacheColDefs;
 
-                                chacheColDefs[filed] = !e.target.checked;
-                                localStorage.setItem(
-                                  "chacheColDefs",
-                                  JSON.stringify(chacheColDefs)
-                                );
-                                return { ...col, hide: !e.target.checked };
-                              }
-                              return col;
-                            });
-                            setColDefs(newColDefs);
-                          }}
-                        />
-                      </Box>
-                    );
-                  })}
-              </Stack>
-            </MenuItem>
-          </Menu>
-        </Dropdown>
+                                  chacheColDefs[filed] = !e.target.checked;
+                                  localStorage.setItem(
+                                    "chacheColDefs",
+                                    JSON.stringify(chacheColDefs)
+                                  );
+                                  return { ...col, hide: !e.target.checked };
+                                }
+                                return col;
+                              });
+                              setColDefs(newColDefs);
+                            }}
+                          />
+                        </Box>
+                      );
+                    })}
+                </Stack>
+              </MenuItem>
+            </Menu>
+          </Dropdown>
+        </Stack>
       </Stack>
       <AgGridReact
-        cellSelection={false}
+        cellSelection
+        rowSelection="single"
         rowData={rowData}
         theme={mode === "dark" ? darkTheme : lightTheme}
         columnDefs={colDefs}
         defaultColDef={defaultColDef}
         pagination={true}
+        ref={gridRef}
         localeText={AG_GRID_LOCALE_CN}
         onCellDoubleClicked={handleCellClick}
       />

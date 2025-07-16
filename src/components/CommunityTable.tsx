@@ -6,16 +6,9 @@ import { AllCommunityModule, ModuleRegistry } from "ag-grid-community";
 import { AgGridReact } from "ag-grid-react";
 import { AG_GRID_LOCALE_CN } from "@ag-grid-community/locale";
 import { Box, Stack, Typography, useColorScheme } from "@mui/joy";
-import { Community } from "@/models/house";
+import { Community, dateToString } from "@/models/house";
 import { darkTheme, lightTheme } from "./agGridTheme";
 import { useCommunityDB } from "@/hooks/useCommunityDB";
-import dayjs from "dayjs";
-import utc from "dayjs/plugin/utc";
-import timezone from "dayjs/plugin/timezone";
-
-// 插件注册
-dayjs.extend(utc);
-dayjs.extend(timezone);
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -31,9 +24,9 @@ export function CommunityTable() {
   // Column Definitions: Defines & controls grid columns.
   const [colDefs, setColDefs] = useState<ColDef<IRow>[]>([
     { field: "name", headerName: "小区名称", pinned: "left" },
-    { field: "address", headerName: "小区地址" },
+    { field: "address", width: 500, headerName: "小区地址" },
     { field: "year_built", headerName: "小区年限" },
-    { field: "typecode", headerName: "小区描述" },
+    { field: "typecode", headerName: "小区类型" },
     { field: "district", headerName: "所属行政区" },
     {
       field: "description",
@@ -47,10 +40,7 @@ export function CommunityTable() {
       minWidth: 200,
       initialFlex: 1,
       cellRenderer: (params: any) => {
-        return dayjs
-          .utc(params.value)
-          .tz("Asia/Shanghai")
-          .format("YYYY-MM-DD HH:mm:ss");
+        return dateToString(params.value);
       },
     },
   ]);
@@ -77,7 +67,8 @@ export function CommunityTable() {
     >
       <Typography level="h3">小区管理</Typography>
       <AgGridReact
-        cellSelection={false}
+        cellSelection={true}
+        rowSelection="single"
         rowData={rowData}
         sideBar
         theme={mode === "dark" ? darkTheme : lightTheme}

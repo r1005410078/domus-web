@@ -48,7 +48,7 @@ export function useHouseList(params: HouseListRequest, enabled?: boolean) {
     queryKey: ["useHouseList", Object.values(params)],
     queryFn: async () => {
       const res = await getHouseList(params);
-      return res.data.data;
+      return res;
     },
     enabled,
   });

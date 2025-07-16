@@ -16,6 +16,7 @@ export interface HouseListRequest {
   page_size: number;
   transaction_type?: string;
   amap_bounds?: AmapBounds;
+  updated_at?: string | null;
 }
 
 // 获取房源列表
@@ -24,14 +25,16 @@ export function getHouseList({
   page_size = 10,
   ...params
 }: HouseListRequest) {
-  return apiClient.post<ResponseBody<{ list: HouseForm[]; total: number }>>(
-    "/api/domus/query/house/list",
-    {
-      page,
-      page_size,
-      ...params,
-    }
-  );
+  return apiClient
+    .post<ResponseBody<{ list: HouseForm[]; total: number }>>(
+      "/api/domus/query/house/list",
+      {
+        page,
+        page_size,
+        ...params,
+      }
+    )
+    .then((res) => res.data.data);
 }
 
 // 根据id 获取房源信息

@@ -10,7 +10,7 @@ export const lightTheme = themeQuartz.withParams({
   chromeBackgroundColor: {
     ref: "backgroundColor",
   },
-  columnBorder: false,
+  columnBorder: true,
   fontFamily: {
     googleFont: "Inter",
   },
@@ -38,7 +38,7 @@ export const darkTheme = themeQuartz.withParams({
   chromeBackgroundColor: {
     ref: "backgroundColor",
   },
-  columnBorder: false,
+  columnBorder: true,
   fontFamily: {
     googleFont: "Roboto",
   },
