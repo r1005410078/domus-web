@@ -5,6 +5,8 @@ import {
   getHouseList,
   HouseListRequest,
   getCommunityByCommunity,
+  addComment,
+  getCommentList,
 } from "@/services/house";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
@@ -65,5 +67,38 @@ export function useGetCommunityByCommunity() {
       const res = await getCommunityByCommunity();
       return res.data.data;
     },
+  });
+}
+
+// 保存评论
+export function useAddComment() {
+  const toast = useToast();
+  const client = useQueryClient();
+
+  return useMutation({
+    mutationFn: addComment,
+    onSuccess: (res) => {
+      if (res.data.code !== 200) {
+        toast.showToast({ message: "评论失败", severity: "success" });
+        return;
+      }
+
+      client.invalidateQueries({ queryKey: ["useCommentList"] });
+    },
+    onError: (err) => {
+      toast.showToast({ message: `录入失败: ${err}`, severity: "danger" });
+    },
+  });
+}
+
+// 获取评论
+export function useCommentList(house_id?: string) {
+  return useQuery({
+    queryKey: ["useCommentList", house_id],
+    queryFn: async () => {
+      const res = await getCommentList(house_id!);
+      return res;
+    },
+    enabled: !!house_id,
   });
 }

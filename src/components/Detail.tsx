@@ -1332,7 +1332,7 @@ export function Detail({ transactionType, detail, onClose }: DetailProps) {
       <Divider />
 
       <CardContent>
-        <HouseComment />
+        <HouseComment houseId={detail.id!} />
       </CardContent>
 
       <EditDetailDrawer
