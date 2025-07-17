@@ -3,6 +3,7 @@ import {
   ApartmentType,
   Community,
   DoorNumber,
+  FileInfo,
   FloorRange,
   HouseForm,
   Stairs,
@@ -22,12 +23,14 @@ import {
   Option,
   Divider,
   Textarea,
+  ModalClose,
 } from "@mui/joy";
 import { SxProps } from "@mui/joy/styles/types";
 import { useForm } from "@tanstack/react-form";
 import React, { useMemo } from "react";
 import { Transition } from "react-transition-group";
 import { CommunityForm, HouseOwnerForm } from "./House/common";
+import DropZone, { useUploadFiles } from "./House/DropZone";
 
 const houseFormComponent: Partial<
   Record<keyof HouseForm, React.ComponentType<FormChange<any>>>
@@ -52,6 +55,7 @@ export function EditDetailDrawer({
   houseDetail,
   onClose,
 }: EditDetailDrawerProps) {
+  const { uploads } = useUploadFiles();
   const { mutate } = useSaveHouse();
   const nodeRef = React.useRef(null);
   const form = useForm({
@@ -89,15 +93,20 @@ export function EditDetailDrawer({
             ]}
           >
             <ModalDialog
-              sx={{
-                opacity: 0,
-                transition: `opacity 300ms`,
-                ...{
-                  entering: { opacity: 1 },
-                  entered: { opacity: 1 },
-                }[state],
-              }}
+              layout={detailEditField === "images" ? "fullscreen" : "center"}
+              sx={[
+                {
+                  opacity: 0,
+                  transition: `opacity 300ms`,
+                  ...{
+                    entering: { opacity: 1 },
+                    entered: { opacity: 1 },
+                  }[state],
+                },
+                { maxWidth: detailEditField === "images" ? "100%" : 560 },
+              ]}
             >
+              <ModalClose />
               <DialogTitle>修改房源</DialogTitle>
               <DialogContent>
                 <Typography
@@ -106,15 +115,7 @@ export function EditDetailDrawer({
                 >
                   点击空白取消修改
                 </Typography>
-              </DialogContent>
-              {detailEditField && (
-                <form
-                  onSubmit={async (event: React.FormEvent<HTMLFormElement>) => {
-                    event.preventDefault();
-                    await form.handleSubmit();
-                    onClose();
-                  }}
-                >
+                {detailEditField && (
                   <Stack spacing={2}>
                     <form.Field
                       name={detailEditField!}
@@ -125,6 +126,9 @@ export function EditDetailDrawer({
                             <Component
                               value={field.state.value}
                               onChange={field.handleChange}
+                              purpose={houseDetail.purpose}
+                              transaction_type={houseDetail.transaction_type}
+                              community_name={houseDetail.community?.name}
                             />
                           );
                         }
@@ -132,10 +136,18 @@ export function EditDetailDrawer({
                         return <>找不到编辑组件 {detailEditField}</>;
                       }}
                     />
-                    <Button type="submit">保存</Button>
+                    <Button
+                      onClick={async () => {
+                        uploads();
+                        await form.handleSubmit();
+                        onClose();
+                      }}
+                    >
+                      保存
+                    </Button>
                   </Stack>
-                </form>
-              )}
+                )}
+              </DialogContent>
             </ModalDialog>
           </Modal>
         );
@@ -153,9 +165,9 @@ export interface FormChange<T> {
   onChange: (value: T) => void;
   value?: T;
   sx?: SxProps;
-  relation?: Relation[];
   purpose?: string;
   transaction_type?: string;
+  community_name?: string;
 }
 
 const isShowRelation = (
@@ -2268,5 +2280,18 @@ export function EditRemark({ value, onChange }: FormChange<string>) {
         onChange={(e) => onChange(e.target.value)}
       />
     </FormControl>
+  );
+}
+
+// images
+registerHouseFormComponent("images", EditImages);
+
+export function EditImages({
+  value,
+  onChange,
+  community_name,
+}: FormChange<FileInfo[]>) {
+  return (
+    <DropZone directory={community_name} value={value} onChange={onChange} />
   );
 }

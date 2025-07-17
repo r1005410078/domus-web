@@ -45,8 +45,6 @@ export default function HouseComment({ houseId }: HouseCommentProps) {
   const { mutate } = useAddComment();
   const { data: comments } = useCommentList(houseId);
 
-  console.log("data", comments);
-
   const handleSubmit = () => {
     if (!newComment.trim()) return;
     mutate({ house_id: houseId, comment: newComment });

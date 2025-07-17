@@ -33,17 +33,17 @@ export function useSaveHouse() {
 }
 
 // 根据id 获取房源信息
-export function useGetHouseDetail(id: string) {
+export function useGetHouseDetail(id?: string) {
   return useQuery({
     queryKey: ["useGetHouseDetail", id],
     queryFn: async () => {
-      const res = await getHouseDetail(id);
+      const res = await getHouseDetail(id!);
 
       const data = res.data.data;
 
       return data;
     },
-    enabled: id !== "",
+    enabled: !!id,
   });
 }
 

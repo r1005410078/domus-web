@@ -23,17 +23,13 @@ import ListItemContent from "@mui/joy/ListItemContent";
 import CottageTwoToneIcon from "@mui/icons-material/CottageTwoTone";
 import HistoryEduTwoToneIcon from "@mui/icons-material/HistoryEduTwoTone";
 import CloseTwoToneIcon from "@mui/icons-material/CloseTwoTone";
-
+import PermMediaSharpIcon from "@mui/icons-material/PermMediaSharp";
 import {
   CardCover,
   Divider,
-  Dropdown,
   List,
   ListItem,
   ListItemButton,
-  Menu,
-  MenuButton,
-  MenuItem,
   sheetClasses,
 } from "@mui/joy";
 import { useCallback, useEffect, useMemo, useState } from "react";
@@ -53,25 +49,29 @@ import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
 import { EditDetailDrawer } from "./EditDetail";
+import { useGetHouseDetail } from "@/hooks/useHouse";
 
 // 插件注册
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
 export interface DetailProps {
-  detail: HouseForm;
+  house_id?: string;
   transactionType?: string;
   onClose: () => void;
 }
 
 // 房源信息
-export function Detail({ transactionType, detail, onClose }: DetailProps) {
+export function Detail({ transactionType, house_id, onClose }: DetailProps) {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: false });
+  const { data: detail } = useGetHouseDetail(house_id);
   const images = useMemo(
     () =>
-      detail.images?.length ? detail.images : [{ url: "/images/shooting.png" }],
-    [detail.images]
+      detail?.images?.length
+        ? detail.images
+        : [{ url: "/images/shooting.png" }],
+    [detail?.images]
   );
 
   const onSelect = useCallback((emblaApi: EmblaCarouselType) => {
@@ -87,6 +87,10 @@ export function Detail({ transactionType, detail, onClose }: DetailProps) {
     onSelect(emblaApi);
     emblaApi.on("reInit", onSelect).on("select", onSelect);
   }, [emblaApi, onSelect]);
+
+  if (!detail) {
+    return <></>;
+  }
 
   return (
     <Card variant="plain" sx={{ border: 0, p: 2 }}>
@@ -538,6 +542,27 @@ export function Detail({ transactionType, detail, onClose }: DetailProps) {
                       }}
                     >
                       {apartmentTypeToStringFull(detail.apartment_type)}
+                      <KeyboardArrowRight />
+                    </Typography>
+                  </ListItemButton>
+                </ListItem>
+
+                <ListItem>
+                  <ListItemButton
+                    onClick={() => {
+                      openDetailEditor("images");
+                    }}
+                  >
+                    <ListItemContent>房源图片</ListItemContent>
+                    <Typography
+                      textColor="text.tertiary"
+                      sx={{
+                        mr: "calc(-1 * var(--ListItem-gap))",
+                        display: "flex",
+                        alignItems: "center",
+                      }}
+                    >
+                      <PermMediaSharpIcon sx={{ fontSize: 18 }} />
                       <KeyboardArrowRight />
                     </Typography>
                   </ListItemButton>

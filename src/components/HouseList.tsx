@@ -200,7 +200,7 @@ export function HouseList({
           <Sheet
             sx={{
               position: "absolute",
-              zIndex: 1,
+              zIndex: 999,
               top: "0",
               display: { xs: "none", md: "initial" },
               width: "430px",
@@ -209,7 +209,7 @@ export function HouseList({
             }}
           >
             <Detail
-              detail={detail}
+              house_id={detail.id}
               transactionType={transactionType}
               onClose={() => setDetail(undefined)}
             />
@@ -243,7 +243,7 @@ export function HouseList({
       >
         {detail && (
           <Detail
-            detail={detail}
+            house_id={detail.id}
             transactionType={transactionType}
             onClose={() => setDetail(undefined)}
           />
