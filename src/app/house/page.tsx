@@ -62,7 +62,7 @@ const gridTemplateColumns = {
 
 export default function Home() {
   const [transaction_type, onChangeTransactionType] =
-    React.useState<keyof typeof gridTemplateColumns>("house");
+    React.useState<keyof typeof gridTemplateColumns>("出售");
   const [drawerAddOpen, setDrawerAddOpen] = React.useState(false);
   const [houseListRequest, setHouseListRequest] =
     React.useState<HouseListRequest>({

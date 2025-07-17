@@ -52,6 +52,7 @@ import HouseComment from "@/components/House/HouseComment";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
+import { EditDetailDrawer } from "./EditDetail";
 
 // 插件注册
 dayjs.extend(utc);
@@ -76,6 +77,10 @@ export function Detail({ transactionType, detail, onClose }: DetailProps) {
   const onSelect = useCallback((emblaApi: EmblaCarouselType) => {
     setSelectedIndex(emblaApi.selectedScrollSnap());
   }, []);
+
+  const [detailEditField, openDetailEditor] = useState<keyof HouseForm | null>(
+    null
+  );
 
   useEffect(() => {
     if (!emblaApi) return;
@@ -287,7 +292,11 @@ export function Detail({ transactionType, detail, onClose }: DetailProps) {
                 }}
               >
                 <ListItem>
-                  <ListItemButton>
+                  <ListItemButton
+                    onClick={() => {
+                      openDetailEditor("purpose");
+                    }}
+                  >
                     <ListItemContent>用途</ListItemContent>
                     <Typography
                       textColor="text.tertiary"
@@ -303,7 +312,11 @@ export function Detail({ transactionType, detail, onClose }: DetailProps) {
                   </ListItemButton>
                 </ListItem>
                 <ListItem>
-                  <ListItemButton>
+                  <ListItemButton
+                    onClick={() => {
+                      openDetailEditor("owner");
+                    }}
+                  >
                     <ListItemContent>业主姓名</ListItemContent>
                     <Typography
                       textColor="text.tertiary"
@@ -321,7 +334,11 @@ export function Detail({ transactionType, detail, onClose }: DetailProps) {
                   </ListItemButton>
                 </ListItem>
                 <ListItem>
-                  <ListItemButton>
+                  <ListItemButton
+                    onClick={() => {
+                      openDetailEditor("owner");
+                    }}
+                  >
                     <ListItemContent>联系方式</ListItemContent>
                     <Typography
                       textColor="text.tertiary"
@@ -337,7 +354,11 @@ export function Detail({ transactionType, detail, onClose }: DetailProps) {
                   </ListItemButton>
                 </ListItem>
                 <ListItem>
-                  <ListItemButton>
+                  <ListItemButton
+                    onClick={() => {
+                      openDetailEditor("sale_price");
+                    }}
+                  >
                     <ListItemContent>售价</ListItemContent>
                     <Typography
                       textColor="text.tertiary"
@@ -353,7 +374,11 @@ export function Detail({ transactionType, detail, onClose }: DetailProps) {
                   </ListItemButton>
                 </ListItem>
                 <ListItem>
-                  <ListItemButton>
+                  <ListItemButton
+                    onClick={() => {
+                      openDetailEditor("sale_low_price");
+                    }}
+                  >
                     <ListItemContent>出售低价</ListItemContent>
                     <Typography
                       textColor="text.tertiary"
@@ -369,7 +394,11 @@ export function Detail({ transactionType, detail, onClose }: DetailProps) {
                   </ListItemButton>
                 </ListItem>
                 <ListItem>
-                  <ListItemButton>
+                  <ListItemButton
+                    onClick={() => {
+                      openDetailEditor("rent_price");
+                    }}
+                  >
                     <ListItemContent>租价</ListItemContent>
                     <Typography
                       textColor="text.tertiary"
@@ -385,7 +414,11 @@ export function Detail({ transactionType, detail, onClose }: DetailProps) {
                   </ListItemButton>
                 </ListItem>
                 <ListItem>
-                  <ListItemButton>
+                  <ListItemButton
+                    onClick={() => {
+                      openDetailEditor("rent_low_price");
+                    }}
+                  >
                     <ListItemContent>出租低价</ListItemContent>
                     <Typography
                       textColor="text.tertiary"
@@ -401,7 +434,11 @@ export function Detail({ transactionType, detail, onClose }: DetailProps) {
                   </ListItemButton>
                 </ListItem>
                 <ListItem>
-                  <ListItemButton>
+                  <ListItemButton
+                    onClick={() => {
+                      openDetailEditor("down_payment");
+                    }}
+                  >
                     <ListItemContent>首付</ListItemContent>
                     <Typography
                       textColor="text.tertiary"
@@ -419,7 +456,11 @@ export function Detail({ transactionType, detail, onClose }: DetailProps) {
                   </ListItemButton>
                 </ListItem>
                 <ListItem>
-                  <ListItemButton>
+                  <ListItemButton
+                    onClick={() => {
+                      openDetailEditor("community");
+                    }}
+                  >
                     <ListItemContent>小区</ListItemContent>
                     <Typography
                       textColor="text.tertiary"
@@ -435,7 +476,11 @@ export function Detail({ transactionType, detail, onClose }: DetailProps) {
                   </ListItemButton>
                 </ListItem>
                 <ListItem>
-                  <ListItemButton>
+                  <ListItemButton
+                    onClick={() => {
+                      openDetailEditor("community");
+                    }}
+                  >
                     <ListItemContent>地址</ListItemContent>
                     <Typography
                       textColor="text.tertiary"
@@ -452,7 +497,11 @@ export function Detail({ transactionType, detail, onClose }: DetailProps) {
                 </ListItem>
 
                 <ListItem>
-                  <ListItemButton>
+                  <ListItemButton
+                    onClick={() => {
+                      openDetailEditor("door_number");
+                    }}
+                  >
                     <ListItemContent>门牌号</ListItemContent>
                     <Typography
                       textColor="text.tertiary"
@@ -474,7 +523,11 @@ export function Detail({ transactionType, detail, onClose }: DetailProps) {
                 </ListItem>
 
                 <ListItem>
-                  <ListItemButton>
+                  <ListItemButton
+                    onClick={() => {
+                      openDetailEditor("apartment_type");
+                    }}
+                  >
                     <ListItemContent>户型</ListItemContent>
                     <Typography
                       textColor="text.tertiary"
@@ -508,7 +561,11 @@ export function Detail({ transactionType, detail, onClose }: DetailProps) {
             <AccordionDetails>
               <List>
                 <ListItem>
-                  <ListItemButton>
+                  <ListItemButton
+                    onClick={() => {
+                      openDetailEditor("floor_range");
+                    }}
+                  >
                     <ListItemContent>楼层</ListItemContent>
                     <Typography
                       textColor="text.tertiary"
@@ -532,7 +589,11 @@ export function Detail({ transactionType, detail, onClose }: DetailProps) {
                   </ListItemButton>
                 </ListItem>
                 <ListItem>
-                  <ListItemButton>
+                  <ListItemButton
+                    onClick={() => {
+                      openDetailEditor("tags");
+                    }}
+                  >
                     <ListItemContent>推荐标签</ListItemContent>
                     <Typography
                       textColor="text.tertiary"
@@ -548,7 +609,11 @@ export function Detail({ transactionType, detail, onClose }: DetailProps) {
                   </ListItemButton>
                 </ListItem>
                 <ListItem>
-                  <ListItemButton>
+                  <ListItemButton
+                    onClick={() => {
+                      openDetailEditor("car_height");
+                    }}
+                  >
                     <ListItemContent>车位高度</ListItemContent>
                     <Typography
                       textColor="text.tertiary"
@@ -566,7 +631,11 @@ export function Detail({ transactionType, detail, onClose }: DetailProps) {
                   </ListItemButton>
                 </ListItem>
                 <ListItem>
-                  <ListItemButton>
+                  <ListItemButton
+                    onClick={() => {
+                      openDetailEditor("stairs");
+                    }}
+                  >
                     <ListItemContent>梯户</ListItemContent>
                     <Typography
                       textColor="text.tertiary"
@@ -586,7 +655,11 @@ export function Detail({ transactionType, detail, onClose }: DetailProps) {
                   </ListItemButton>
                 </ListItem>
                 <ListItem>
-                  <ListItemButton>
+                  <ListItemButton
+                    onClick={() => {
+                      openDetailEditor("actual_rate");
+                    }}
+                  >
                     <ListItemContent>实率</ListItemContent>
                     <Typography
                       textColor="text.tertiary"
@@ -604,7 +677,11 @@ export function Detail({ transactionType, detail, onClose }: DetailProps) {
                   </ListItemButton>
                 </ListItem>
                 <ListItem>
-                  <ListItemButton>
+                  <ListItemButton
+                    onClick={() => {
+                      openDetailEditor("level");
+                    }}
+                  >
                     <ListItemContent>级别</ListItemContent>
                     <Typography
                       textColor="text.tertiary"
@@ -620,7 +697,11 @@ export function Detail({ transactionType, detail, onClose }: DetailProps) {
                   </ListItemButton>
                 </ListItem>
                 <ListItem>
-                  <ListItemButton>
+                  <ListItemButton
+                    onClick={() => {
+                      openDetailEditor("floor_height");
+                    }}
+                  >
                     <ListItemContent>层高</ListItemContent>
                     <Typography
                       textColor="text.tertiary"
@@ -638,7 +719,11 @@ export function Detail({ transactionType, detail, onClose }: DetailProps) {
                   </ListItemButton>
                 </ListItem>
                 <ListItem>
-                  <ListItemButton>
+                  <ListItemButton
+                    onClick={() => {
+                      openDetailEditor("progress_depth");
+                    }}
+                  >
                     <ListItemContent>进深</ListItemContent>
                     <Typography
                       textColor="text.tertiary"
@@ -656,7 +741,11 @@ export function Detail({ transactionType, detail, onClose }: DetailProps) {
                   </ListItemButton>
                 </ListItem>
                 <ListItem>
-                  <ListItemButton>
+                  <ListItemButton
+                    onClick={() => {
+                      openDetailEditor("door_width");
+                    }}
+                  >
                     <ListItemContent>门宽</ListItemContent>
                     <Typography
                       textColor="text.tertiary"
@@ -674,7 +763,11 @@ export function Detail({ transactionType, detail, onClose }: DetailProps) {
                   </ListItemButton>
                 </ListItem>
                 <ListItem>
-                  <ListItemButton>
+                  <ListItemButton
+                    onClick={() => {
+                      openDetailEditor("building_area");
+                    }}
+                  >
                     <ListItemContent>建筑面积</ListItemContent>
                     <Typography
                       textColor="text.tertiary"
@@ -692,7 +785,11 @@ export function Detail({ transactionType, detail, onClose }: DetailProps) {
                   </ListItemButton>
                 </ListItem>
                 <ListItem>
-                  <ListItemButton>
+                  <ListItemButton
+                    onClick={() => {
+                      openDetailEditor("use_area");
+                    }}
+                  >
                     <ListItemContent>使用面积</ListItemContent>
                     <Typography
                       textColor="text.tertiary"
@@ -710,7 +807,11 @@ export function Detail({ transactionType, detail, onClose }: DetailProps) {
                   </ListItemButton>
                 </ListItem>
                 <ListItem>
-                  <ListItemButton>
+                  <ListItemButton
+                    onClick={() => {
+                      openDetailEditor("house_type");
+                    }}
+                  >
                     <ListItemContent>房屋类型</ListItemContent>
                     <Typography
                       textColor="text.tertiary"
@@ -728,7 +829,11 @@ export function Detail({ transactionType, detail, onClose }: DetailProps) {
                   </ListItemButton>
                 </ListItem>
                 <ListItem>
-                  <ListItemButton>
+                  <ListItemButton
+                    onClick={() => {
+                      openDetailEditor("house_orientation");
+                    }}
+                  >
                     <ListItemContent>朝向</ListItemContent>
                     <Typography
                       textColor="text.tertiary"
@@ -746,7 +851,11 @@ export function Detail({ transactionType, detail, onClose }: DetailProps) {
                   </ListItemButton>
                 </ListItem>
                 <ListItem>
-                  <ListItemButton>
+                  <ListItemButton
+                    onClick={() => {
+                      openDetailEditor("house_decoration");
+                    }}
+                  >
                     <ListItemContent>装修</ListItemContent>
                     <Typography
                       textColor="text.tertiary"
@@ -764,7 +873,11 @@ export function Detail({ transactionType, detail, onClose }: DetailProps) {
                   </ListItemButton>
                 </ListItem>
                 <ListItem>
-                  <ListItemButton>
+                  <ListItemButton
+                    onClick={() => {
+                      openDetailEditor("discount_year_limit");
+                    }}
+                  >
                     <ListItemContent>满减年限</ListItemContent>
                     <Typography
                       textColor="text.tertiary"
@@ -782,7 +895,11 @@ export function Detail({ transactionType, detail, onClose }: DetailProps) {
                   </ListItemButton>
                 </ListItem>
                 <ListItem>
-                  <ListItemButton>
+                  <ListItemButton
+                    onClick={() => {
+                      openDetailEditor("view_method");
+                    }}
+                  >
                     <ListItemContent>看房方式</ListItemContent>
                     <Typography
                       textColor="text.tertiary"
@@ -800,7 +917,11 @@ export function Detail({ transactionType, detail, onClose }: DetailProps) {
                   </ListItemButton>
                 </ListItem>
                 <ListItem>
-                  <ListItemButton>
+                  <ListItemButton
+                    onClick={() => {
+                      openDetailEditor("payment_method");
+                    }}
+                  >
                     <ListItemContent>付款方式</ListItemContent>
                     <Typography
                       textColor="text.tertiary"
@@ -818,7 +939,11 @@ export function Detail({ transactionType, detail, onClose }: DetailProps) {
                   </ListItemButton>
                 </ListItem>
                 <ListItem>
-                  <ListItemButton>
+                  <ListItemButton
+                    onClick={() => {
+                      openDetailEditor("property_tax");
+                    }}
+                  >
                     <ListItemContent>房源税费</ListItemContent>
                     <Typography
                       textColor="text.tertiary"
@@ -836,7 +961,11 @@ export function Detail({ transactionType, detail, onClose }: DetailProps) {
                   </ListItemButton>
                 </ListItem>
                 <ListItem>
-                  <ListItemButton>
+                  <ListItemButton
+                    onClick={() => {
+                      openDetailEditor("building_structure");
+                    }}
+                  >
                     <ListItemContent>建筑结构</ListItemContent>
                     <Typography
                       textColor="text.tertiary"
@@ -854,7 +983,11 @@ export function Detail({ transactionType, detail, onClose }: DetailProps) {
                   </ListItemButton>
                 </ListItem>
                 <ListItem>
-                  <ListItemButton>
+                  <ListItemButton
+                    onClick={() => {
+                      openDetailEditor("property_rights");
+                    }}
+                  >
                     <ListItemContent>产权性质</ListItemContent>
                     <Typography
                       textColor="text.tertiary"
@@ -872,7 +1005,11 @@ export function Detail({ transactionType, detail, onClose }: DetailProps) {
                   </ListItemButton>
                 </ListItem>
                 <ListItem>
-                  <ListItemButton>
+                  <ListItemButton
+                    onClick={() => {
+                      openDetailEditor("property_year_limit");
+                    }}
+                  >
                     <ListItemContent>产权年限</ListItemContent>
                     <Typography
                       textColor="text.tertiary"
@@ -890,7 +1027,11 @@ export function Detail({ transactionType, detail, onClose }: DetailProps) {
                   </ListItemButton>
                 </ListItem>
                 <ListItem>
-                  <ListItemButton>
+                  <ListItemButton
+                    onClick={() => {
+                      openDetailEditor("certificate_date");
+                    }}
+                  >
                     <ListItemContent>产证日期</ListItemContent>
                     <Typography
                       textColor="text.tertiary"
@@ -908,7 +1049,11 @@ export function Detail({ transactionType, detail, onClose }: DetailProps) {
                   </ListItemButton>
                 </ListItem>
                 <ListItem>
-                  <ListItemButton>
+                  <ListItemButton
+                    onClick={() => {
+                      openDetailEditor("handover_date");
+                    }}
+                  >
                     <ListItemContent>交房日期</ListItemContent>
                     <Typography
                       textColor="text.tertiary"
@@ -927,7 +1072,11 @@ export function Detail({ transactionType, detail, onClose }: DetailProps) {
                 </ListItem>
 
                 <ListItem>
-                  <ListItemButton>
+                  <ListItemButton
+                    onClick={() => {
+                      openDetailEditor("degree");
+                    }}
+                  >
                     <ListItemContent>学位</ListItemContent>
                     <Typography
                       textColor="text.tertiary"
@@ -944,7 +1093,11 @@ export function Detail({ transactionType, detail, onClose }: DetailProps) {
                 </ListItem>
 
                 <ListItem>
-                  <ListItemButton>
+                  <ListItemButton
+                    onClick={() => {
+                      openDetailEditor("household");
+                    }}
+                  >
                     <ListItemContent>户口</ListItemContent>
                     <Typography
                       textColor="text.tertiary"
@@ -961,7 +1114,11 @@ export function Detail({ transactionType, detail, onClose }: DetailProps) {
                 </ListItem>
 
                 <ListItem>
-                  <ListItemButton>
+                  <ListItemButton
+                    onClick={() => {
+                      openDetailEditor("source");
+                    }}
+                  >
                     <ListItemContent>来源</ListItemContent>
                     <Typography
                       textColor="text.tertiary"
@@ -978,7 +1135,11 @@ export function Detail({ transactionType, detail, onClose }: DetailProps) {
                 </ListItem>
 
                 <ListItem>
-                  <ListItemButton>
+                  <ListItemButton
+                    onClick={() => {
+                      openDetailEditor("unique_housing");
+                    }}
+                  >
                     <ListItemContent>唯一住房</ListItemContent>
                     <Typography
                       textColor="text.tertiary"
@@ -997,7 +1158,11 @@ export function Detail({ transactionType, detail, onClose }: DetailProps) {
                 </ListItem>
 
                 <ListItem>
-                  <ListItemButton>
+                  <ListItemButton
+                    onClick={() => {
+                      openDetailEditor("full_payment");
+                    }}
+                  >
                     <ListItemContent>全款</ListItemContent>
                     <Typography
                       textColor="text.tertiary"
@@ -1016,7 +1181,11 @@ export function Detail({ transactionType, detail, onClose }: DetailProps) {
                 </ListItem>
 
                 <ListItem>
-                  <ListItemButton>
+                  <ListItemButton
+                    onClick={() => {
+                      openDetailEditor("mortgage");
+                    }}
+                  >
                     <ListItemContent>抵押</ListItemContent>
                     <Typography
                       textColor="text.tertiary"
@@ -1033,7 +1202,11 @@ export function Detail({ transactionType, detail, onClose }: DetailProps) {
                 </ListItem>
 
                 <ListItem>
-                  <ListItemButton>
+                  <ListItemButton
+                    onClick={() => {
+                      openDetailEditor("urgent");
+                    }}
+                  >
                     <ListItemContent>急切</ListItemContent>
                     <Typography
                       textColor="text.tertiary"
@@ -1050,7 +1223,11 @@ export function Detail({ transactionType, detail, onClose }: DetailProps) {
                 </ListItem>
 
                 <ListItem>
-                  <ListItemButton>
+                  <ListItemButton
+                    onClick={() => {
+                      openDetailEditor("support");
+                    }}
+                  >
                     <ListItemContent>配套</ListItemContent>
                     <Typography
                       textColor="text.tertiary"
@@ -1067,7 +1244,11 @@ export function Detail({ transactionType, detail, onClose }: DetailProps) {
                 </ListItem>
 
                 <ListItem>
-                  <ListItemButton>
+                  <ListItemButton
+                    onClick={() => {
+                      openDetailEditor("present_state");
+                    }}
+                  >
                     <ListItemContent>现状</ListItemContent>
                     <Typography
                       textColor="text.tertiary"
@@ -1086,7 +1267,11 @@ export function Detail({ transactionType, detail, onClose }: DetailProps) {
                 </ListItem>
 
                 <ListItem>
-                  <ListItemButton>
+                  <ListItemButton
+                    onClick={() => {
+                      openDetailEditor("external_sync");
+                    }}
+                  >
                     <ListItemContent>外网同步</ListItemContent>
                     <Typography
                       textColor="text.tertiary"
@@ -1105,7 +1290,11 @@ export function Detail({ transactionType, detail, onClose }: DetailProps) {
                 </ListItem>
 
                 <ListItem>
-                  <ListItemButton>
+                  <ListItemButton
+                    onClick={() => {
+                      openDetailEditor("remark");
+                    }}
+                  >
                     <ListItemContent sx={{ width: 150 }}>备注</ListItemContent>
                     <Typography
                       textColor="text.tertiary"
@@ -1145,6 +1334,12 @@ export function Detail({ transactionType, detail, onClose }: DetailProps) {
       <CardContent>
         <HouseComment />
       </CardContent>
+
+      <EditDetailDrawer
+        detailEditField={detailEditField}
+        houseDetail={detail}
+        onClose={() => openDetailEditor(null)}
+      />
     </Card>
   );
 }

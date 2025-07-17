@@ -6,10 +6,11 @@ import {
   HouseListRequest,
   getCommunityByCommunity,
 } from "@/services/house";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 export function useSaveHouse() {
   const toast = useToast();
+  const client = useQueryClient();
 
   return useMutation({
     mutationFn: saveHouse,
@@ -19,6 +20,8 @@ export function useSaveHouse() {
         return;
       }
 
+      client.invalidateQueries({ queryKey: ["useHouseList"] });
+      client.invalidateQueries({ queryKey: ["useGetHouseDetail"] });
       toast.showToast({ message: "录入成功", severity: "success" });
     },
     onError: (err) => {
@@ -63,7 +66,4 @@ export function useGetCommunityByCommunity() {
       return res.data.data;
     },
   });
-}
-function useDebounce(text: any, arg1: number): [any] {
-  throw new Error("Function not implemented.");
 }

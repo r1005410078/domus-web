@@ -1,11 +1,8 @@
 import {
   AspectRatio,
-  Box,
-  Button,
   Card,
   CardContent,
   Chip,
-  CircularProgress,
   Drawer,
   List,
   ListItem,
@@ -17,7 +14,6 @@ import Layout from "./Layout";
 import { apartmentTypeToString, HouseForm } from "@/models/house";
 import Filters from "./Filters";
 import Pagination, { PaginationProps } from "./Pagination";
-import ReplayCircleFilledTwoToneIcon from "@mui/icons-material/ReplayCircleFilledTwoTone";
 import {
   AmapBounds,
   AMapComponent,
@@ -133,7 +129,12 @@ export function HouseList({
                         .filter(Boolean)
                         .join("/")}
                     </Typography>
-                    <Stack direction="row" spacing={1}>
+                    <Stack
+                      direction="row"
+                      useFlexGap
+                      sx={{ flexWrap: "wrap" }}
+                      spacing={1}
+                    >
                       {item.tags?.map((tag) => (
                         <Chip
                           variant="outlined"
@@ -199,7 +200,7 @@ export function HouseList({
           <Sheet
             sx={{
               position: "absolute",
-              zIndex: 99999,
+              zIndex: 1,
               top: "0",
               display: { xs: "none", md: "initial" },
               width: "430px",
