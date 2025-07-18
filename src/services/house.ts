@@ -1,6 +1,7 @@
 import { Community, HouseForm } from "@/models/house";
 import apiClient, { ResponseBody } from "./http";
 import { AmapBounds, CommunityWithHouseCount } from "@/components/AMap";
+import { HouseCommentItem } from "@/models/comment";
 
 type CreateHouseRequest = HouseForm;
 // 创建房源
@@ -77,4 +78,48 @@ export function getCommunityByCommunity() {
   return apiClient.get<ResponseBody<CommunityWithHouseCount[]>>(
     "/api/domus/query/house/group_by_community"
   );
+}
+
+// 添加评论
+
+interface AddCommentRequest {
+  house_id: string;
+  comment: string;
+}
+
+export function addComment(data: AddCommentRequest) {
+  return apiClient.post<ResponseBody<string>>(
+    `/api/domus/house_comment/add_comment`,
+    data
+  );
+}
+
+// 更新评论
+
+interface UpdateCommentRequest {
+  comment_id: string;
+  content: string;
+}
+
+export function updateComment(data: UpdateCommentRequest) {
+  return apiClient.post<ResponseBody<string>>(
+    `/api/domus/house_comment/update_comment`,
+    data
+  );
+}
+
+// 删除评论
+export function deleteComment(comment_id: string) {
+  return apiClient.post<ResponseBody<string>>(
+    `/api/domus/house_comment/delete_comment/${comment_id}`
+  );
+}
+
+// 获取评论列表
+export async function getCommentList(house_id: string) {
+  const res = await apiClient.get<ResponseBody<HouseCommentItem[]>>(
+    `/api/domus/house_comment/get_comments/${house_id}`
+  );
+
+  return res.data.data;
 }

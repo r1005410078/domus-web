@@ -8,6 +8,8 @@ import {
   Card,
   Stack,
 } from "@mui/joy";
+import { useAddComment, useCommentList } from "@/hooks/useHouse";
+import { dateToString } from "@/models/house";
 
 interface Comment {
   id: number;
@@ -34,19 +36,18 @@ const initialComments: Comment[] = [
   },
 ];
 
-export default function HouseComment() {
-  const [comments, setComments] = React.useState<Comment[]>(initialComments);
+interface HouseCommentProps {
+  houseId: string;
+}
+
+export default function HouseComment({ houseId }: HouseCommentProps) {
   const [newComment, setNewComment] = React.useState("");
+  const { mutate } = useAddComment();
+  const { data: comments } = useCommentList(houseId);
 
   const handleSubmit = () => {
     if (!newComment.trim()) return;
-    const comment: Comment = {
-      id: Date.now(),
-      username: "我",
-      content: newComment,
-      createdAt: new Date().toLocaleString(),
-    };
-    setComments([comment, ...comments]);
+    mutate({ house_id: houseId, comment: newComment });
     setNewComment("");
   };
 
@@ -67,20 +68,20 @@ export default function HouseComment() {
       </Stack>
 
       <Box mt={4}>
-        {comments.map((comment) => (
+        {comments?.map((comment) => (
           <Box key={comment.id} mb={3} display="flex">
             <Avatar
               size="sm"
-              alt={comment.username}
-              src={comment.avatarUrl}
+              alt={comment.admin_id.toLocaleUpperCase()}
+              src={comment.admin_id[0].toLocaleUpperCase()}
               sx={{ mr: 2 }}
             />
             <Box>
               <Typography level="body-sm" fontWeight="lg">
-                {comment.username}
+                {comment.admin_id}
               </Typography>
               <Typography level="body-xs" textColor="text.tertiary">
-                {comment.createdAt}
+                {dateToString(comment.updated_at)}
               </Typography>
               <Typography mt={1}>{comment.content}</Typography>
             </Box>
