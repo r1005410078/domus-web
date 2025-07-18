@@ -8,8 +8,12 @@ const nextConfig: NextConfig = {
   async rewrites() {
     return [
       {
-        source: "/api/:path*", // 代理前缀
-        destination: "http://localhost:9002/api/:path*", // 目标地址
+        source: "/api/domus/:path*", // 代理前缀
+        destination: "http://localhost:9002/api/domus/:path*", // 目标地址
+      },
+      {
+        source: "/api/user_system/:path*", // 代理前缀
+        destination: "http://localhost:9001/api/user_system/:path*", // 目标地址
       },
     ];
   },

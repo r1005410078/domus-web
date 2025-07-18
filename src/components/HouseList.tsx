@@ -195,7 +195,6 @@ export function HouseList({
       </Layout.SidePane>
       <Layout.Main sx={{ p: 0, position: "relative" }}>
         <AMapComponent data={aMapData} onMapBoundsChange={onMapBoundsChange} />
-
         {detail && (
           <Sheet
             sx={{

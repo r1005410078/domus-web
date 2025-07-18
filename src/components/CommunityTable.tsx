@@ -10,7 +10,27 @@ import { Community, dateToString } from "@/models/house";
 import { darkTheme, lightTheme } from "./agGridTheme";
 import { useCommunityDB } from "@/hooks/useCommunityDB";
 
-ModuleRegistry.registerModules([AllCommunityModule]);
+import {
+  CellSelectionModule,
+  ClipboardModule,
+  ColumnMenuModule,
+  ContextMenuModule,
+  LicenseManager,
+  ColumnsToolPanelModule,
+} from "ag-grid-enterprise";
+
+ModuleRegistry.registerModules([
+  AllCommunityModule,
+  ContextMenuModule,
+  ColumnMenuModule,
+  CellSelectionModule,
+  ClipboardModule,
+  ColumnsToolPanelModule,
+]);
+
+LicenseManager.setLicenseKey(
+  "[v3][RELEASE][0102]_NDg2Njc4MzY3MDgzNw==16d78ca762fb5d2ff740aed081e2af7b"
+);
 
 // Row Data Interface
 type IRow = Partial<Community>;
@@ -58,6 +78,13 @@ export function CommunityTable() {
     console.log("值:", event.value);
   };
 
+  const getContextMenuItems = (params: any) => {
+    const defaultItems = params.defaultItems || [];
+    return [
+      ...defaultItems, // 包含默认菜单项
+    ];
+  };
+
   // Container: Defines the grid's theme & dimensions.
   return (
     <Stack
@@ -70,13 +97,14 @@ export function CommunityTable() {
         cellSelection={true}
         rowSelection="single"
         rowData={rowData}
-        sideBar
         theme={mode === "dark" ? darkTheme : lightTheme}
         columnDefs={colDefs}
         defaultColDef={defaultColDef}
         pagination={true}
         localeText={AG_GRID_LOCALE_CN}
         onCellDoubleClicked={handleCellClick}
+        sideBar={{ toolPanels: ["columns"] }}
+        getContextMenuItems={getContextMenuItems}
       />
     </Stack>
   );

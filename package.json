@@ -9,7 +9,6 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@ag-grid-community/locale": "^34.0.1",
     "@amap/amap-jsapi-types": "^0.0.15",
     "@emotion/cache": "^11.14.0",
     "@emotion/react": "^11.14.0",
@@ -21,8 +20,10 @@
     "@tanstack/react-db": "^0.0.20",
     "@tanstack/react-form": "^1.12.4",
     "@tanstack/react-query": "^5.81.5",
-    "ag-grid-community": "^34.0.1",
-    "ag-grid-react": "^34.0.1",
+    "ag-grid-community": "^34.0.2",
+    "ag-grid-enterprise": "34.0.2",
+    "ag-grid-react": "^34.0.2",
+    "@ag-grid-community/locale": "^34.0.2",
     "axios": "^1.5.0",
     "crypto": "^1.0.1",
     "dayjs": "^1.11.13",

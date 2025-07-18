@@ -78,8 +78,8 @@ export interface Relation {
 }
 
 interface FormProps {
-  defaultValues?: HouseForm;
-  value?: HouseForm;
+  defaultValues?: Partial<HouseForm> | null;
+  value?: Partial<HouseForm> | null;
 }
 
 export function Form({ defaultValues, value }: FormProps) {
@@ -88,7 +88,7 @@ export function Form({ defaultValues, value }: FormProps) {
   const form = useForm({
     defaultValues,
     onSubmit: async ({ value }) => {
-      mutate(value);
+      mutate(value as HouseForm);
     },
   });
 
@@ -101,9 +101,9 @@ export function Form({ defaultValues, value }: FormProps) {
     form.store,
     (state) => {
       return {
-        purpose: state.values.purpose,
-        transaction_type: state.values.transaction_type,
-        community_name: state.values.community?.name,
+        purpose: state.values?.purpose,
+        transaction_type: state.values?.transaction_type,
+        community_name: state.values?.community?.name,
       };
     }
   );
@@ -372,13 +372,10 @@ export function Form({ defaultValues, value }: FormProps) {
                 name="door_number"
                 children={(field) => {
                   return (
-                    <FormControl required>
-                      <FormLabel>门牌号</FormLabel>
-                      <EditDoorNumber
-                        value={field.state.value}
-                        onChange={field.handleChange}
-                      />
-                    </FormControl>
+                    <EditDoorNumber
+                      value={field.state.value}
+                      onChange={field.handleChange}
+                    />
                   );
                 }}
               />
@@ -392,13 +389,10 @@ export function Form({ defaultValues, value }: FormProps) {
                   name="apartment_type"
                   children={(field) => {
                     return (
-                      <FormControl>
-                        <FormLabel>户型</FormLabel>
-                        <EditApartmentType
-                          value={field.state.value}
-                          onChange={field.handleChange}
-                        />
-                      </FormControl>
+                      <EditApartmentType
+                        value={field.state.value}
+                        onChange={field.handleChange}
+                      />
                     );
                   }}
                 />

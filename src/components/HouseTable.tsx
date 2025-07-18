@@ -6,12 +6,17 @@ import { AllCommunityModule, ModuleRegistry } from "ag-grid-community";
 import { AgGridReact } from "ag-grid-react";
 import { AG_GRID_LOCALE_CN } from "@ag-grid-community/locale";
 import {
+  Alert,
   Box,
   Button,
   Checkbox,
+  DialogTitle,
+  Drawer,
   Dropdown,
+  IconButton,
   MenuButton,
   MenuItem,
+  ModalClose,
   Stack,
   Typography,
   useColorScheme,
@@ -33,28 +38,46 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import "@/utils/crypto-polyfill";
 import { useHouseDB } from "@/hooks/useHouseDB";
 
-ModuleRegistry.registerModules([AllCommunityModule]);
+import {
+  CellSelectionModule,
+  ClipboardModule,
+  ColumnMenuModule,
+  ContextMenuModule,
+  LicenseManager,
+  ColumnsToolPanelModule,
+} from "ag-grid-enterprise";
+import House from "./House";
+import { useModalContent } from "@/hooks/useModalContent";
+import { AlertTableHelp } from "./AlertTableHelp";
+
+ModuleRegistry.registerModules([
+  AllCommunityModule,
+  ContextMenuModule,
+  ColumnMenuModule,
+  CellSelectionModule,
+  ClipboardModule,
+  ColumnsToolPanelModule,
+]);
+
+LicenseManager.setLicenseKey(
+  "[v3][RELEASE][0102]_NDg2Njc4MzY3MDgzNw==16d78ca762fb5d2ff740aed081e2af7b"
+);
 
 // Row Data Interface
 type IRow = Partial<HouseForm>;
-
-// 列显示缓存
-const chacheColDefs: { [key in keyof IRow]: boolean } = (() => {
-  try {
-    return JSON.parse(localStorage.getItem("chacheColDefs") || "{}");
-  } catch (error) {
-    return {};
-  }
-})();
 
 interface HouseTable {}
 
 // Create new GridExample component
 export function HouseTable({}: HouseTable) {
-  const gridRef = React.useRef<AgGridReact>(null);
-  const { mode } = useColorScheme();
+  const [editItem, setEditItem] = useState<IRow | null>(null);
   const { houseDataSource: rowData } = useHouseDB();
+  const { openDetail, detailModal } = useModalContent({
+    layout: "center",
+  });
 
+  const { mode } = useColorScheme();
+  const gridRef = React.useRef<AgGridReact>(null);
   // Column Definitions: Defines & controls grid columns.
   const [colDefs, setColDefs] = useState<ColDef<IRow>[]>(
     [
@@ -182,7 +205,12 @@ export function HouseTable({}: HouseTable) {
       { field: "present_state", headerName: "现状" },
       { field: "external_sync", headerName: "外网同步" },
       { field: "remark", headerName: "备注" },
-      { field: "images", headerName: "图片" },
+      {
+        field: "images",
+        headerName: "图片",
+        width: 100,
+        cellRenderer: (params: any) => "🗂️",
+      },
       {
         field: "updated_at",
         headerName: "更新时间",
@@ -190,8 +218,6 @@ export function HouseTable({}: HouseTable) {
       },
     ].map((item: any) => {
       const newItem: ColDef<IRow> = item;
-      const field = newItem.field! as keyof typeof chacheColDefs;
-      newItem.hide = chacheColDefs[field!];
 
       if (newItem.cellRenderer === undefined) {
         newItem.cellRenderer = (params: any) => {
@@ -214,103 +240,102 @@ export function HouseTable({}: HouseTable) {
     console.log("行数据:", event.data);
     console.log("列字段:", event.colDef.field);
     console.log("值:", event.value);
+    openDetail(event.value);
+  };
+
+  const getContextMenuItems = (params: any) => {
+    const defaultItems = params.defaultItems || [];
+    return [
+      {
+        name: params.node ? "编辑房源" : "新增房源",
+        action: () => {
+          setEditItem(params.node?.data ?? {});
+        },
+        icon: "✏️",
+      },
+      "separator",
+      ...defaultItems, // 包含默认菜单项
+    ];
   };
 
   // Container: Defines the grid's theme & dimensions.
   return (
-    <Stack
-      direction="column"
-      spacing={2}
-      sx={{ height: "100%", width: "100%" }}
-    >
-      <Typography level="h3">小区管理</Typography>
+    <>
       <Stack
-        direction="row"
-        sx={{ justifyContent: "flex-end", alignItems: "flex-start" }}
+        direction="column"
+        spacing={2}
+        sx={{ height: "100%", width: "100%" }}
       >
-        <Stack direction="row" spacing={2}>
-          <Button
-            color="warning"
-            onClick={() => {
-              gridRef.current?.api.exportDataAsCsv();
-            }}
+        <Typography level="h3">小区管理</Typography>
+        <Stack
+          direction="row"
+          spacing={2}
+          sx={{ alignItems: "flex-end", justifyContent: "space-between" }}
+        >
+          <AlertTableHelp name="HouseTable" />
+          <Stack
+            direction="row"
+            spacing={2}
+            flex={1}
+            justifyContent={"flex-end"}
           >
-            备份导出
-          </Button>
-          <Dropdown>
-            <MenuButton
-              color="primary"
-              variant="outlined"
-              startDecorator={<SettingsIcon />}
+            <Button
+              color="warning"
+              onClick={() => {
+                gridRef.current?.api.exportDataAsCsv();
+              }}
             >
-              列设置
-            </MenuButton>
-            <Menu>
-              <MenuItem
-                slots={{ root: "div" }}
-                sx={{ hoverBg: "transparent", width: "300px" }}
-              >
-                <Stack
-                  spacing={1}
-                  direction="row"
-                  useFlexGap
-                  sx={{ p: 2, flexWrap: "wrap", width: 520 }}
-                >
-                  {colDefs
-                    .filter((item) => !!item.field)
-                    .map((item) => {
-                      return (
-                        <Box
-                          key={item.field}
-                          sx={{ width: 140 }}
-                          onClick={(e) => e.stopPropagation()}
-                        >
-                          <Checkbox
-                            size="sm"
-                            label={item.headerName}
-                            value={item.field}
-                            checked={!item.hide}
-                            onChange={(e) => {
-                              e.stopPropagation();
-                              const newColDefs = colDefs.map((col) => {
-                                if (col.field === item.field) {
-                                  const filed =
-                                    col.field! as keyof typeof chacheColDefs;
-
-                                  chacheColDefs[filed] = !e.target.checked;
-                                  localStorage.setItem(
-                                    "chacheColDefs",
-                                    JSON.stringify(chacheColDefs)
-                                  );
-                                  return { ...col, hide: !e.target.checked };
-                                }
-                                return col;
-                              });
-                              setColDefs(newColDefs);
-                            }}
-                          />
-                        </Box>
-                      );
-                    })}
-                </Stack>
-              </MenuItem>
-            </Menu>
-          </Dropdown>
+              备份导出
+            </Button>
+          </Stack>
         </Stack>
+        <AgGridReact
+          cellSelection
+          rowSelection="single"
+          rowData={rowData}
+          theme={mode === "dark" ? darkTheme : lightTheme}
+          columnDefs={colDefs}
+          defaultColDef={defaultColDef}
+          pagination={true}
+          ref={gridRef}
+          localeText={AG_GRID_LOCALE_CN}
+          onCellDoubleClicked={handleCellClick}
+          sideBar={{ toolPanels: ["columns"] }}
+          getContextMenuItems={getContextMenuItems}
+        />
       </Stack>
-      <AgGridReact
-        cellSelection
-        rowSelection="single"
-        rowData={rowData}
-        theme={mode === "dark" ? darkTheme : lightTheme}
-        columnDefs={colDefs}
-        defaultColDef={defaultColDef}
-        pagination={true}
-        ref={gridRef}
-        localeText={AG_GRID_LOCALE_CN}
-        onCellDoubleClicked={handleCellClick}
-      />
-    </Stack>
+      <Drawer
+        anchor="bottom"
+        sx={{}}
+        slotProps={{
+          content: {
+            sx: {
+              height: "100vh",
+              width: { xs: "100%", md: "430px" },
+              top: 0,
+              left: { xs: 0, md: "calc(50% - 215px)" },
+              borderRadius: 0,
+              boxShadow: "lg",
+              p: 0,
+              backgroundColor: "background.body",
+              overflow: "auto",
+            },
+          },
+        }}
+        open={editItem !== null}
+        onClose={(_, reason) => {
+          // if (reason === "backdropClick") return;
+          setEditItem(null);
+        }}
+      >
+        <ModalClose />
+        <DialogTitle>添加房源</DialogTitle>
+        <Box sx={{ height: "100%", width: { xs: "100%", md: "430px" } }}>
+          <House.Form value={editItem} />
+        </Box>
+      </Drawer>
+      {detailModal}
+    </>
   );
 }
 

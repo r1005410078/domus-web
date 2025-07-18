@@ -47,6 +47,7 @@ export default function Page() {
       <Layout.Main
         sx={{
           p: 2,
+          pt: { xs: 0, md: 2 },
           position: "relative",
           display: {
             xs: "initial",
@@ -54,25 +55,6 @@ export default function Page() {
           },
         }}
       >
-        <Box
-          sx={{
-            display: "flex",
-            mb: 1,
-            gap: 1,
-            flexDirection: { xs: "column", sm: "row" },
-            alignItems: { xs: "start", sm: "center" },
-            flexWrap: "wrap",
-            justifyContent: "space-between",
-          }}
-        >
-          <Typography
-            level="h2"
-            component="h1"
-            sx={{ display: { xs: "none", sm: "initial" } }}
-          >
-            用户管理
-          </Typography>
-        </Box>
         {(() => {
           switch (tabBar) {
             case "user":
