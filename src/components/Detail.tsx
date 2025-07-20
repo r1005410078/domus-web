@@ -35,12 +35,7 @@ import {
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { EmblaCarouselType } from "embla-carousel";
 import MyLocationTwoToneIcon from "@mui/icons-material/MyLocationTwoTone";
-import {
-  ApartmentType,
-  floor_rangeToString,
-  FloorRange,
-  HouseForm,
-} from "@/models/house";
+import { ApartmentType, floor_rangeToString, HouseForm } from "@/models/house";
 import ImportContactsTwoToneIcon from "@mui/icons-material/ImportContactsTwoTone";
 import KeyboardArrowRight from "@mui/icons-material/KeyboardArrowRightRounded";
 import UpdateHouse from "@/components/House/UpdateHouse";
@@ -50,6 +45,9 @@ import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
 import { EditDetailDrawer } from "./EditDetail";
 import { useGetHouseDetail } from "@/hooks/useHouse";
+import { PhotoProvider, PhotoView } from "react-photo-view";
+
+import "react-photo-view/dist/react-photo-view.css";
 
 // 插件注册
 dayjs.extend(utc);
@@ -113,23 +111,31 @@ export function Detail({ transactionType, house_id, onClose }: DetailProps) {
         </IconButton>
       </CardContent>
       <CardOverflow>
-        <div className="embla" ref={emblaRef} style={{ overflow: "hidden" }}>
-          <div
-            className="embla__container"
-            style={{ display: "flex", height: "260px" }}
-          >
-            {images.map((image, index) => (
-              <div
-                className="embla__slide"
-                style={{ flex: "0 0 100%", minWidth: 0 }}
-              >
-                <CardCover>
-                  <img src={image.url} alt="" loading="lazy" />
-                </CardCover>
-              </div>
-            ))}
+        <PhotoProvider>
+          <div className="embla" ref={emblaRef} style={{ overflow: "hidden" }}>
+            <div
+              className="embla__container"
+              id="lightgallery"
+              style={{ display: "flex", height: "260px" }}
+            >
+              {images.map((image, index) => (
+                <div
+                  className="embla__slide"
+                  style={{
+                    flex: "0 0 100%",
+                    minWidth: 0,
+                    borderRadius: "xs",
+                    overflow: "hidden",
+                  }}
+                >
+                  <PhotoView key={index} src={image.url}>
+                    <img src={image.url} width={"100%"} alt="" loading="lazy" />
+                  </PhotoView>
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
+        </PhotoProvider>
       </CardOverflow>
       <CardContent
         orientation="horizontal"
@@ -221,7 +227,9 @@ export function Detail({ transactionType, house_id, onClose }: DetailProps) {
       <CardContent>
         <div>
           <Typography level="h4" color="danger">
-            {transactionType === "出售" ? detail.sale_price : detail.rent_price}
+            {transactionType === "出售"
+              ? detail.sale_price || "--"
+              : detail.rent_price || "--"}
             <Typography
               textColor="text.tertiary"
               sx={{ fontSize: "sm", ml: 0.5 }}

@@ -36,7 +36,7 @@ LicenseManager.setLicenseKey(
 type IRow = Partial<Community>;
 
 // Create new GridExample component
-export function CommunityTable() {
+export default function CommunityTable() {
   const { communitys: rowData } = useCommunityDB();
   const { mode } = useColorScheme();
 

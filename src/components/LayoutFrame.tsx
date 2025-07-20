@@ -12,34 +12,31 @@ import {
   Button,
   CssBaseline,
   CssVarsProvider,
+  DialogTitle,
+  Drawer,
   GlobalStyles,
-  ListItemDecorator,
+  ModalClose,
   Stack,
-  Tab,
-  tabClasses,
-  TabList,
-  Tabs,
-  Typography,
 } from "@mui/joy";
 import { usePathname } from "next/navigation";
 import React from "react";
 import RoomPreferencesTwoToneIcon from "@mui/icons-material/RoomPreferencesTwoTone";
 import PersonAddTwoToneIcon from "@mui/icons-material/PersonAddTwoTone";
 import CreateRoundedIcon from "@mui/icons-material/CreateRounded";
+import House from "./House";
 
 interface LayoutFrameProps {
   children: React.ReactNode;
   tabBar: NavigationProps;
-  onAdd?: () => void;
   rootProps?: BoxProps;
 }
 
 export default function LayoutFrame({
   children,
   tabBar,
-  onAdd,
   rootProps,
 }: LayoutFrameProps) {
+  const [drawerAddOpen, setDrawerAddOpen] = React.useState(false);
   const [drawerOpen, setDrawerOpen] = React.useState(false);
   const pathname = usePathname();
 
@@ -129,13 +126,40 @@ export default function LayoutFrame({
         ]}
       >
         <Layout.Header>
-          <Header tabBar={{ ...tabBar }} onAdd={onAdd} />
+          <Header tabBar={{ ...tabBar }} onAdd={() => setDrawerAddOpen(true)} />
         </Layout.Header>
         <Layout.SideNav>
           <Navigation {...tabBar} />
         </Layout.SideNav>
         {children}
       </Layout.Root>
+      <Drawer
+        anchor="bottom"
+        sx={{}}
+        slotProps={{
+          content: {
+            sx: {
+              height: "100vh",
+              width: { xs: "100%", md: "430px" },
+              top: 0,
+              left: { xs: 0, md: "calc(50% - 215px)" },
+              borderRadius: 0,
+              boxShadow: "lg",
+              p: 0,
+              backgroundColor: "background.body",
+              overflow: "auto",
+            },
+          },
+        }}
+        open={drawerAddOpen}
+        onClose={() => setDrawerAddOpen(false)}
+      >
+        <ModalClose />
+        <DialogTitle>添加房源</DialogTitle>
+        <Box sx={{ height: "100%", width: { xs: "100%", md: "430px" } }}>
+          <House.Form />
+        </Box>
+      </Drawer>
     </CssVarsProvider>
   );
 }

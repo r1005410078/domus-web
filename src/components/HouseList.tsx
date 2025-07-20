@@ -1,5 +1,6 @@
 import {
   AspectRatio,
+  Box,
   Card,
   CardContent,
   Chip,
@@ -12,28 +13,26 @@ import {
 } from "@mui/joy";
 import Layout from "./Layout";
 import { apartmentTypeToString, HouseForm } from "@/models/house";
-import Filters from "./Filters";
+import Filters, { FiltersForm } from "./Filters";
 import Pagination, { PaginationProps } from "./Pagination";
-import {
-  AmapBounds,
-  AMapComponent,
-  CommunityWithHouseCount,
-} from "@/components/AMap";
+import type { AmapBounds, CommunityWithHouseCount } from "@/components/AMap";
 import { Detail } from "./Detail";
 import React from "react";
+import { isMobile } from "@/utils";
+import dynamic from "next/dynamic";
+const DynamicAMapComponent = dynamic(() => import("@/components/AMap"), {
+  loading: () => <p>加载中...</p>,
+});
 
 export interface HouseListProps {
   data: HouseForm[];
-  transactionType?: string;
+  transactionType: string;
   aMapData: CommunityWithHouseCount[];
   onMapBoundsChange?: (bounds: AmapBounds) => void;
   loading?: boolean;
   onPullLoadMore?: () => void;
   pagination: PaginationProps;
-}
-
-interface FilterForm {
-  purpose?: string[];
+  onFilterSubmit: (values: FiltersForm) => void;
 }
 
 export function HouseList({
@@ -44,9 +43,9 @@ export function HouseList({
   pagination,
   onMapBoundsChange,
   onPullLoadMore,
+  onFilterSubmit,
 }: HouseListProps) {
   const [detail, setDetail] = React.useState<HouseForm>();
-  const [filterFrom, setFilterFrom] = React.useState<FilterForm>({});
 
   return (
     <>
@@ -78,15 +77,9 @@ export function HouseList({
             }}
           >
             <Filters
-              purposeSelectorProps={{
-                value: filterFrom.purpose,
-                onChange: (value) => {
-                  setFilterFrom({
-                    ...filterFrom,
-                    purpose: value,
-                  });
-                },
-              }}
+              key={transactionType}
+              transactionType={transactionType}
+              onFilterSubmit={onFilterSubmit}
             />
             {data.map((item) => (
               <ListItem key={item.id} onClick={() => setDetail(item)}>
@@ -151,8 +144,8 @@ export function HouseList({
                       color="danger"
                     >
                       {transactionType === "出售"
-                        ? item.sale_price + "万元"
-                        : item.rent_price + "元/月"}
+                        ? (item.sale_price || "- ") + "万元"
+                        : (item.rent_price || "- ") + "元/月"}
                       {transactionType === "出售" && (
                         <Typography level="body-xs" ml={1}>
                           ¥
@@ -168,33 +161,25 @@ export function HouseList({
                 </Card>
               </ListItem>
             ))}
-            {/* <Box
-              className="Pagination-mobile"
-              sx={{
-                display: { xs: "flex", md: "none" },
-                alignItems: "center",
-                justifyContent: "center",
-                mx: 2,
-                my: 1,
-              }}
-            >
-              <Button
-                aria-label="previous page"
-                variant="plain"
-                color="neutral"
-                size="sm"
-                startDecorator={<ReplayCircleFilledTwoToneIcon />}
-                onClick={() => {}}
-              >
-                加载更多
-              </Button>
-            </Box> */}
           </List>
         </Stack>
         <Pagination {...pagination} />
       </Layout.SidePane>
       <Layout.Main sx={{ p: 0, position: "relative" }}>
-        <AMapComponent data={aMapData} onMapBoundsChange={onMapBoundsChange} />
+        <Box
+          sx={{
+            height: "100%",
+            width: "100%",
+            display: { xs: "none", md: "initial" },
+          }}
+        >
+          {!isMobile && (
+            <DynamicAMapComponent
+              data={aMapData}
+              onMapBoundsChange={onMapBoundsChange}
+            />
+          )}
+        </Box>
         {detail && (
           <Sheet
             sx={{

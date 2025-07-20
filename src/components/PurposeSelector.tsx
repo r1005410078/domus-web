@@ -3,8 +3,8 @@ import * as React from "react";
 import { Option, Select } from "@mui/joy";
 
 export interface PurposeSelectorProps {
-  value?: string[];
-  onChange: (value: string[]) => void;
+  value?: string;
+  onChange: (value: string) => void;
 }
 
 export default function PurposeSelector({
@@ -14,10 +14,9 @@ export default function PurposeSelector({
   return (
     <Select
       variant="plain"
-      multiple
       sx={{ minWidth: 80 }}
       onChange={(_, value) => onChange(value!)}
-      value={value || []}
+      value={value}
     >
       {[
         {

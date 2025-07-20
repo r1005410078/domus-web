@@ -1,11 +1,17 @@
 "use client";
 
-import { Permission, Role } from "@/models/user";
+import { Permission, Role, User } from "@/models/user";
 import apiClient, { ResponseBody } from "./http";
 
 export function getRoleList() {
   return apiClient.get<ResponseBody<{ list: Role[]; total: number }>>(
     "/api/user_system/role/list?page=1&page_size=100"
+  );
+}
+
+export function getUserList() {
+  return apiClient.get<ResponseBody<{ list: User[]; total: number }>>(
+    "/api/user_system/user/list?page=1&page_size=100"
   );
 }
 
@@ -33,5 +39,41 @@ export function updateRole(data: Partial<RoleRequest>) {
   return apiClient.post<ResponseBody<Permission[]>>(
     "/api/user_system/role/update",
     data
+  );
+}
+
+export function deleteRole(id: string) {
+  return apiClient.post<ResponseBody<any>>(
+    `/api/user_system/role/delete/${id}`
+  );
+}
+
+export interface UserRequest {
+  id?: string;
+  username: string;
+  email?: any;
+  phone?: any;
+  // 角色
+  roles: string[];
+  password?: string;
+}
+
+export function createUser(data: Partial<RoleRequest>) {
+  return apiClient.post<ResponseBody<any>>(
+    "/api/user_system/user/register",
+    data
+  );
+}
+
+export function updateUser(data: Partial<RoleRequest>) {
+  return apiClient.post<ResponseBody<any>>(
+    "/api/user_system/user/update",
+    data
+  );
+}
+
+export function deleteUser(id: string) {
+  return apiClient.post<ResponseBody<any>>(
+    `/api/user_system/user/delete/${id}`
   );
 }

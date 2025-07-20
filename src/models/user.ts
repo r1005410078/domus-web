@@ -16,3 +16,15 @@ export interface Permission {
   created_at: string;
   updated_at: string;
 }
+
+export interface User {
+  user_id: string;
+  username: string;
+  email: any;
+  phone: any;
+  // 角色
+  roles: string[];
+  password?: string;
+  created_at: string;
+  updated_at: string;
+}

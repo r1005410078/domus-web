@@ -89,7 +89,7 @@ interface AddCommentRequest {
 
 export function addComment(data: AddCommentRequest) {
   return apiClient.post<ResponseBody<string>>(
-    `/api/domus/house_comment/add_comment`,
+    `/api/domus/management/house/add_comment`,
     data
   );
 }
@@ -103,7 +103,7 @@ interface UpdateCommentRequest {
 
 export function updateComment(data: UpdateCommentRequest) {
   return apiClient.post<ResponseBody<string>>(
-    `/api/domus/house_comment/update_comment`,
+    `/api/domus/management/house/update_comment`,
     data
   );
 }
@@ -111,14 +111,14 @@ export function updateComment(data: UpdateCommentRequest) {
 // 删除评论
 export function deleteComment(comment_id: string) {
   return apiClient.post<ResponseBody<string>>(
-    `/api/domus/house_comment/delete_comment/${comment_id}`
+    `/api/domus/management/house/delete_comment/${comment_id}`
   );
 }
 
 // 获取评论列表
 export async function getCommentList(house_id: string) {
   const res = await apiClient.get<ResponseBody<HouseCommentItem[]>>(
-    `/api/domus/house_comment/get_comments/${house_id}`
+    `/api/domus/query/house/get_comments/${house_id}`
   );
 
   return res.data.data;

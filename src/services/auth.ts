@@ -12,5 +12,8 @@ export interface LoginResponse {
 }
 
 export const login = (data: LoginRequest) => {
-  return apiClient.post<ResponseBody<LoginResponse>>("/api/login", data); // 返回 token 等信息
+  return apiClient.post<ResponseBody<LoginResponse>>(
+    "/api/user_system/login",
+    data
+  ); // 返回 token 等信息
 };

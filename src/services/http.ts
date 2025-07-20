@@ -7,6 +7,7 @@ const http = axios.create({
   withCredentials: true,
   headers: {
     "Content-Type": "application/json",
+    Authorization: `Bearer ${globalThis.localStorage?.getItem("token")}`,
   },
 });
 
@@ -20,11 +21,11 @@ http.interceptors.request.use((config) => {
   return config;
 });
 
-// 响应拦截器（统一处理 403）
+// 响应拦截器（统一处理 401）
 http.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response?.status === 403) {
+    if (error.response?.status === 401) {
       // 清除 token（可选）
       localStorage.removeItem("token");
       // 跳转到登录页面

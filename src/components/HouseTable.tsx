@@ -49,6 +49,7 @@ import {
 import House from "./House";
 import { useModalContent } from "@/hooks/useModalContent";
 import { AlertTableHelp } from "./AlertTableHelp";
+import { PhotoSlider } from "react-photo-view";
 
 ModuleRegistry.registerModules([
   AllCommunityModule,
@@ -69,10 +70,10 @@ type IRow = Partial<HouseForm>;
 interface HouseTable {}
 
 // Create new GridExample component
-export function HouseTable({}: HouseTable) {
+export default function HouseTable({}: HouseTable) {
   const [editItem, setEditItem] = useState<IRow | null>(null);
   const { houseDataSource: rowData } = useHouseDB();
-  const { openDetail, detailModal } = useModalContent({
+  const { openDetail, detailModal, openImages } = useModalContent({
     layout: "center",
   });
 
@@ -90,6 +91,13 @@ export function HouseTable({}: HouseTable) {
         cellClass: "ag-cell-center",
       },
       { field: "title", headerName: "房源标题", pinned: "left" },
+      {
+        field: "images",
+        headerName: "图片",
+        width: 100,
+        cellRenderer: (params: any) =>
+          params.value?.length ? `📷 共 ${params.value.length} 张` : null,
+      },
       { field: "purpose", width: 100, headerName: "用途" },
       { field: "transaction_type", width: 100, headerName: "交易类型" },
       { field: "house_status", width: 100, headerName: "状态" },
@@ -205,12 +213,7 @@ export function HouseTable({}: HouseTable) {
       { field: "present_state", headerName: "现状" },
       { field: "external_sync", headerName: "外网同步" },
       { field: "remark", headerName: "备注" },
-      {
-        field: "images",
-        headerName: "图片",
-        width: 100,
-        cellRenderer: (params: any) => "🗂️",
-      },
+
       {
         field: "updated_at",
         headerName: "更新时间",
@@ -240,6 +243,17 @@ export function HouseTable({}: HouseTable) {
     console.log("行数据:", event.data);
     console.log("列字段:", event.colDef.field);
     console.log("值:", event.value);
+
+    if (event.colDef.field === "images") {
+      // openImages(event.value);
+      openImages(
+        ((event.value as IRow["images"]) || []).map((item) => ({
+          src: item.url,
+          key: item.name,
+        }))
+      );
+      return;
+    }
     openDetail(event.value);
   };
 

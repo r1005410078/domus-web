@@ -36,7 +36,10 @@ export interface AmapBounds {
   south_west: { lng: number; lat: number };
 }
 
-export function AMapComponent({ data, onMapBoundsChange }: MapPageProps) {
+export default function AMapComponent({
+  data,
+  onMapBoundsChange,
+}: MapPageProps) {
   const { amap, AMapRef } = useAMap();
   const polygons = useRef<any[]>([]);
   const clearPolygons = () => {
@@ -64,13 +67,14 @@ export function AMapComponent({ data, onMapBoundsChange }: MapPageProps) {
 
     logMapBounds();
 
+    let callback = debounce(logMapBounds, 300);
     //绑定地图移动与缩放事件
-    amap.on("moveend", logMapBounds);
-    amap.on("zoomend", logMapBounds);
+    amap.on("moveend", callback);
+    amap.on("zoomend", callback);
 
     return () => {
-      amap.off("moveend", logMapBounds);
-      amap.off("zoomend", logMapBounds);
+      amap.off("moveend", callback);
+      amap.off("zoomend", callback);
     };
   }, [amap]);
 
@@ -307,6 +311,27 @@ function useAMap() {
 
   return { amap, AMapRef };
 }
+
+function debounce(fn: Function, delay: number) {
+  let timer: any = null;
+  return function (...args: any[]) {
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+      // @ts-ignore
+      fn.apply(this, args);
+    }, delay);
+  };
+}
+
+// 兼容处理 requestIdleCallback
+const requestIdle = (cb: () => void) => {
+  if ("requestIdleCallback" in window) {
+    (window as any).requestIdleCallback(cb);
+  } else {
+    // fallback: 如果不支持，延迟50ms执行
+    setTimeout(cb, 50);
+  }
+};
 
 // 安庆行政区
 const districtList = [

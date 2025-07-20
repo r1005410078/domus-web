@@ -138,7 +138,7 @@ export function EditDetailDrawer({
                     />
                     <Button
                       onClick={async () => {
-                        uploads();
+                        await uploads();
                         await form.handleSubmit();
                         onClose();
                       }}
@@ -168,6 +168,7 @@ export interface FormChange<T> {
   purpose?: string;
   transaction_type?: string;
   community_name?: string;
+  required?: boolean;
 }
 
 const isShowRelation = (
@@ -253,9 +254,10 @@ export function EditTransactionType({
   value,
   onChange,
   sx,
+  required = true,
 }: FormChange<string>) {
   return (
-    <FormControl required sx={[...(Array.isArray(sx) ? sx : [sx])]}>
+    <FormControl required={required} sx={[...(Array.isArray(sx) ? sx : [sx])]}>
       <FormLabel>交易类型</FormLabel>
       <Select
         placeholder="请输入"
@@ -523,9 +525,10 @@ export function EditApartmentType({
   value,
   onChange,
   sx,
+  required = true,
 }: FormChange<ApartmentType>) {
   return (
-    <FormControl required sx={[...(Array.isArray(sx) ? sx : [sx])]}>
+    <FormControl required={required} sx={[...(Array.isArray(sx) ? sx : [sx])]}>
       <FormLabel>户型</FormLabel>
       <Stack spacing={1} direction="row" useFlexGap sx={{ flexWrap: "wrap" }}>
         <FormControl style={{ width: 115 }}>
@@ -952,7 +955,7 @@ export function EditBuildingArea({ value, onChange }: FormChange<number>) {
         placeholder="请输入"
         name="building_area"
         type="number"
-        endDecorator={<span>平米</span>}
+        endDecorator={<span>M²</span>}
         value={value}
         onChange={(e) => {
           onChange(Number(e.target.value));
@@ -972,7 +975,7 @@ export function EditUseArea({ value, onChange }: FormChange<number>) {
         placeholder="请输入"
         name="use_area"
         type="number"
-        endDecorator={<span>平米</span>}
+        endDecorator={<span>M²</span>}
         value={value}
         onChange={(e) => {
           onChange(Number(e.target.value));
@@ -1321,7 +1324,7 @@ export function EditHouseDecoration({
     }
 
     return [];
-  }, []);
+  }, [purpose]);
 
   if (options.length === 0) {
     return null;

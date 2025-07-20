@@ -16,10 +16,14 @@ export function useLogin() {
       }
 
       toast.showToast({ message: "登录成功", severity: "success" });
+
+      console.log("token", res.data.data.token);
       localStorage.setItem("token", res.data.data.token);
       location.replace("/");
       console.log("跳转到首页");
     },
-    onError: (err) => {},
+    onError: (err) => {
+      toast.showToast({ message: `登录失败: ${err}`, severity: "danger" });
+    },
   });
 }

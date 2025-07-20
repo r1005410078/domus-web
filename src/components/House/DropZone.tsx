@@ -5,10 +5,10 @@ import Card, { CardProps } from "@mui/joy/Card";
 import Link from "@mui/joy/Link";
 import Typography from "@mui/joy/Typography";
 import AspectRatio from "@mui/joy/AspectRatio";
-import VideocamRoundedIcon from "@mui/icons-material/VideocamRounded";
-import InsertDriveFileRoundedIcon from "@mui/icons-material/InsertDriveFileRounded";
+
 import FileUploadRoundedIcon from "@mui/icons-material/FileUploadRounded";
 import { useApplyUploadHouseUrl } from "@/hooks/useApplyUploadHouseUrl";
+import imageCompression from "browser-image-compression";
 import axios from "axios";
 import { useToast } from "@/libs/ToastProvider";
 import {
@@ -20,6 +20,7 @@ import {
   Divider,
   Grid,
   IconButton,
+  LinearProgress,
   Stack,
 } from "@mui/joy";
 import { FileInfo } from "@/models/house";
@@ -31,6 +32,8 @@ export type UploadFile = {
   url: string;
   filename: string;
   percent: number;
+  // state
+  state?: "uploading" | "zipping";
   deleted?: boolean;
 };
 
@@ -58,7 +61,31 @@ export const useUploadFiles = create<Store>()((set, get) => ({
     const files = get().files;
     const promises = files
       .filter((f) => !f.deleted)
-      .map(({ file, url }) => {
+      .map(async ({ file, url }) => {
+        const options = {
+          maxSizeMB: 0.2, // 0.2 MB
+          maxWidthOrHeight: 1920,
+          useWebWorker: true,
+          onProgress: (percentage: number) => {
+            set((state) => ({
+              files: state.files.map((f) => {
+                if (f.url === url) {
+                  return { ...f, percent: percentage * 0.5, state: "zipping" };
+                }
+                return f;
+              }),
+            }));
+          },
+        };
+
+        // 压缩图片
+        try {
+          file = await imageCompression(file, options);
+          console.log("Compressed file size:", file.size / 1024 / 1024, "MB");
+        } catch (error) {
+          console.log(error);
+        }
+
         return axios.put(url, file, {
           headers: {
             "Content-Type": file.type,
@@ -71,7 +98,7 @@ export const useUploadFiles = create<Store>()((set, get) => ({
             set((state) => ({
               files: state.files.map((f) => {
                 if (f.url === url) {
-                  return { ...f, percent };
+                  return { ...f, percent, state: "uploading" };
                 }
                 return f;
               }),
@@ -204,7 +231,7 @@ export default function DropZone(props: DropZoneProps) {
           ref={inputRef}
           type="file"
           multiple
-          accept=".svg,.png,.jpg,.jpeg,.gif"
+          accept="image/*"
           style={{ display: "none" }}
           onChange={handleFileChange}
         />
@@ -249,21 +276,48 @@ export default function DropZone(props: DropZoneProps) {
 }
 
 function FileReview(props: UploadFile) {
-  const { file, percent } = props;
+  const { file, percent, state } = props;
   const { removeFile } = useUploadFiles();
+  const stateLabel = React.useMemo(() => {
+    switch (state) {
+      case "uploading":
+        return "上传中";
+      case "zipping":
+        return "压缩中";
+      default:
+        return "";
+    }
+  }, [state]);
+
   return (
     <Card component="li" sx={{ width: "100%", height: "200px" }}>
       <CardCover>
         <img src={URL.createObjectURL(file)} alt={file.name} loading="lazy" />
       </CardCover>
       <CardContent
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
+        sx={{ display: "flex", flexDirection: "row", alignItems: "center" }}
       >
-        <CircularProgress determinate value={percent} />
+        <LinearProgress
+          determinate
+          variant="outlined"
+          color="neutral"
+          size="sm"
+          thickness={24}
+          value={Number(percent!)}
+          sx={{
+            "--LinearProgress-radius": "20px",
+            "--LinearProgress-thickness": "24px",
+          }}
+        >
+          <Typography
+            level="body-xs"
+            textColor="common.white"
+            sx={{ fontWeight: "xl", mixBlendMode: "difference" }}
+          >
+            {stateLabel} {`${Math.round(Number(percent!))}%`}
+          </Typography>
+        </LinearProgress>
+
         <IconButton
           variant="plain"
           color="danger"

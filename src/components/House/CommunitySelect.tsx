@@ -22,7 +22,7 @@ import { getCommunityList } from "@/services/house";
 const cache = new Map<string, Poi>();
 
 interface CommunitySelectProps {
-  value?: Poi;
+  value?: Poi | null;
   onChange: (value: Poi | null) => void;
 }
 

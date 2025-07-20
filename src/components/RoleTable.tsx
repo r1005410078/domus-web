@@ -3,15 +3,9 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import * as React from "react";
 import { useColorScheme } from "@mui/joy/styles";
-import Box from "@mui/joy/Box";
 import Button from "@mui/joy/Button";
 import { AG_GRID_LOCALE_CN } from "@ag-grid-community/locale";
-import Checkbox from "@mui/joy/Checkbox";
 import Typography from "@mui/joy/Typography";
-import Menu from "@mui/joy/Menu";
-import MenuButton from "@mui/joy/MenuButton";
-import MenuItem from "@mui/joy/MenuItem";
-import Dropdown from "@mui/joy/Dropdown";
 
 import {
   DialogContent,
@@ -21,7 +15,7 @@ import {
   ModalDialog,
   Stack,
 } from "@mui/joy";
-import { useRoleList } from "@/hooks/useUser";
+import { useDeleteRole, useRoleList } from "@/hooks/useUser";
 import { CellDoubleClickedEvent, ColDef } from "ag-grid-community";
 import { AllCommunityModule, ModuleRegistry } from "ag-grid-community";
 import { Permission, Role } from "@/models/user";
@@ -37,6 +31,8 @@ import {
   LicenseManager,
   ColumnsToolPanelModule,
 } from "ag-grid-enterprise";
+import { mdComfirm } from "./Confirm";
+import { useAddRoleModal } from "@/hooks/useAddRoleModal";
 
 ModuleRegistry.registerModules([
   AllCommunityModule,
@@ -54,48 +50,51 @@ LicenseManager.setLicenseKey(
 type IRow = Role;
 
 export default function RoleTable() {
-  const [editItem, setEditItem] = React.useState<Partial<IRow> | null>(null);
-  const { data: rowData } = useRoleList();
+  const { editorModal, openRoleEditModal } = useAddRoleModal();
   const { mode } = useColorScheme();
   const gridRef = React.useRef<AgGridReact>(null);
+  const { data: rowData } = useRoleList();
+  const { mutate } = useDeleteRole();
   // Column Definitions: Defines & controls grid columns.
-  const [colDefs, setColDefs] = React.useState<ColDef<IRow>[]>(
-    [
-      {
-        headerName: "序号",
-        valueGetter: (params: any) => params.node!.rowIndex! + 1,
-        width: 100,
-        pinned: "left",
-        suppressMovable: true,
-        cellClass: "ag-cell-center",
-      },
-      { field: "name", headerName: "角色名称", width: 120 },
-      { field: "description", width: 120, headerName: "角色描述" },
-      {
-        field: "updated_at",
-        headerName: "更新时间",
-        width: 200,
-        valueGetter: (params: any) => dateToString(params.value),
-      },
-      {
-        field: "permissions",
-        initialFlex: 1,
-        headerName: "权限",
-        valueGetter: (params: any) =>
-          (params.data.permissions as Permission[])
-            ?.map((p) => p.name)
-            .join(", "),
-      },
-    ].map((item: any) => {
-      const newItem: ColDef<IRow> = item;
-      if (newItem.cellRenderer === undefined) {
-        newItem.cellRenderer = (params: any) => {
-          return emptyToString(params.value);
-        };
-      }
+  const colDefs = React.useMemo<ColDef<IRow>[]>(
+    () =>
+      [
+        {
+          headerName: "序号",
+          valueGetter: (params: any) => params.node!.rowIndex! + 1,
+          width: 100,
+          pinned: "left",
+          suppressMovable: true,
+          cellClass: "ag-cell-center",
+        },
+        { field: "name", headerName: "角色名称", width: 120 },
+        { field: "description", width: 120, headerName: "角色描述" },
+        {
+          field: "updated_at",
+          headerName: "更新时间",
+          width: 200,
+          valueGetter: (params: any) => dateToString(params.value),
+        },
+        {
+          field: "permissions",
+          initialFlex: 1,
+          headerName: "权限",
+          valueGetter: (params: any) =>
+            (params.data.permissions as Permission[])
+              ?.map((p) => p.name)
+              .join(", "),
+        },
+      ].map((item: any) => {
+        const newItem: ColDef<IRow> = item;
+        if (newItem.cellRenderer === undefined) {
+          newItem.cellRenderer = (params: any) => {
+            return emptyToString(params.value);
+          };
+        }
 
-      return newItem;
-    })
+        return newItem;
+      }),
+    []
   );
 
   const defaultColDef: ColDef = {
@@ -113,25 +112,53 @@ export default function RoleTable() {
 
   const getContextMenuItems = (params: any) => {
     const defaultItems = params.defaultItems || [];
-    console.log("params", params);
-    return [
+    const items: any[] = [
       {
         name: params.node ? "编辑角色" : "新增角色",
         action: () => {
-          setEditItem(params.node?.data ?? {});
+          openRoleEditModal(params.node?.data ?? {});
         },
         icon: "✏️",
       },
-      "separator",
-      ...defaultItems, // 包含默认菜单项
     ];
+
+    if (params.node) {
+      items.push({
+        name: "删除角色",
+        action: () => {
+          console.log("删除角色", params.node?.data.id);
+          mdComfirm({
+            title: "删除角色",
+            content: "确定删除角色吗?",
+            onOK: (state) => {
+              mutate(params.node?.data.id);
+              state.close();
+            },
+            onCancel: (state) => {
+              state.close();
+            },
+          });
+        },
+        icon: "🗑️",
+      });
+    }
+
+    items.push("separator");
+    // 包含默认菜单项
+    items.push(...defaultItems);
+
+    return items;
   };
 
   return (
     <Stack
       direction="column"
       spacing={2}
-      sx={{ height: "100%", width: "100%" }}
+      sx={{
+        height: "100%",
+        width: "100%",
+        display: { md: "flex", xs: "none" },
+      }}
     >
       <Typography level="h3">角色管理</Typography>
       <Stack
@@ -150,31 +177,11 @@ export default function RoleTable() {
           <Button
             color="primary"
             onClick={() => {
-              setEditItem({});
+              openRoleEditModal({});
             }}
           >
             添加角色
           </Button>
-          <Modal
-            open={!!editItem}
-            onClose={(_, reason) => {
-              console.log("reason", reason);
-              if (reason === "backdropClick") return;
-              setEditItem(null);
-            }}
-          >
-            <ModalDialog
-              aria-labelledby="filter-modal"
-              size="lg"
-              sx={{ maxWidth: 300 }}
-            >
-              <ModalClose />
-              <DialogTitle>添加角色</DialogTitle>
-              <DialogContent>
-                <EditorRole role={editItem} onClose={() => setEditItem(null)} />
-              </DialogContent>
-            </ModalDialog>
-          </Modal>
         </Stack>
       </Stack>
       <AgGridReact
@@ -192,6 +199,7 @@ export default function RoleTable() {
         sideBar={{ toolPanels: ["columns"] }}
         getContextMenuItems={getContextMenuItems}
       />
+      {editorModal}
     </Stack>
   );
 }

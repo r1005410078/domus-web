@@ -2,6 +2,8 @@ import * as React from "react";
 import ThemeRegistry from "@/components/theme-registry/ThemeRegistry";
 import QueryProvider from "@/libs/QueryProvider";
 import { ToastProvider } from "@/libs/ToastProvider";
+import Confirm from "@/components/Confirm";
+import "./globals.css";
 
 export const metadata = {
   title: "美大",
@@ -18,6 +20,7 @@ export default function RootLayout(props: { children: React.ReactNode }) {
         <ToastProvider>
           <QueryProvider>
             <ThemeRegistry>{props.children}</ThemeRegistry>
+            <Confirm />
           </QueryProvider>
         </ToastProvider>
       </body>

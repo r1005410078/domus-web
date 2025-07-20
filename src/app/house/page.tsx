@@ -6,17 +6,24 @@ import MapsHomeWorkTwoToneIcon from "@mui/icons-material/MapsHomeWorkTwoTone";
 import OutboxRoundedIcon from "@mui/icons-material/OutboxRounded";
 import DeckTwoToneIcon from "@mui/icons-material/DeckTwoTone";
 import TableViewTwoToneIcon from "@mui/icons-material/TableViewTwoTone";
-import { Box, DialogTitle, Drawer, ModalClose, Sheet } from "@mui/joy";
 import Layout from "@/components/Layout";
 import { HouseList } from "@/components/HouseList";
 import { HouseForm } from "@/models/house";
-import House from "@/components/House";
-import { CommunityTable } from "@/components/CommunityTable";
-import { HouseTable } from "@/components/HouseTable";
+
 import { useGetCommunityByCommunity, useHouseList } from "@/hooks/useHouse";
 import { HouseListRequest } from "@/services/house";
-import { useDebouncedCallback } from "use-debounce";
 import { PaginationProps } from "@/components/Pagination";
+import dynamic from "next/dynamic";
+const DynamicHouseTable = dynamic(() => import("@/components/HouseTable"), {
+  loading: () => <p>加载中...</p>,
+});
+
+const DynamicCommunityTable = dynamic(
+  () => import("@/components/CommunityTable"),
+  {
+    loading: () => <p>加载中...</p>,
+  }
+);
 
 const tabBarItems = [
   {
@@ -33,11 +40,23 @@ const tabBarItems = [
     label: "房源",
     key: "house",
     icon: <TableViewTwoToneIcon />,
+    sx: {
+      display: {
+        xs: "none",
+        md: "initial",
+      },
+    },
   },
   {
     label: "小区",
     key: "community",
     icon: <MapsHomeWorkTwoToneIcon />,
+    sx: {
+      display: {
+        xs: "none",
+        md: "initial",
+      },
+    },
   },
 ];
 
@@ -63,7 +82,6 @@ const gridTemplateColumns = {
 export default function Home() {
   const [transaction_type, onChangeTransactionType] =
     React.useState<keyof typeof gridTemplateColumns>("出售");
-  const [drawerAddOpen, setDrawerAddOpen] = React.useState(false);
   const [houseListRequest, setHouseListRequest] =
     React.useState<HouseListRequest>({
       page: 1,
@@ -90,15 +108,6 @@ export default function Home() {
   };
 
   const { data: aMapData = [] } = useGetCommunityByCommunity();
-  const setHouseListRequestDebounced = useDebouncedCallback(
-    (value: HouseListRequest) => {
-      setHouseListRequest({
-        ...houseListRequest,
-        ...value,
-      });
-    },
-    300
-  );
 
   return (
     <>
@@ -107,9 +116,6 @@ export default function Home() {
           sx: {
             gridTemplateColumns: gridTemplateColumns[transaction_type],
           },
-        }}
-        onAdd={() => {
-          setDrawerAddOpen(true);
         }}
         tabBar={{
           items: tabBarItems,
@@ -135,29 +141,39 @@ export default function Home() {
             case "出租":
               return (
                 <HouseList
+                  key={transaction_type}
                   loading={isFetching}
                   data={houseList}
                   pagination={pagination}
                   transactionType={transaction_type}
                   aMapData={aMapData}
+                  onFilterSubmit={(values) => {
+                    setHouseListRequest((pre) => ({
+                      ...pre,
+                      ...values,
+                      amap_bounds: pre.amap_bounds,
+                      page: pre.page,
+                      page_size: pre.page_size,
+                    }));
+                  }}
                   onMapBoundsChange={(amap_bounds) => {
-                    setHouseListRequestDebounced({
-                      ...houseListRequest,
+                    setHouseListRequest((pre) => ({
+                      ...pre,
                       amap_bounds,
-                    });
+                    }));
                   }}
                 />
               );
             case "house":
               return (
                 <Layout.Main sx={{ p: 2, position: "relative" }}>
-                  <HouseTable />
+                  <DynamicHouseTable />
                 </Layout.Main>
               );
             case "community":
               return (
                 <Layout.Main sx={{ p: 2, position: "relative" }}>
-                  <CommunityTable />
+                  <DynamicCommunityTable />
                 </Layout.Main>
               );
             default:
@@ -165,33 +181,6 @@ export default function Home() {
           }
         })()}
       </LayoutFrame>
-      <Drawer
-        anchor="bottom"
-        sx={{}}
-        slotProps={{
-          content: {
-            sx: {
-              height: "100vh",
-              width: { xs: "100%", md: "430px" },
-              top: 0,
-              left: { xs: 0, md: "calc(50% - 215px)" },
-              borderRadius: 0,
-              boxShadow: "lg",
-              p: 0,
-              backgroundColor: "background.body",
-              overflow: "auto",
-            },
-          },
-        }}
-        open={drawerAddOpen}
-        onClose={() => setDrawerAddOpen(false)}
-      >
-        <ModalClose />
-        <DialogTitle>添加房源</DialogTitle>
-        <Box sx={{ height: "100%", width: { xs: "100%", md: "430px" } }}>
-          <House.Form />
-        </Box>
-      </Drawer>
     </>
   );
 }

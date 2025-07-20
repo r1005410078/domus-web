@@ -12,7 +12,6 @@ import Typography from "@mui/joy/Typography";
 import InsertDriveFileRoundedIcon from "@mui/icons-material/InsertDriveFileRounded";
 import CheckRoundedIcon from "@mui/icons-material/CheckRounded";
 import RemoveCircleOutlineRoundedIcon from "@mui/icons-material/RemoveCircleOutlineRounded";
-
 export default function FileUpload(
   props: CardProps & {
     icon?: React.ReactElement<any>;

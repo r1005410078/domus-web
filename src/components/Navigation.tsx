@@ -10,6 +10,7 @@ import ListItemDecorator from "@mui/joy/ListItemDecorator";
 import ListItemContent from "@mui/joy/ListItemContent";
 import { IconButton } from "@mui/joy";
 import AddTwoToneIcon from "@mui/icons-material/AddTwoTone";
+import { SxProps } from "@mui/joy/styles/types";
 export interface NavigationProps {
   value: string;
   onChange: (value: any) => void;
@@ -27,6 +28,7 @@ export interface NavigationItem {
   label: string;
   key: string;
   icon: React.ReactNode;
+  sx?: SxProps;
 }
 
 export default function Navigation({
@@ -43,7 +45,7 @@ export default function Navigation({
         </ListSubheader>
         <List aria-labelledby="nav-list-browse">
           {items.map((item) => (
-            <ListItem key={item.key}>
+            <ListItem key={item.key} sx={item.sx}>
               <ListItemButton
                 selected={value === item.key}
                 onClick={() => onChange(item.key)}

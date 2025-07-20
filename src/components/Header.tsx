@@ -30,6 +30,24 @@ import MenuRoundedIcon from "@mui/icons-material/MenuRounded";
 import Navigation, { NavigationProps } from "./Navigation";
 import { usePathname } from "next/navigation";
 import Add from "@mui/icons-material/Add";
+import {
+  Calculator,
+  Calendar,
+  CreditCard,
+  Settings,
+  Smile,
+  User,
+} from "lucide-react";
+import {
+  CommandDialog,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+  CommandSeparator,
+  CommandShortcut,
+} from "@/components/ui/command";
 
 function ColorSchemeToggle() {
   const { mode, setMode } = useColorScheme();
@@ -69,7 +87,21 @@ interface HeaderProps {
 
 export default function Header({ tabBar, onAdd }: HeaderProps) {
   const [open, setOpen] = React.useState(false);
+  const [openCmdk, setOpenCmdk] = React.useState(false);
   const pathname = usePathname();
+
+  React.useEffect(() => {
+    const down = (e: KeyboardEvent) => {
+      console.log("keydown", e.metaKey);
+      if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
+        e.preventDefault();
+        setOpenCmdk((open) => !open);
+      }
+    };
+    console.log(111);
+    document.addEventListener("keydown", down);
+    return () => document.removeEventListener("keydown", down);
+  }, []);
 
   return (
     <Box sx={{ display: "flex", flexGrow: 1, justifyContent: "space-between" }}>
@@ -154,8 +186,9 @@ export default function Header({ tabBar, onAdd }: HeaderProps) {
         <Input
           size="sm"
           variant="outlined"
-          placeholder="Search anything…"
+          placeholder="搜索功能..."
           startDecorator={<SearchRoundedIcon color="primary" />}
+          onClick={() => setOpenCmdk(true)}
           endDecorator={
             <IconButton
               variant="outlined"
@@ -175,17 +208,57 @@ export default function Header({ tabBar, onAdd }: HeaderProps) {
             },
           }}
         />
-        <IconButton
+
+        <CommandDialog open={openCmdk} onOpenChange={setOpenCmdk}>
+          <CommandInput placeholder="Type a command or search..." />
+          <CommandList>
+            <CommandEmpty>No results found.</CommandEmpty>
+            <CommandGroup heading="Suggestions">
+              <CommandItem>
+                <Calendar />
+                <span>Calendar</span>
+              </CommandItem>
+              <CommandItem>
+                <Smile />
+                <span>Search Emoji</span>
+              </CommandItem>
+              <CommandItem>
+                <Calculator />
+                <span>Calculator</span>
+              </CommandItem>
+            </CommandGroup>
+            <CommandSeparator />
+            <CommandGroup heading="Settings">
+              <CommandItem>
+                <User />
+                <span>Profile</span>
+                <CommandShortcut>⌘P</CommandShortcut>
+              </CommandItem>
+              <CommandItem>
+                <CreditCard />
+                <span>Billing</span>
+                <CommandShortcut>⌘B</CommandShortcut>
+              </CommandItem>
+              <CommandItem>
+                <Settings />
+                <span>Settings</span>
+                <CommandShortcut>⌘S</CommandShortcut>
+              </CommandItem>
+            </CommandGroup>
+          </CommandList>
+        </CommandDialog>
+        {/* <IconButton
           size="sm"
           variant="outlined"
           color="neutral"
+          onClick={() => setOpenCmdk(true)}
           sx={{
             display: { xs: "inline-flex", sm: "none" },
             alignSelf: "center",
           }}
         >
           <SearchRoundedIcon />
-        </IconButton>
+        </IconButton> */}
         <ColorSchemeToggle />
         <Dropdown>
           <MenuButton
