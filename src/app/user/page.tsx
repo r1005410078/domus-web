@@ -3,12 +3,19 @@
 import React from "react";
 import LayoutFrame from "@/components/LayoutFrame";
 import RoomPreferencesTwoToneIcon from "@mui/icons-material/RoomPreferencesTwoTone";
-import UserTable from "@/components/UserTable";
 import Layout from "@/components/Layout";
 import UserList from "@/components/UserList";
 import RoleList from "@/components/RoleList";
-import RoleTable from "@/components/RoleTable";
 import ManageAccountsTwoToneIcon from "@mui/icons-material/ManageAccountsTwoTone";
+import dynamic from "next/dynamic";
+
+const DynamicRoleTable = dynamic(() => import("@/components/RoleTable"), {
+  loading: () => <p>加载中...</p>,
+});
+
+const DynamicUserTable = dynamic(() => import("@/components/UserTable"), {
+  loading: () => <p>加载中...</p>,
+});
 
 export default function Page() {
   const [tabBar, setTabBar] = React.useState("user");
@@ -57,14 +64,14 @@ export default function Page() {
             case "user":
               return (
                 <>
-                  <UserTable />
+                  <DynamicUserTable />
                   <UserList />
                 </>
               );
             case "role":
               return (
                 <>
-                  <RoleTable />
+                  <DynamicRoleTable />
                   <RoleList />
                 </>
               );
