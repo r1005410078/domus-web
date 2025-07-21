@@ -22,7 +22,6 @@ import { usePathname } from "next/navigation";
 import React from "react";
 import RoomPreferencesTwoToneIcon from "@mui/icons-material/RoomPreferencesTwoTone";
 import PersonAddTwoToneIcon from "@mui/icons-material/PersonAddTwoTone";
-import CreateRoundedIcon from "@mui/icons-material/CreateRounded";
 import House from "./House";
 
 interface LayoutFrameProps {
@@ -157,7 +156,7 @@ export default function LayoutFrame({
         <ModalClose />
         <DialogTitle>添加房源</DialogTitle>
         <Box sx={{ height: "100%", width: { xs: "100%", md: "430px" } }}>
-          <House.Form />
+          <House.Form onSubmit={() => setDrawerAddOpen(false)} />
         </Box>
       </Drawer>
     </CssVarsProvider>

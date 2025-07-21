@@ -28,7 +28,6 @@ import {
   stairsToString,
 } from "@/models/house";
 import { darkTheme, lightTheme } from "./agGridTheme";
-import SettingsIcon from "@mui/icons-material/Settings";
 import "@/utils/crypto-polyfill";
 import { useHouseDB } from "@/hooks/useHouseDB";
 
@@ -337,7 +336,7 @@ export default function HouseTable({}: HouseTable) {
         <ModalClose />
         <DialogTitle>添加房源</DialogTitle>
         <Box sx={{ height: "100%", width: { xs: "100%", md: "430px" } }}>
-          <House.Form value={editItem} />
+          <House.Form value={editItem} onSubmit={() => setEditItem(null)} />
         </Box>
       </Drawer>
       {detailModal}

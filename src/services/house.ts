@@ -1,7 +1,8 @@
-import { Community, HouseData, HouseForm } from "@/models/house";
+import { Community, HouseForm } from "@/models/house";
 import apiClient, { ResponseBody } from "./http";
 import { AmapBounds, CommunityWithHouseCount } from "@/components/AMap";
 import { HouseCommentItem } from "@/models/comment";
+import { HouseData } from "@/schema/house";
 
 type CreateHouseRequest = HouseForm;
 // 创建房源
@@ -17,7 +18,8 @@ export interface HouseListRequest {
   page_size: number;
   transaction_type?: string;
   amap_bounds?: AmapBounds;
-  updated_at?: string | null;
+  updated_at?: string;
+  not_exclude_deleted?: boolean;
 }
 
 // 获取房源列表

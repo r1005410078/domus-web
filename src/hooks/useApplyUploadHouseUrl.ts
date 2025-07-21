@@ -14,7 +14,7 @@ export function useApplyUploadHouseUrl() {
       }
     },
     onError: (err) => {
-      toast.showToast({ message: `录入失败: ${err}`, severity: "danger" });
+      toast.showToast({ message: `保存失败: ${err}`, severity: "danger" });
     },
   });
 }

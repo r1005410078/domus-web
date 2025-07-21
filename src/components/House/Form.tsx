@@ -82,19 +82,21 @@ export interface Relation {
 interface FormProps {
   defaultValues?: Partial<HouseForm> | null;
   value?: Partial<HouseForm> | null;
+  onSubmit?: () => void;
 }
 
-export function Form({ defaultValues, value }: FormProps) {
+export function Form({ defaultValues, value, onSubmit }: FormProps) {
   const { mutate } = useSaveHouse();
   const { uploads } = useUploadFiles();
   const toast = useToast();
   const form = useForm({
     defaultValues,
-    validators: {
-      onChange: houseFormSchema as any,
-    },
+    // validators: {
+    //   onChange: houseFormSchema as any,
+    // },
     onSubmit: async ({ value }) => {
       mutate(value as HouseForm);
+      onSubmit?.();
     },
   });
 

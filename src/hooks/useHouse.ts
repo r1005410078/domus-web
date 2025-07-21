@@ -24,10 +24,11 @@ export function useSaveHouse() {
 
       client.invalidateQueries({ queryKey: ["useHouseList"] });
       client.invalidateQueries({ queryKey: ["useGetHouseDetail"] });
-      toast.showToast({ message: "录入成功", severity: "success" });
+      client.invalidateQueries({ queryKey: ["houseCollection"] });
+      toast.showToast({ message: "保存成功", severity: "success" });
     },
     onError: (err) => {
-      toast.showToast({ message: `录入失败: ${err}`, severity: "danger" });
+      toast.showToast({ message: `保存失败: ${err}`, severity: "danger" });
     },
   });
 }
@@ -86,7 +87,7 @@ export function useAddComment() {
       client.invalidateQueries({ queryKey: ["useCommentList"] });
     },
     onError: (err) => {
-      toast.showToast({ message: `录入失败: ${err}`, severity: "danger" });
+      toast.showToast({ message: `保存失败: ${err}`, severity: "danger" });
     },
   });
 }

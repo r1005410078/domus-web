@@ -1,75 +1,45 @@
 "use client";
 
 import { createCollection, useLiveQuery } from "@tanstack/react-db";
-import { localStorageCollectionOptions } from "@tanstack/db-collections";
-import * as z from "zod";
+import { queryCollectionOptions } from "@tanstack/db-collections";
 import { useEffect, useRef, useState } from "react";
 import { getCommunityList } from "@/services/house";
 import "@/utils/crypto-polyfill";
 import { communitySchema } from "@/schema/house";
+import { queryClient } from "@/libs/QueryProvider";
+import { CollectionChache } from "@/utils/CollectionChache";
+
+const PAGE_SIZE = 100;
+const communityChache = new CollectionChache({
+  chacheKey: "COMMUNITY_CHACHE_DATA",
+  getData: (page, updated_at) =>
+    getCommunityList({
+      updated_at,
+      page,
+      page_size: PAGE_SIZE,
+    }).then((res) => res),
+  pageSize: PAGE_SIZE,
+});
 
 const communityCollection = createCollection(
-  localStorageCollectionOptions({
-    id: "communitys",
-    storageKey: "communitys",
-    storage: globalThis.localStorage,
+  queryCollectionOptions({
+    queryKey: ["communitysCollection"],
+    queryClient,
+    queryFn: async () => {
+      return communityChache.syncData();
+    },
+    getKey: (item) => item.id,
     schema: communitySchema,
-    getKey: (todo) => todo.id,
-    onInsert: ({ transaction, collection }) => {
-      return Promise.resolve({ success: true });
-    },
-    onUpdate: ({ transaction, collection }) => {
-      return Promise.resolve({ success: true });
-    },
+    onInsert: async ({ transaction }) => {},
   })
 );
 
 export function useCommunityDB() {
   const { data: communitys } = useLiveQuery((q) =>
     q
-      .from({ community: communityCollection })
-      .orderBy(({ community }) => community.updated_at, "desc")
+      .from({ house: communityCollection })
+      .orderBy((h) => h.house.updated_at, "desc")
   );
 
-  const initCommunityRef = useRef(communitys);
-
-  useEffect(() => {
-    const updated_at = initCommunityRef.current[0]?.updated_at;
-    syncCommunity(updated_at, 1);
-  }, []);
-
   return { communitys };
-}
-
-// 同步小区数据
-const PAGE_SIZE = 100;
-export async function syncCommunity(updated_at?: string | null, page = 1) {
-  const list = await getCommunityList({
-    updated_at,
-    page,
-    page_size: PAGE_SIZE,
-  });
-
-  let newItems = [];
-  for (const item of list) {
-    if (communityCollection.has(item.id)) {
-      communityCollection.update(item.id, (drafts) => {
-        for (const key in item) {
-          // @ts-ignore
-          drafts[key] = item[key];
-        }
-      });
-    } else {
-      newItems.push(item);
-    }
-  }
-
-  communityCollection.insert(newItems as any);
-  if (list.length < PAGE_SIZE) {
-    return;
-  }
-
-  requestAnimationFrame(() => {
-    syncCommunity(updated_at, page + 1);
-  });
 }
