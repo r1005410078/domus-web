@@ -48,7 +48,7 @@ import {
   CommandSeparator,
   CommandShortcut,
 } from "@/components/ui/command";
-import { UserAvatar, UserProfile } from "./UserAvatar";
+import { UserAvatar, UserInfomation } from "./UserAvatar";
 import Link from "next/link";
 import { useEditUserProfileModal } from "./EditUserProfile";
 import { isMobile } from "@/utils";
@@ -269,7 +269,7 @@ export default function Header({ tabBar, onAdd }: HeaderProps) {
             }}
           >
             <MenuItem>
-              <UserProfile />
+              <UserInfomation />
             </MenuItem>
             <ListDivider />
             <MenuItem

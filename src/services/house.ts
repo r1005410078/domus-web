@@ -1,4 +1,4 @@
-import { Community, HouseForm } from "@/models/house";
+import { Community, HouseData, HouseForm } from "@/models/house";
 import apiClient, { ResponseBody } from "./http";
 import { AmapBounds, CommunityWithHouseCount } from "@/components/AMap";
 import { HouseCommentItem } from "@/models/comment";
@@ -40,7 +40,7 @@ export function getHouseList({
 
 // 根据id 获取房源信息
 export function getHouseDetail(id: string) {
-  return apiClient.get<ResponseBody<HouseForm>>(
+  return apiClient.get<ResponseBody<HouseData>>(
     `/api/domus/query/house/detail/${id}`
   ); // 返回 token 等信息
 }

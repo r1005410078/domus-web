@@ -1,12 +1,23 @@
 "use client";
 
-import { useUserInformation } from "@/hooks/useLogin";
+import { useUserProfile } from "@/hooks/useLogin";
+import { useUserInfomation } from "@/hooks/useUser";
 import { capitalizeFirstLetter } from "@/utils";
 import { Avatar, Badge, badgeClasses, Box, Typography } from "@mui/joy";
 
-export function UserAvatar() {
-  const { userInfo, avatarURL, avatarName } = useUserInformation();
-  if (!userInfo) {
+interface UserAvatarProps {
+  userId?: string;
+}
+
+export function UserAvatar({ userId }: UserAvatarProps) {
+  const { userProfile, avatarURL, avatarName } = useUserProfile();
+  const { data: user } = useUserInfomation(userId);
+  let userInfo = userProfile;
+  if (user) {
+    userInfo = user;
+  }
+
+  if (!userProfile) {
     return null;
   }
 
@@ -55,10 +66,15 @@ export function UserAvatar() {
   );
 }
 
-export function UserProfile() {
-  const { userInfo, avatarURL, avatarName } = useUserInformation();
+export function UserInfomation({ userId }: UserAvatarProps) {
+  const { userProfile, avatarURL, avatarName } = useUserProfile();
+  const { data: user } = useUserInfomation(userId);
+  let userInfo = userProfile;
+  if (user) {
+    userInfo = user;
+  }
 
-  if (!userInfo) {
+  if (!userProfile) {
     return null;
   }
 
@@ -67,10 +83,10 @@ export function UserProfile() {
       <UserAvatar />
       <Box sx={{ ml: 1.5 }}>
         <Typography level="title-sm" textColor="text.primary">
-          {capitalizeFirstLetter(userInfo.username)}
+          {capitalizeFirstLetter(userProfile.username)}
         </Typography>
         <Typography level="body-xs" textColor="text.tertiary">
-          {userInfo.phone}
+          {userProfile.phone}
         </Typography>
       </Box>
     </Box>

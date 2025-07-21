@@ -9,6 +9,7 @@ import {
   deleteUser,
   getPermissionsDetailsList,
   getRoleList,
+  getUserInfo,
   getUserList,
   RoleRequest,
   updateRole,
@@ -171,5 +172,16 @@ export function useDeleteUser() {
     onError: (err) => {
       toast.showToast({ message: `删除失败: ${err}`, severity: "danger" });
     },
+  });
+}
+
+export function useUserInfomation(user_id?: string) {
+  return useQuery({
+    queryKey: ["useUserInfomation"],
+    queryFn: async () => {
+      const res = await getUserInfo(user_id!);
+      return res.data.data;
+    },
+    enabled: !!user_id,
   });
 }

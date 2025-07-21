@@ -92,3 +92,10 @@ export function deleteUser(id: string) {
     `/api/user_system/user/delete/${id}`
   );
 }
+
+// 获取用户信息
+export function getUserInfo(user_id: string) {
+  return apiClient.get<ResponseBody<UserInfomation>>(
+    `/api/user_system/user_profile/user_detail/${user_id}`
+  );
+}
