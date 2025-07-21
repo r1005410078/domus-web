@@ -1,5 +1,6 @@
 "use client";
 
+import { UserInfomation } from "@/models/user";
 import apiClient, { ResponseBody } from "./http";
 
 export interface LoginRequest {
@@ -9,6 +10,7 @@ export interface LoginRequest {
 
 export interface LoginResponse {
   token: string;
+  user: UserInfomation;
 }
 
 export const login = (data: LoginRequest) => {

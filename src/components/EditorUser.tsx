@@ -60,7 +60,11 @@ export default function EditorUser({ onClose, user }: EditorUserProps) {
           name="username"
           children={(field) => {
             return (
-              <FormControl size="sm" required>
+              <FormControl
+                size="sm"
+                disabled={user?.user_id ? true : false}
+                required
+              >
                 <FormLabel>用户名称</FormLabel>
                 <Input
                   placeholder="请输入"

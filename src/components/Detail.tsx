@@ -48,6 +48,7 @@ import { useGetHouseDetail } from "@/hooks/useHouse";
 import { PhotoProvider, PhotoView } from "react-photo-view";
 
 import "react-photo-view/dist/react-photo-view.css";
+import { UserProfile } from "./UserAvatar";
 
 // 插件注册
 dayjs.extend(utc);
@@ -97,14 +98,7 @@ export function Detail({ transactionType, house_id, onClose }: DetailProps) {
         sx={{ alignItems: "center", justifyContent: "space-between" }}
       >
         <Box>
-          <Stack spacing={2} direction="row" sx={{ alignItems: "center" }}>
-            <Stack>
-              <Avatar size="sm" src="/user.png" />
-            </Stack>
-            <Stack sx={{ minWidth: 0 }}>
-              <Typography noWrap>美大超级管理员</Typography>
-            </Stack>
-          </Stack>
+          <UserProfile />
         </Box>
         <IconButton size="lg" variant="plain">
           <CloseTwoToneIcon onClick={() => onClose()} />

@@ -183,7 +183,12 @@ export default function Page() {
                       alignItems: "center",
                     }}
                   >
-                    <Checkbox size="sm" label="记住我" name="persistent" />
+                    <Checkbox
+                      size="sm"
+                      label="记住我"
+                      name="persistent"
+                      defaultChecked
+                    />
                   </Box>
                   <Button type="submit" fullWidth loading={login.isPending}>
                     登陆

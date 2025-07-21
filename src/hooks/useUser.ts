@@ -13,9 +13,11 @@ import {
   RoleRequest,
   updateRole,
   updateUser,
+  updateUserProfile,
   UserRequest,
 } from "@/services/user";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { Update } from "next/dist/build/swc/types";
 
 export function useRoleList() {
   return useQuery({
@@ -98,11 +100,32 @@ export function useSaveUser() {
         return;
       }
 
-      toast.showToast({ message: "创建成功", severity: "success" });
+      toast.showToast({ message: "保存成功", severity: "success" });
       client.invalidateQueries({ queryKey: ["useUserList"] });
     },
     onError: (err) => {
       toast.showToast({ message: `创建失败: ${err}`, severity: "danger" });
+    },
+  });
+}
+
+export function useUpdateUserProfile() {
+  const toast = useToast();
+  const client = useQueryClient();
+  return useMutation({
+    mutationFn: updateUserProfile,
+    onSuccess: (res) => {
+      if (res.data.code !== 200) {
+        toast.showToast({ message: res.data.msg, severity: "danger" });
+        return;
+      }
+
+      toast.showToast({ message: "保存成功", severity: "success" });
+      globalThis.localStorage.removeItem("token");
+      globalThis.location.replace("/login");
+    },
+    onError: (err) => {
+      toast.showToast({ message: `保存失败: ${err}`, severity: "danger" });
     },
   });
 }

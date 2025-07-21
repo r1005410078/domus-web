@@ -1,6 +1,6 @@
 "use client";
 
-import { Permission, Role, User } from "@/models/user";
+import { Permission, Role, User, UserInfomation } from "@/models/user";
 import apiClient, { ResponseBody } from "./http";
 
 export function getRoleList() {
@@ -68,6 +68,17 @@ export function createUser(data: Partial<RoleRequest>) {
 export function updateUser(data: Partial<RoleRequest>) {
   return apiClient.post<ResponseBody<any>>(
     "/api/user_system/user/update",
+    data
+  );
+}
+
+export type UpdateUserInfoRequest = Partial<
+  UserInfomation & { password: string }
+>;
+
+export function updateUserProfile(data: Partial<UpdateUserInfoRequest>) {
+  return apiClient.post<ResponseBody<any>>(
+    "/api/user_system/user_profile/update",
     data
   );
 }

@@ -28,3 +28,15 @@ export interface User {
   created_at: string;
   updated_at: string;
 }
+
+export interface UserInfomation {
+  id: string;
+  // 用户名
+  username: string;
+  // 邮箱
+  email: string | null;
+  // 手机号
+  phone: string | null;
+  // 角色
+  roles: string[];
+}

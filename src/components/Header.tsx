@@ -48,37 +48,10 @@ import {
   CommandSeparator,
   CommandShortcut,
 } from "@/components/ui/command";
-
-function ColorSchemeToggle() {
-  const { mode, setMode } = useColorScheme();
-  const [mounted, setMounted] = React.useState(false);
-  React.useEffect(() => {
-    setMounted(true);
-  }, []);
-  if (!mounted) {
-    return <IconButton size="sm" variant="outlined" color="primary" />;
-  }
-  return (
-    <Tooltip title="Change theme" variant="outlined">
-      <IconButton
-        data-screenshot="toggle-mode"
-        size="sm"
-        variant="plain"
-        color="neutral"
-        sx={{ alignSelf: "center" }}
-        onClick={() => {
-          if (mode === "light") {
-            setMode("dark");
-          } else {
-            setMode("light");
-          }
-        }}
-      >
-        {mode === "light" ? <DarkModeRoundedIcon /> : <LightModeRoundedIcon />}
-      </IconButton>
-    </Tooltip>
-  );
-}
+import { UserAvatar, UserProfile } from "./UserAvatar";
+import Link from "next/link";
+import { useEditUserProfileModal } from "./EditUserProfile";
+import { isMobile } from "@/utils";
 
 interface HeaderProps {
   tabBar: NavigationProps;
@@ -86,25 +59,39 @@ interface HeaderProps {
 }
 
 export default function Header({ tabBar, onAdd }: HeaderProps) {
+  const [mounted, setMounted] = React.useState(false);
+  React.useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const { mode, setMode } = useColorScheme();
   const [open, setOpen] = React.useState(false);
   const [openCmdk, setOpenCmdk] = React.useState(false);
   const pathname = usePathname();
 
+  const { editUserProfileModal, openEditUserProfileModal } =
+    useEditUserProfileModal({
+      layout: isMobile ? "fullscreen" : "center",
+    });
+
   React.useEffect(() => {
     const down = (e: KeyboardEvent) => {
-      console.log("keydown", e.metaKey);
       if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
         e.preventDefault();
         setOpenCmdk((open) => !open);
       }
     };
-    console.log(111);
     document.addEventListener("keydown", down);
     return () => document.removeEventListener("keydown", down);
   }, []);
 
+  if (!mounted) {
+    return <></>;
+  }
+
   return (
     <Box sx={{ display: "flex", flexGrow: 1, justifyContent: "space-between" }}>
+      {editUserProfileModal}
       <Stack
         direction="row"
         spacing={1}
@@ -259,7 +246,6 @@ export default function Header({ tabBar, onAdd }: HeaderProps) {
         >
           <SearchRoundedIcon />
         </IconButton> */}
-        <ColorSchemeToggle />
         <Dropdown>
           <MenuButton
             variant="plain"
@@ -270,11 +256,7 @@ export default function Header({ tabBar, onAdd }: HeaderProps) {
               borderRadius: "9999999px",
             }}
           >
-            <Avatar
-              src="https://i.pravatar.cc/40?img=2"
-              srcSet="https://i.pravatar.cc/80?img=2"
-              sx={{ maxWidth: "32px", maxHeight: "32px" }}
-            />
+            <UserAvatar />
           </MenuButton>
           <Menu
             placement="bottom-end"
@@ -287,47 +269,41 @@ export default function Header({ tabBar, onAdd }: HeaderProps) {
             }}
           >
             <MenuItem>
-              <Box sx={{ display: "flex", alignItems: "center" }}>
-                <Avatar
-                  src="https://i.pravatar.cc/40?img=2"
-                  srcSet="https://i.pravatar.cc/80?img=2"
-                  sx={{ borderRadius: "50%" }}
-                />
-                <Box sx={{ ml: 1.5 }}>
-                  <Typography level="title-sm" textColor="text.primary">
-                    Rick Sanchez
-                  </Typography>
-                  <Typography level="body-xs" textColor="text.tertiary">
-                    rick@email.com
-                  </Typography>
-                </Box>
-              </Box>
+              <UserProfile />
             </MenuItem>
             <ListDivider />
-            <MenuItem>
-              <HelpRoundedIcon />
-              Help
-            </MenuItem>
-            <MenuItem>
-              <SettingsRoundedIcon />
-              Settings
-            </MenuItem>
-            <ListDivider />
-            <MenuItem component="a" href="/blog/first-look-at-joy/">
-              First look at Joy UI
-              <OpenInNewRoundedIcon />
-            </MenuItem>
             <MenuItem
-              component="a"
-              href="https://github.com/mui/material-ui/tree/master/docs/data/joy/getting-started/templates/email"
+              onClick={() => {
+                if (mode === "light") {
+                  setMode("dark");
+                } else {
+                  setMode("light");
+                }
+              }}
             >
-              Sourcecode
-              <OpenInNewRoundedIcon />
+              {mode === "light" ? (
+                <DarkModeRoundedIcon />
+              ) : (
+                <LightModeRoundedIcon />
+              )}
+              切换主题
+            </MenuItem>
+            <MenuItem onClick={() => openEditUserProfileModal()}>
+              <SettingsRoundedIcon />
+              用户设置
             </MenuItem>
             <ListDivider />
-            <MenuItem>
-              <LogoutRoundedIcon />
-              Log out
+            <MenuItem
+              onClick={() => {
+                globalThis.localStorage.removeItem("token");
+              }}
+            >
+              <Link href="/login">
+                <>
+                  <LogoutRoundedIcon />
+                  退出
+                </>
+              </Link>
             </MenuItem>
           </Menu>
         </Dropdown>

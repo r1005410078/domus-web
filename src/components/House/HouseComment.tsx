@@ -10,6 +10,7 @@ import {
 } from "@mui/joy";
 import { useAddComment, useCommentList } from "@/hooks/useHouse";
 import { dateToString } from "@/models/house";
+import { capitalizeFirstLetter } from "@/utils";
 
 interface Comment {
   id: number;
@@ -18,23 +19,6 @@ interface Comment {
   content: string;
   createdAt: string;
 }
-
-const initialComments: Comment[] = [
-  {
-    id: 1,
-    username: "Alice",
-    avatarUrl: "",
-    content: "这是一条评论！",
-    createdAt: "2025-07-08 15:00",
-  },
-  {
-    id: 2,
-    username: "Bob",
-    avatarUrl: "",
-    content: "你好呀～",
-    createdAt: "2025-07-08 16:00",
-  },
-];
 
 interface HouseCommentProps {
   houseId: string;
@@ -78,7 +62,7 @@ export default function HouseComment({ houseId }: HouseCommentProps) {
             />
             <Box>
               <Typography level="body-sm" fontWeight="lg">
-                {comment.admin_id}
+                {capitalizeFirstLetter(comment.admin_id)}
               </Typography>
               <Typography level="body-xs" textColor="text.tertiary">
                 {dateToString(comment.updated_at)}
