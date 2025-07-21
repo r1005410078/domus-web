@@ -2,18 +2,17 @@
 
 import { createCollection, useLiveQuery } from "@tanstack/react-db";
 import { localStorageCollectionOptions } from "@tanstack/db-collections";
-import * as z from "zod";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { getHouseList } from "@/services/house";
 import "@/utils/crypto-polyfill";
-import { houseFormSchema } from "@/schema/house";
+import { houseDataSchema } from "@/schema/house";
 
 const houseCollection = createCollection(
   localStorageCollectionOptions({
     id: "house",
     storageKey: "house",
     storage: globalThis.localStorage,
-    schema: houseFormSchema,
+    schema: houseDataSchema,
     getKey: (house) => house.id!,
     onInsert: ({ transaction, collection }) => {
       return Promise.resolve({ success: true });

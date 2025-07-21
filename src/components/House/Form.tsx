@@ -24,7 +24,6 @@ import { HouseForm } from "@/models/house";
 import { CommunityForm, HouseOwnerForm } from "./common";
 import DropZone, { useUploadFiles } from "./DropZone";
 import { useSaveHouse } from "@/hooks/useHouse";
-import PurposeSelector from "../PurposeSelector";
 import {
   EditActualRate,
   EditApartmentType,
@@ -71,6 +70,9 @@ import {
   EditUseArea,
   EditViewMethod,
 } from "../EditDetail";
+import { houseFormSchema } from "@/schema/house";
+import { useToast } from "@/libs/ToastProvider";
+import { getFirstError } from "@/utils";
 
 export interface Relation {
   purpose?: string;
@@ -85,14 +87,27 @@ interface FormProps {
 export function Form({ defaultValues, value }: FormProps) {
   const { mutate } = useSaveHouse();
   const { uploads } = useUploadFiles();
+  const toast = useToast();
   const form = useForm({
     defaultValues,
+    validators: {
+      onChange: houseFormSchema as any,
+    },
     onSubmit: async ({ value }) => {
       mutate(value as HouseForm);
     },
   });
 
   const handleSubmit = async () => {
+    const errorsMessage = getFirstError(form.getAllErrors());
+    if (errorsMessage) {
+      toast.showToast({
+        message: errorsMessage,
+        severity: "danger",
+      });
+      return;
+    }
+
     await uploads();
     await form.handleSubmit();
   };

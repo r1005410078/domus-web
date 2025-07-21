@@ -1,9 +1,9 @@
 import { z } from "zod";
 
 export const doorNumberSchema = z.object({
-  building_number: z.number(),
-  unit_number: z.number(),
-  door_number: z.number(),
+  building_number: z.number("楼号不能空"),
+  unit_number: z.number("单元号不能空"),
+  door_number: z.number("室号不能空"),
 });
 
 export const floorRangeSchema = z.object({
@@ -12,10 +12,10 @@ export const floorRangeSchema = z.object({
 });
 
 export const apartmentTypeSchema = z.object({
-  room: z.number().nullable().optional(),
-  hall: z.number().nullable().optional(),
-  bathroom: z.number().nullable().optional(),
-  kitchen: z.number().nullable().optional(),
+  room: z.number("户型房间数量不能空"),
+  hall: z.number("户型厅数量不能空"),
+  bathroom: z.number("户型卫数量不能空"),
+  kitchen: z.number("户型厨数量不能空"),
   terrace: z.number().nullable().optional(),
   balcony: z.number().nullable().optional(),
 });
@@ -27,8 +27,8 @@ export const stairsSchema = z.object({
 
 export const houseOwnerSchema = z.object({
   id: z.string().nullable().optional(),
-  name: z.string().nullable().optional(),
-  phone: z.string().nullable().optional(),
+  name: z.string("房主姓名不能空"),
+  phone: z.string("房主电话不能空"),
   id_card: z.string().nullable().optional(),
   id_card_images: z.array(z.string()).nullable().optional(),
   description: z.string().nullable().optional(),
@@ -60,9 +60,9 @@ export const fileInfoSchema = z.object({
 export const houseFormSchema = z.object({
   id: z.string().nullable().optional(),
   title: z.string().nullable().optional(),
-  purpose: z.string(),
-  transaction_type: z.string(),
-  house_status: z.string(),
+  purpose: z.string("用途不能空"),
+  transaction_type: z.string("交易类型不能空"),
+  house_status: z.string("状态不能空"),
   floor_range: floorRangeSchema.nullable().optional(),
   door_number: doorNumberSchema.nullable().optional(),
   apartment_type: apartmentTypeSchema.nullable().optional(),
@@ -91,8 +91,8 @@ export const houseFormSchema = z.object({
   door_width: z.number().nullable().optional(),
   discount_year_limit: z.string().nullable().optional(),
   stairs: stairsSchema.nullable().optional(),
-  owner: houseOwnerSchema.nullable().optional(),
-  community: communitySchema.nullable().optional(),
+  owner: houseOwnerSchema,
+  community: communitySchema,
   sale_low_price: z.number().nullable().optional(),
   view_method: z.string().nullable().optional(),
   payment_method: z.string().nullable().optional(),
@@ -110,5 +110,9 @@ export const houseFormSchema = z.object({
   external_sync: z.string().nullable().optional(),
   remark: z.string().nullable().optional(),
   images: z.array(fileInfoSchema).nullable().optional(),
+});
+
+export const houseDataSchema = houseFormSchema.extend({
+  id: z.string(),
   updated_at: z.string().nullable().optional(),
 });

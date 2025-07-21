@@ -24,13 +24,13 @@ export interface FloorRange {
 
 export interface ApartmentType {
   // 室
-  room?: number;
+  room: number;
   // 厅
-  hall?: number;
+  hall: number;
   // 卫
-  bathroom?: number;
+  bathroom: number;
   // 厨
-  kitchen?: number;
+  kitchen: number;
   // 阳台
   terrace?: number;
   // 阁楼
@@ -101,10 +101,10 @@ export interface HouseForm {
   floor_range?: FloorRange;
 
   // 门牌号结构
-  door_number?: DoorNumber;
+  door_number: DoorNumber;
 
   // 户型结构
-  apartment_type?: ApartmentType;
+  apartment_type: ApartmentType;
 
   /// 面积与装修
   // 建筑面积
@@ -203,7 +203,11 @@ export interface HouseForm {
   remark?: string;
   // 图片
   images?: FileInfo[];
+}
 
+export interface HouseData extends HouseForm {
+  // 房源ID
+  id: string;
   // 更新时间
   updated_at?: string;
 }

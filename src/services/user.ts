@@ -2,6 +2,7 @@
 
 import { Permission, Role, User, UserInfomation } from "@/models/user";
 import apiClient, { ResponseBody } from "./http";
+import z from "zod";
 
 export function getRoleList() {
   return apiClient.get<ResponseBody<{ list: Role[]; total: number }>>(
@@ -21,21 +22,23 @@ export function getPermissionsDetailsList() {
   );
 } // 获取权限详情
 
-export interface RoleRequest {
-  id?: string;
-  name: string;
-  description: string;
-  permissions: { source: string; action: string }[];
-}
+export const roleRequestSchema = z.object({
+  id: z.string().optional(),
+  name: z.string(),
+  description: z.string(),
+  permissions: z.array(z.object({ source: z.string(), action: z.string() })),
+});
 
-export function createRole(data: Partial<RoleRequest>) {
+export type RoleRequest = z.infer<typeof roleRequestSchema>;
+
+export function createRole(data: RoleRequest) {
   return apiClient.post<ResponseBody<Permission[]>>(
     "/api/user_system/role/create",
     data
   );
 }
 
-export function updateRole(data: Partial<RoleRequest>) {
+export function updateRole(data: RoleRequest) {
   return apiClient.post<ResponseBody<Permission[]>>(
     "/api/user_system/role/update",
     data
@@ -48,15 +51,16 @@ export function deleteRole(id: string) {
   );
 }
 
-export interface UserRequest {
-  id?: string;
-  username: string;
-  email?: any;
-  phone?: any;
-  // 角色
-  roles: string[];
-  password?: string;
-}
+export const userRequestSchema = z.object({
+  id: z.string().optional(),
+  username: z.string("用户名不能为空"),
+  email: z.string().optional(),
+  phone: z.string().optional(),
+  roles: z.array(z.string()),
+  password: z.string().optional(),
+});
+
+export type UserRequest = z.infer<typeof userRequestSchema>;
 
 export function createUser(data: Partial<RoleRequest>) {
   return apiClient.post<ResponseBody<any>>(

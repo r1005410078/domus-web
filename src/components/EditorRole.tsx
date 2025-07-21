@@ -1,7 +1,10 @@
 "use client";
 
 import { usePermissionsDetailsList, useSaveRole } from "@/hooks/useUser";
-import { Permission, Role } from "@/models/user";
+import { useToast } from "@/libs/ToastProvider";
+import { Role } from "@/models/user";
+import { roleRequestSchema } from "@/services/user";
+import { getFirstError } from "@/utils";
 import {
   Button,
   FormControl,
@@ -21,22 +24,25 @@ import { useEffect } from "react";
 interface EditorRoleProps {
   onClose: () => void;
   children?: React.ReactNode;
-  role?: Partial<Role> | null;
+  role?: Role | null;
 }
 
 export default function EditorRole({ onClose, role }: EditorRoleProps) {
   const { data: permissions } = usePermissionsDetailsList();
   const { mutate } = useSaveRole();
+  const toast = useToast();
 
   const form = useForm({
     defaultValues: role,
-
+    validators: {
+      onChange: roleRequestSchema as any,
+    },
     onSubmit: async ({ value }) => {
       mutate({
         id: role?.id,
-        name: value?.name,
-        description: value?.description,
-        permissions: value?.permissions?.map((p) => ({
+        name: value!.name,
+        description: value!.description,
+        permissions: value!.permissions?.map((p) => ({
           source: p.source,
           action: p.action,
         })),
@@ -114,6 +120,14 @@ export default function EditorRole({ onClose, role }: EditorRoleProps) {
       <Button
         color="primary"
         onClick={() => {
+          const errorsMessage = getFirstError(form.getAllErrors());
+          if (errorsMessage) {
+            toast.showToast({
+              message: errorsMessage,
+              severity: "danger",
+            });
+            return;
+          }
           form.handleSubmit();
           onClose();
         }}

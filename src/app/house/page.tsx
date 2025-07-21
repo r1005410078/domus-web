@@ -233,37 +233,3 @@ const aMapData = [
     house_count: 11,
   },
 ];
-
-// 出售
-const sale: HouseForm[] = [
-  {
-    purpose: "住宅",
-    transaction_type: "出售",
-    house_status: "在售",
-    title: "这是一个出售房源",
-    sale_price: 120,
-    sale_low_price: 11,
-    down_payment: 2,
-    building_area: 125,
-    apartment_type: {
-      room: 2,
-      hall: 1,
-      bathroom: 1,
-      kitchen: 1,
-      terrace: 1,
-      balcony: 1,
-    },
-    tags: ["近地铁", "近公交", "学区好"],
-    community: {
-      name: "东安花园",
-      typecode: "",
-      lat: 0,
-      lng: 0,
-      address: "华中路与港华路交叉口东北100米",
-      district: "华中路与港华路交叉口东北100米",
-      adcode: "",
-      id: "",
-      city: "",
-    },
-  },
-];

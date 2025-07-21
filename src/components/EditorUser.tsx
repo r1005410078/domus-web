@@ -6,15 +6,16 @@ import {
   useRoleMap,
   useSaveUser,
 } from "@/hooks/useUser";
-import { Permission, User } from "@/models/user";
+import { useToast } from "@/libs/ToastProvider";
+import { User } from "@/models/user";
+import { userRequestSchema } from "@/services/user";
+import { getFirstError } from "@/utils";
 import {
   Button,
   FormControl,
   FormLabel,
   Input,
-  Select,
   Sheet,
-  Option,
   Typography,
   Autocomplete,
   AutocompleteOption,
@@ -26,25 +27,28 @@ import { useEffect } from "react";
 interface EditorUserProps {
   onClose: () => void;
   children?: React.ReactNode;
-  user?: Partial<User> | null;
+  user?: User | null;
 }
 
 export default function EditorUser({ onClose, user }: EditorUserProps) {
   const { data: roles } = useRoleList();
   const rolesMap = useRoleMap();
   const { mutate } = useSaveUser();
+  const toast = useToast();
 
   const form = useForm({
     defaultValues: user,
-
+    validators: {
+      onChange: userRequestSchema as any,
+    },
     onSubmit: async ({ value }) => {
       mutate({
         id: user?.user_id,
-        username: value?.username,
-        phone: value?.phone,
-        email: value?.email,
-        roles: value?.roles,
-        password: value?.password,
+        username: value!.username,
+        phone: value!.phone,
+        email: value!.email,
+        roles: value!.roles,
+        password: value!.password,
       });
     },
   });
@@ -158,6 +162,14 @@ export default function EditorUser({ onClose, user }: EditorUserProps) {
       <Button
         color="primary"
         onClick={() => {
+          const errorsMessage = getFirstError(form.getAllErrors());
+          if (errorsMessage) {
+            toast.showToast({
+              message: errorsMessage,
+              severity: "danger",
+            });
+            return;
+          }
           form.handleSubmit();
           onClose();
         }}

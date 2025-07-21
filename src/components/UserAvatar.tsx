@@ -6,7 +6,6 @@ import { Avatar, Badge, badgeClasses, Box, Typography } from "@mui/joy";
 
 export function UserAvatar() {
   const { userInfo, avatarURL, avatarName } = useUserInformation();
-  console.log("userInfo", userInfo);
   if (!userInfo) {
     return null;
   }

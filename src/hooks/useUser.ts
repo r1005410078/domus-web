@@ -63,7 +63,7 @@ export function useSaveRole() {
   const toast = useToast();
   const client = useQueryClient();
   return useMutation({
-    mutationFn: (data: Partial<RoleRequest>) => {
+    mutationFn: (data: RoleRequest) => {
       if (data.id) {
         return updateRole(data);
       }
