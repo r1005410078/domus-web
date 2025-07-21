@@ -6,16 +6,10 @@ import { AllCommunityModule, ModuleRegistry } from "ag-grid-community";
 import { AgGridReact } from "ag-grid-react";
 import { AG_GRID_LOCALE_CN } from "@ag-grid-community/locale";
 import {
-  Alert,
   Box,
   Button,
-  Checkbox,
   DialogTitle,
   Drawer,
-  Dropdown,
-  IconButton,
-  MenuButton,
-  MenuItem,
   ModalClose,
   Stack,
   Typography,
@@ -49,7 +43,6 @@ import {
 import House from "./House";
 import { useModalContent } from "@/hooks/useModalContent";
 import { AlertTableHelp } from "./AlertTableHelp";
-import { PhotoSlider } from "react-photo-view";
 
 ModuleRegistry.registerModules([
   AllCommunityModule,
@@ -245,7 +238,6 @@ export default function HouseTable({}: HouseTable) {
     console.log("值:", event.value);
 
     if (event.colDef.field === "images") {
-      // openImages(event.value);
       openImages(
         ((event.value as IRow["images"]) || []).map((item) => ({
           src: item.url,

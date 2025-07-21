@@ -27,7 +27,7 @@ export function getHouseList({
   ...params
 }: HouseListRequest) {
   return apiClient
-    .post<ResponseBody<{ list: HouseForm[]; total: number }>>(
+    .post<ResponseBody<{ list: HouseData[]; total: number }>>(
       "/api/domus/query/house/list",
       {
         page,

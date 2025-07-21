@@ -13,7 +13,7 @@ export const floorRangeSchema = z.object({
 
 export const apartmentTypeSchema = z.object({
   room: z.number("户型房间数量不能空"),
-  hall: z.number("户型厅数量不能空"),
+  hall: z.number().nullable().optional(),
   bathroom: z.number("户型卫数量不能空"),
   kitchen: z.number("户型厨数量不能空"),
   terrace: z.number().nullable().optional(),
@@ -45,8 +45,8 @@ export const communitySchema = z.object({
   typecode: z.string(),
   lat: z.number(),
   lng: z.number(),
-  district: z.string(),
-  adcode: z.string(),
+  district: z.string().nullable().optional(),
+  adcode: z.string().nullable().optional(),
   updated_at: z.string().nullable().optional(),
 });
 

@@ -8,7 +8,6 @@ import DeckTwoToneIcon from "@mui/icons-material/DeckTwoTone";
 import TableViewTwoToneIcon from "@mui/icons-material/TableViewTwoTone";
 import Layout from "@/components/Layout";
 import { HouseList } from "@/components/HouseList";
-import { HouseForm } from "@/models/house";
 
 import { useGetCommunityByCommunity, useHouseList } from "@/hooks/useHouse";
 import { HouseListRequest } from "@/services/house";
@@ -81,7 +80,7 @@ const gridTemplateColumns = {
 
 export default function Home() {
   const [transaction_type, onChangeTransactionType] =
-    React.useState<keyof typeof gridTemplateColumns>("出售");
+    React.useState<keyof typeof gridTemplateColumns>("house");
   const [houseListRequest, setHouseListRequest] =
     React.useState<HouseListRequest>({
       page: 1,

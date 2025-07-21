@@ -17,8 +17,6 @@ export function useModalContent({ layout = "center" }: ModalContent) {
   const [detail, openDetail] = useState<React.ReactNode | null>(null);
   const [images, openImages] = useState<DataType[] | null>(null);
 
-  console.log("detail", detail);
-
   const detailModal = (
     <>
       <Modal open={!!detail} onClose={() => openDetail(null)}>
