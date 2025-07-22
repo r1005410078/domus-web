@@ -114,6 +114,7 @@ export const houseFormSchema = z.object({
 
 export const houseDataSchema = houseFormSchema.extend({
   id: z.string(),
+  created_by: z.string(),
   updated_at: z.string().optional(),
   deleted_at: z.string().optional(),
 });

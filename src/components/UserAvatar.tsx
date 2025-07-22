@@ -17,7 +17,7 @@ export function UserAvatar({ userId }: UserAvatarProps) {
     userInfo = user;
   }
 
-  if (!userProfile) {
+  if (!userInfo) {
     return null;
   }
 
@@ -26,7 +26,8 @@ export function UserAvatar({ userId }: UserAvatarProps) {
     avatarNode = <Avatar src={avatarURL} sx={{ borderRadius: "50%" }} />;
   }
 
-  avatarNode = <Avatar>{avatarName}</Avatar>;
+  const name = userInfo!.username?.[0]?.toUpperCase() || "R";
+  avatarNode = <Avatar>{name}</Avatar>;
 
   return (
     <Badge
@@ -74,7 +75,7 @@ export function UserInfomation({ userId }: UserAvatarProps) {
     userInfo = user;
   }
 
-  if (!userProfile) {
+  if (!userInfo) {
     return null;
   }
 
@@ -83,10 +84,10 @@ export function UserInfomation({ userId }: UserAvatarProps) {
       <UserAvatar />
       <Box sx={{ ml: 1.5 }}>
         <Typography level="title-sm" textColor="text.primary">
-          {capitalizeFirstLetter(userProfile.username)}
+          {capitalizeFirstLetter(userInfo!.username)}
         </Typography>
         <Typography level="body-xs" textColor="text.tertiary">
-          {userProfile.phone}
+          {userInfo!.phone}
         </Typography>
       </Box>
     </Box>

@@ -45,7 +45,7 @@ export function registerHouseFormComponent(
 }
 
 export interface EditDetailDrawerProps {
-  detailEditField: keyof HouseForm | null;
+  detailEditField?: keyof HouseForm;
   houseDetail: HouseForm;
   onClose: () => void;
 }
@@ -65,8 +65,12 @@ export function EditDetailDrawer({
     },
   });
 
+  React.useEffect(() => {
+    form.reset(houseDetail);
+  }, [houseDetail]);
+
   return (
-    <Transition nodeRef={nodeRef} in={!!detailEditField} timeout={400}>
+    <Transition nodeRef={nodeRef} in={!!detailEditField} timeout={100}>
       {(state: string) => {
         return (
           <Modal
@@ -78,7 +82,7 @@ export function EditDetailDrawer({
                 sx: {
                   opacity: 0,
                   backdropFilter: "none",
-                  transition: `opacity 400ms, backdrop-filter 400ms`,
+                  transition: `opacity 100ms, backdrop-filter 100ms`,
                   ...{
                     entering: { opacity: 1, backdropFilter: "blur(8px)" },
                     entered: { opacity: 1, backdropFilter: "blur(8px)" },

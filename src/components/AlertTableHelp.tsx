@@ -4,7 +4,7 @@ import { Alert, IconButton, Typography } from "@mui/joy";
 import InfoIcon from "@mui/icons-material/Info";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import { useState } from "react";
-
+import ContactSupportTwoToneIcon from "@mui/icons-material/ContactSupportTwoTone";
 export function AlertTableHelp({ name }: { name: string }) {
   const storage_key = `alertTableHelpVisible_${name}`;
 
@@ -13,7 +13,16 @@ export function AlertTableHelp({ name }: { name: string }) {
   );
 
   if (!alertTableHelpVisible) {
-    return null;
+    return (
+      <IconButton aria-label="Open in new tab" component="a" href="#as-link">
+        <ContactSupportTwoToneIcon
+          onClick={() => {
+            localStorage.removeItem(storage_key);
+            setAlertTableHelpVisible(true);
+          }}
+        />
+      </IconButton>
+    );
   }
   return (
     <Alert
@@ -38,7 +47,7 @@ export function AlertTableHelp({ name }: { name: string }) {
       <div>
         <div>操作提示</div>
         <Typography level="body-sm" color="neutral">
-          双击序号单元格查看详情其他则放大，右键菜单可进行编辑操作
+          双击表格单元格进行编辑，双击序号查看整行数据，右键查看更多操作
         </Typography>
       </div>
     </Alert>

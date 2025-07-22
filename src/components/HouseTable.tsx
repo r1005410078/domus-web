@@ -9,9 +9,14 @@ import {
   Box,
   Button,
   DialogTitle,
+  Divider,
   Drawer,
+  Grid,
+  Link,
   ModalClose,
+  Sheet,
   Stack,
+  Table,
   Typography,
   useColorScheme,
 } from "@mui/joy";
@@ -42,6 +47,7 @@ import {
 import House from "./House";
 import { useModalContent } from "@/hooks/useModalContent";
 import { AlertTableHelp } from "./AlertTableHelp";
+import { EditDetailDrawer } from "./EditDetail";
 
 ModuleRegistry.registerModules([
   AllCommunityModule,
@@ -63,7 +69,10 @@ interface HouseTable {}
 
 // Create new GridExample component
 export default function HouseTable({}: HouseTable) {
+  const [detailEditField, setDetailEditField] = useState<keyof HouseForm>();
   const [editItem, setEditItem] = useState<IRow | null>(null);
+  const [visibleOpenEditorHouse, openEditorHouse] = useState<boolean>();
+
   const {
     houseDataSource: rowData,
     refreshHouse,
@@ -71,6 +80,7 @@ export default function HouseTable({}: HouseTable) {
   } = useHouseDB();
   const { openDetail, detailModal, openImages } = useModalContent({
     layout: "center",
+    title: "房源详情",
   });
 
   const { mode } = useColorScheme();
@@ -213,7 +223,7 @@ export default function HouseTable({}: HouseTable) {
       {
         field: "updated_at",
         headerName: "更新时间",
-        cellRenderer: (params: any) => dateToString(params.data.updated_at),
+        cellRenderer: (params: any) => dateToString(params.data?.updated_at),
       },
     ].map((item: any) => {
       const newItem: ColDef<IRow> = item;
@@ -234,33 +244,112 @@ export default function HouseTable({}: HouseTable) {
     resizable: true,
   };
 
+  const openTabelRowDetail = (event: CellDoubleClickedEvent<Community>) => {
+    openDetail(
+      <Sheet>
+        <DescriptionList
+          items={
+            colDefs
+              .filter((item) => item.headerName !== "序号")
+              .map((item) => {
+                // @ts-ignore
+                const value = event.data![item.field];
+                let content = value;
+                if (typeof item.valueGetter == "function") {
+                  content = item.valueGetter(event as any);
+                }
+
+                if (typeof item.cellRenderer == "function") {
+                  content = item.cellRenderer({
+                    value: content,
+                  });
+                }
+
+                if (item.field === "images") {
+                  content = (
+                    <Link
+                      onClick={() =>
+                        openImages(
+                          ((value as IRow["images"]) || []).map((item) => ({
+                            src: item.url,
+                            key: item.name,
+                          }))
+                        )
+                      }
+                    >
+                      {content}
+                    </Link>
+                  );
+                }
+
+                return {
+                  key: item.field,
+                  label: item.headerName,
+                  content,
+                };
+              }) as DescriptionItem[]
+          }
+        />
+      </Sheet>
+    );
+  };
+
   const handleCellClick = (event: CellDoubleClickedEvent<Community>) => {
     console.log("单元格点击:", event);
     console.log("行数据:", event.data);
     console.log("列字段:", event.colDef.field);
     console.log("值:", event.value);
 
-    if (event.colDef.field === "images") {
-      openImages(
-        ((event.value as IRow["images"]) || []).map((item) => ({
-          src: item.url,
-          key: item.name,
-        }))
-      );
-      return;
+    let field = event.colDef.field as keyof IRow;
+
+    setEditItem((event.data ?? {}) as IRow);
+    setDetailEditField(field);
+    if (!field) {
+      openTabelRowDetail(event);
     }
-    openDetail(event.value);
   };
 
   const getContextMenuItems = (params: any) => {
+    const field = params.column.colDef.field;
     const defaultItems = params.defaultItems || [];
+
+    let viewCell = field == "images" ? "查看图片" : "单元格详情";
+
     return [
       {
         name: params.node ? "编辑房源" : "新增房源",
         action: () => {
           setEditItem(params.node?.data ?? {});
+          setDetailEditField(field);
+          if (!field) {
+            openEditorHouse(true);
+          }
         },
         icon: "✏️",
+      },
+      {
+        name: "查看行数据",
+        action: () => {
+          openTabelRowDetail(params.node);
+        },
+        icon: "👀",
+      },
+      {
+        name: viewCell,
+        action: () => {
+          if (field === "images") {
+            openImages(
+              ((params.value as IRow["images"]) || []).map((item) => ({
+                src: item.url,
+                key: item.name,
+              }))
+            );
+            return;
+          } else {
+            openDetail(params.value);
+          }
+        },
+        icon: "👀",
       },
       {
         name: "刷新",
@@ -277,15 +366,25 @@ export default function HouseTable({}: HouseTable) {
     ];
   };
 
+  console.log("editItem", editItem);
+
   // Container: Defines the grid's theme & dimensions.
   return (
     <>
+      <EditDetailDrawer
+        detailEditField={detailEditField}
+        houseDetail={editItem as HouseForm}
+        onClose={() => {
+          setEditItem(null);
+          setDetailEditField(undefined);
+        }}
+      />
       <Stack
         direction="column"
         spacing={2}
         sx={{ height: "100%", width: "100%" }}
       >
-        <Typography level="h3">小区管理</Typography>
+        <Typography level="h3">房源管理</Typography>
         <Stack
           direction="row"
           spacing={2}
@@ -341,10 +440,10 @@ export default function HouseTable({}: HouseTable) {
             },
           },
         }}
-        open={editItem !== null}
+        open={!!visibleOpenEditorHouse}
         onClose={(_, reason) => {
-          // if (reason === "backdropClick") return;
           setEditItem(null);
+          openEditorHouse(false);
         }}
       >
         <ModalClose />
@@ -359,3 +458,52 @@ export default function HouseTable({}: HouseTable) {
 }
 
 // Render GridExample
+
+type DescriptionItem = {
+  key: string;
+  label: string;
+  content: React.ReactNode;
+};
+
+type DescriptionListProps = {
+  items: DescriptionItem[];
+};
+
+export const DescriptionList: React.FC<DescriptionListProps> = ({ items }) => {
+  const groups = [];
+
+  for (let i = 0; i < items.length; i += 3) {
+    const group = [];
+    for (let j = 0; j < 3 && i + j < items.length; j++) {
+      group.push(items[i + j]);
+    }
+
+    groups.push(group);
+  }
+  return (
+    <Box>
+      <Sheet variant="outlined">
+        <Table variant="soft" borderAxis="bothBetween">
+          <tbody>
+            {groups.map((group, i) => (
+              <tr key={i}>
+                {group
+                  .map((item) => {
+                    return [
+                      <th scope="row">{item.label}</th>,
+                      <td>
+                        {item.content || (
+                          <span style={{ opacity: 0.5 }}>未填写</span>
+                        )}
+                      </td>,
+                    ];
+                  })
+                  .flat()}
+              </tr>
+            ))}
+          </tbody>
+        </Table>
+      </Sheet>
+    </Box>
+  );
+};

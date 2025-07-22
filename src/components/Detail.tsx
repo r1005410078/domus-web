@@ -77,9 +77,7 @@ export function Detail({ transactionType, house_id, onClose }: DetailProps) {
     setSelectedIndex(emblaApi.selectedScrollSnap());
   }, []);
 
-  const [detailEditField, openDetailEditor] = useState<keyof HouseForm | null>(
-    null
-  );
+  const [detailEditField, openDetailEditor] = useState<keyof HouseForm>();
 
   useEffect(() => {
     if (!emblaApi) return;
@@ -98,7 +96,7 @@ export function Detail({ transactionType, house_id, onClose }: DetailProps) {
         sx={{ alignItems: "center", justifyContent: "space-between" }}
       >
         <Box>
-          <UserInfomation userId={detail.id} />
+          <UserInfomation userId={detail.created_by} />
         </Box>
         <IconButton size="lg" variant="plain">
           <CloseTwoToneIcon onClick={() => onClose()} />
@@ -1365,7 +1363,7 @@ export function Detail({ transactionType, house_id, onClose }: DetailProps) {
       <EditDetailDrawer
         detailEditField={detailEditField}
         houseDetail={detail}
-        onClose={() => openDetailEditor(null)}
+        onClose={() => openDetailEditor(undefined)}
       />
     </Card>
   );
