@@ -9,6 +9,7 @@ import "@/utils/crypto-polyfill";
 import { houseDataSchema } from "@/schema/house";
 import { queryClient } from "@/libs/QueryProvider";
 import { CollectionChache } from "@/utils/CollectionChache";
+import { useQueryClient } from "@tanstack/react-query";
 
 // 同步房源数据
 const PAGE_SIZE = 100;
@@ -38,11 +39,21 @@ const houseCollection = createCollection(
 );
 
 export function useHouseDB() {
+  const queryClient = useQueryClient();
   const { data: houseDataSource } = useLiveQuery((q) =>
     q
       .from({ house: houseCollection })
       .orderBy((h) => h.house.updated_at, "desc")
   );
 
-  return { houseDataSource };
+  return {
+    houseDataSource,
+    refreshHouse: () =>
+      queryClient.invalidateQueries({ queryKey: ["houseCollection"] }),
+    // 强制刷新
+    forceRefreshHouse: () => {
+      houseChache.clear();
+      queryClient.refetchQueries({ queryKey: ["houseCollection"] });
+    },
+  };
 }

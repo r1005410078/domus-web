@@ -80,4 +80,8 @@ export class CollectionChache<
     this.updateChache(Array.from(data));
     return data;
   }
+
+  clear() {
+    localStorage.removeItem(this.options.chacheKey);
+  }
 }

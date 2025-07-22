@@ -87,11 +87,7 @@ export function HouseOwnerForm({
           placeholder="请输入"
           value={propValue?.name}
           onChange={(value) => {
-            onChange({ ...propValue, name: value });
-          }}
-          endDecoratorSelect={{
-            options: ownerNameOptions,
-            defaultValue: "本人",
+            onChange({ ...propValue, name: value } as HouseOwner);
           }}
         />
       </FormControl>
@@ -102,11 +98,7 @@ export function HouseOwnerForm({
           placeholder="请输入"
           value={propValue?.phone}
           onChange={(value) => {
-            onChange({ ...propValue, phone: value });
-          }}
-          endDecoratorSelect={{
-            options: ownerNameOptions,
-            defaultValue: "本人",
+            onChange({ ...propValue, phone: value } as HouseOwner);
           }}
         />
       </FormControl>
@@ -118,39 +110,16 @@ export interface InputDecoratorProps {
   value?: string;
   placeholder?: string;
   onChange: (value: string) => void;
-  endDecoratorSelect: {
-    defaultValue?: string;
-    options: { label: string; value: string }[];
-  };
 }
 
 export function InputDecorator(props: InputDecoratorProps) {
-  const { value: propValue, placeholder, onChange, endDecoratorSelect } = props;
-  const [inputValue, setInputValue] = useState(
-    () => propValue?.split(":")?.[0] || ""
-  );
-  const [endValue, setEndValue] = useState(
-    () => propValue?.split(":")?.[1] || endDecoratorSelect.defaultValue || ""
-  );
-
-  // Keep state in sync with propValue changes
-  useEffect(() => {
-    setInputValue(propValue?.split(":")?.[0] || "");
-    setEndValue(
-      propValue?.split(":")?.[1] || endDecoratorSelect.defaultValue || ""
-    );
-  }, [propValue, endDecoratorSelect.defaultValue]);
+  const { value: propValue, placeholder, onChange } = props;
+  const [inputValue, setInputValue] = useState(() => propValue);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const val = e.target.value;
     setInputValue(val);
-    onChange(`${val}:${endValue}`);
-  };
-
-  const handleSelectChange = (_: any, val: string | null) => {
-    const selected = val ?? "";
-    setEndValue(selected);
-    onChange(`${inputValue}:${selected}`);
+    onChange(val);
   };
 
   return (
@@ -160,65 +129,7 @@ export function InputDecorator(props: InputDecoratorProps) {
       type="text"
       value={inputValue}
       onChange={handleInputChange}
-      endDecorator={
-        <>
-          <Divider orientation="vertical" />
-          <FormControl>
-            <Select
-              variant="plain"
-              value={endValue}
-              onChange={handleSelectChange}
-              slotProps={{
-                listbox: {
-                  variant: "outlined",
-                },
-              }}
-              sx={{
-                mr: -1.5,
-                "&:hover": { bgcolor: "transparent" },
-              }}
-            >
-              {endDecoratorSelect.options.map((item) => (
-                <Option key={item.value} value={item.value}>
-                  {item.label}
-                </Option>
-              ))}
-            </Select>
-          </FormControl>
-        </>
-      }
       sx={{ width: 300 }}
     />
   );
 }
-
-const ownerNameOptions = [
-  {
-    label: "本人",
-    value: "本人",
-  },
-  {
-    label: "配偶",
-    value: "配偶",
-  },
-  {
-    label: "亲戚",
-    value: "亲戚",
-  },
-  {
-    label: "朋友",
-    value: "朋友",
-  },
-  {
-    label: "子女",
-    value: "子女",
-  },
-  {
-    label: "授权委托人",
-    value: "授权委托人",
-  },
-  {
-    label: "二房东",
-    value: "二房东",
-  },
-];

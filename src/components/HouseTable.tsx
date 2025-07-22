@@ -64,7 +64,11 @@ interface HouseTable {}
 // Create new GridExample component
 export default function HouseTable({}: HouseTable) {
   const [editItem, setEditItem] = useState<IRow | null>(null);
-  const { houseDataSource: rowData } = useHouseDB();
+  const {
+    houseDataSource: rowData,
+    refreshHouse,
+    forceRefreshHouse,
+  } = useHouseDB();
   const { openDetail, detailModal, openImages } = useModalContent({
     layout: "center",
   });
@@ -257,6 +261,16 @@ export default function HouseTable({}: HouseTable) {
           setEditItem(params.node?.data ?? {});
         },
         icon: "✏️",
+      },
+      {
+        name: "刷新",
+        action: () => refreshHouse(),
+        icon: "🔄",
+      },
+      {
+        name: "强制刷新",
+        action: () => forceRefreshHouse(),
+        icon: "🔃",
       },
       "separator",
       ...defaultItems, // 包含默认菜单项
