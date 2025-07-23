@@ -342,7 +342,7 @@ export default function HouseTable({}: HouseTable) {
                 openDetail(params.value);
               }
             },
-            icon: "👀",
+            icon: "🔍",
           },
         ]
       );
