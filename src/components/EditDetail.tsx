@@ -75,7 +75,10 @@ export function EditDetailDrawer({
         return (
           <Modal
             open={!["exited", "exiting"].includes(state)}
-            onClose={() => onClose()}
+            onClose={(_, reason) => {
+              if (reason === "backdropClick") return;
+              onClose();
+            }}
             keepMounted
             slotProps={{
               backdrop: {
@@ -113,12 +116,6 @@ export function EditDetailDrawer({
               <ModalClose />
               <DialogTitle>修改房源</DialogTitle>
               <DialogContent>
-                <Typography
-                  level="body-xs"
-                  sx={{ fontFamily: "monospace", opacity: "50%" }}
-                >
-                  点击空白取消修改
-                </Typography>
                 {detailEditField && (
                   <Stack spacing={2}>
                     <form.Field
@@ -2110,10 +2107,6 @@ export function EditSupport({ value, onChange, purpose }: FormChange<string>) {
     ) {
       return [
         {
-          ref: "用途",
-          value: "厂房",
-        },
-        {
           label: "床",
           value: "床",
         },
@@ -2300,5 +2293,23 @@ export function EditImages({
 }: FormChange<FileInfo[]>) {
   return (
     <DropZone directory={community_name} value={value} onChange={onChange} />
+  );
+}
+
+// 建筑年代
+registerHouseFormComponent("building_year", EditBuildingYear);
+
+export function EditBuildingYear({ value, onChange }: FormChange<string>) {
+  return (
+    <FormControl>
+      <FormLabel>建筑年代</FormLabel>
+      <Input
+        placeholder="请输入"
+        name="building_year"
+        type="date"
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+      />
+    </FormControl>
   );
 }

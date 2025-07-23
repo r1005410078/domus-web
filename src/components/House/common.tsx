@@ -44,6 +44,7 @@ export function CommunityForm({
   return (
     <CommunitySelect
       value={poi}
+      key={poi?.id}
       onChange={(poi) => {
         if (poi) {
           onChange({
@@ -79,14 +80,16 @@ export function HouseOwnerForm({
   value: propValue,
   onChange,
 }: HouseOwnerFormProps) {
+  console.log("propValue", propValue?.name);
   return (
     <>
       <FormControl required sx={{ gridColumn: "span 2" }}>
         <FormLabel>业主姓名</FormLabel>
-        <InputDecorator
+        <Input
           placeholder="请输入"
           value={propValue?.name}
-          onChange={(value) => {
+          onChange={(e) => {
+            const value = e.target.value;
             onChange({ ...propValue, name: value } as HouseOwner);
           }}
         />
@@ -94,10 +97,11 @@ export function HouseOwnerForm({
 
       <FormControl required sx={{ gridColumn: "span 2" }}>
         <FormLabel>联系电话</FormLabel>
-        <InputDecorator
+        <Input
           placeholder="请输入"
           value={propValue?.phone}
-          onChange={(value) => {
+          onChange={(e) => {
+            const value = e.target.value;
             onChange({ ...propValue, phone: value } as HouseOwner);
           }}
         />

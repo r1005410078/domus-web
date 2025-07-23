@@ -39,7 +39,6 @@ export function CommunitySelect({ value, onChange }: CommunitySelectProps) {
     if (data) {
       for (const poi of data) {
         if (poi.id) {
-          // 待id 表示更新
           cache.set(poi.id, {
             id: poi.id!,
             name: poi.name!,
@@ -111,7 +110,6 @@ export function CommunitySelect({ value, onChange }: CommunitySelectProps) {
 
   return (
     <>
-      <script type="text/javascript"></script>
       <Script
         src="https://webapi.amap.com/maps?v=2.0&key=beb2c304f924eedf108a4632603711b4&callback=initMap"
         strategy="afterInteractive"
@@ -123,13 +121,13 @@ export function CommunitySelect({ value, onChange }: CommunitySelectProps) {
         isOptionEqualToValue={(option, value) => {
           return option?.id === value?.id;
         }}
+        getOptionLabel={(option) => option.name}
         onInputChange={(_, keyword) => {
           seKeyword(keyword);
         }}
         onChange={(_, value) => {
           onChange(value);
         }}
-        getOptionLabel={(option) => option.name}
         renderOption={(props, option) => {
           return (
             <AutocompleteOption {...props}>
@@ -147,6 +145,139 @@ export function CommunitySelect({ value, onChange }: CommunitySelectProps) {
     </>
   );
 }
+
+const options_debuf = [
+  {
+    id: "A3FFGA9AAU",
+    name: "华东小区-东区",
+    typecode: "residential",
+    district: null,
+    adcode: null,
+    city: ["安庆"],
+    location: {
+      lat: 40.7128,
+      lng: -74.006,
+    },
+    address: "华中路与港华路交叉口东北112米",
+  },
+  {
+    id: "B022C02C8Q",
+    name: "红旗小区",
+    typecode: "120302",
+    district: null,
+    adcode: null,
+    city: ["安庆"],
+    location: {
+      lat: 30.512622,
+      lng: 117.081381,
+    },
+    address: "龙狮桥乡华中路309号",
+  },
+  {
+    id: "B022C05S27",
+    name: "月亮城小区",
+    typecode: "120302",
+    district: null,
+    adcode: null,
+    city: ["安庆"],
+    location: {
+      lat: 30.506398,
+      lng: 117.034372,
+    },
+    address: "玉虹街",
+  },
+  {
+    id: "B0FFFAL9T0",
+    name: "东方天韵",
+    typecode: "120302",
+    district: null,
+    adcode: null,
+    city: ["安庆"],
+    location: {
+      lat: 30.534275,
+      lng: 117.086982,
+    },
+    address: "天柱山东路南",
+  },
+  {
+    id: "B0FFG4ZYFW",
+    name: "东湖一品",
+    typecode: "120302",
+    district: null,
+    adcode: null,
+    city: ["安庆"],
+    location: {
+      lat: 30.53031,
+      lng: 117.074403,
+    },
+    address: "元山路6号",
+  },
+  {
+    id: "B0FFGA9AAU",
+    name: "东安花园",
+    typecode: "120302",
+    district: null,
+    adcode: null,
+    city: ["安庆"],
+    location: {
+      lat: 30.511163,
+      lng: 117.087754,
+    },
+    address: "华中路与港华路交叉口东北100米",
+  },
+  {
+    id: "B0FFH23I4R",
+    name: "逸龙湾",
+    typecode: "120302",
+    district: null,
+    adcode: null,
+    city: ["安庆"],
+    location: {
+      lat: 30.540835,
+      lng: 117.096881,
+    },
+    address: "独秀大道附近",
+  },
+  {
+    id: "B0FFJ8T9MS",
+    name: "大发·融悦四季",
+    typecode: "120302",
+    district: "安徽省安庆市宜秀区",
+    adcode: "340811",
+    city: ["安庆"],
+    location: {
+      lat: 30.544564,
+      lng: 117.090779,
+    },
+    address: "迎宾东路与月池路交叉口北80米",
+  },
+  {
+    id: "B0JGLCJQ8I",
+    name: "大发宜景城三期",
+    typecode: "120302",
+    district: "安徽省安庆市迎江区",
+    adcode: "340802",
+    city: ["安庆"],
+    location: {
+      lat: 30.519817,
+      lng: 117.125397,
+    },
+    address: "华中东路与华中路交叉口北300米",
+  },
+  {
+    id: "K3FFGA9AAU",
+    name: "回祥小区-西区",
+    typecode: "residential",
+    district: null,
+    adcode: null,
+    city: ["安庆"],
+    location: {
+      lat: 40.7128,
+      lng: -74.006,
+    },
+    address: "华中路与港华路交叉口东北112米",
+  },
+];
 
 export interface SearchData {
   info: string;

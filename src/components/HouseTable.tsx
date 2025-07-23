@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Menu from "@mui/joy/Menu";
 import type { CellDoubleClickedEvent, ColDef } from "ag-grid-community";
 import { AllCommunityModule, ModuleRegistry } from "ag-grid-community";
@@ -210,7 +210,6 @@ export default function HouseTable({}: HouseTable) {
       { field: "degree", headerName: "学位" },
       { field: "household", headerName: "户口" },
       { field: "source", headerName: "来源" },
-      { field: "delegate_number", headerName: "委托编号" },
       { field: "unique_housing", headerName: "唯一住房" },
       { field: "full_payment", headerName: "全款" },
       { field: "mortgage", headerName: "抵押" },
@@ -366,8 +365,6 @@ export default function HouseTable({}: HouseTable) {
     ];
   };
 
-  console.log("editItem", editItem);
-
   // Container: Defines the grid's theme & dimensions.
   return (
     <>
@@ -409,6 +406,9 @@ export default function HouseTable({}: HouseTable) {
         </Stack>
         <AgGridReact
           cellSelection
+          getRowId={(params) => {
+            return params.data.id;
+          }}
           rowSelection="single"
           rowData={rowData}
           theme={mode === "dark" ? darkTheme : lightTheme}

@@ -49,7 +49,7 @@ export function useHouseDB() {
   return {
     houseDataSource,
     refreshHouse: () =>
-      queryClient.invalidateQueries({ queryKey: ["houseCollection"] }),
+      queryClient.refetchQueries({ queryKey: ["houseCollection"] }),
     // 强制刷新
     forceRefreshHouse: () => {
       houseChache.clear();

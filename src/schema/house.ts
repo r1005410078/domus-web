@@ -77,7 +77,7 @@ export const houseFormSchema = z.object({
   house_type: z.string().optional(),
   house_orientation: z.string().optional(),
   building_structure: z.string().optional(),
-  building_year: z.number().optional(),
+  building_year: z.string().optional(),
   property_rights: z.string().optional(),
   property_year_limit: z.string().optional(),
   certificate_date: z.string().optional(),
