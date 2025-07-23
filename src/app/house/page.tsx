@@ -13,6 +13,7 @@ import { useGetCommunityByCommunity, useHouseList } from "@/hooks/useHouse";
 import { HouseListRequest } from "@/services/house";
 import { PaginationProps } from "@/components/Pagination";
 import dynamic from "next/dynamic";
+import { EmptyState } from "@/components/EmptyState";
 const DynamicHouseTable = dynamic(() => import("@/components/HouseTable"), {
   loading: () => <p>加载中...</p>,
 });
@@ -80,7 +81,7 @@ const gridTemplateColumns = {
 
 export default function Home() {
   const [transaction_type, onChangeTransactionType] =
-    React.useState<keyof typeof gridTemplateColumns>("house");
+    React.useState<keyof typeof gridTemplateColumns>("出售");
   const [houseListRequest, setHouseListRequest] =
     React.useState<HouseListRequest>({
       page: 1,
@@ -88,7 +89,7 @@ export default function Home() {
       transaction_type,
     });
 
-  const { data, isFetching } = useHouseList(
+  const { data, isFetched, isFetching } = useHouseList(
     houseListRequest,
     ["出售", "出租"].includes(transaction_type)
   );
@@ -142,6 +143,7 @@ export default function Home() {
                 <HouseList
                   key={transaction_type}
                   loading={isFetching}
+                  isFetched={isFetched}
                   data={houseList}
                   pagination={pagination}
                   transactionType={transaction_type}

@@ -50,20 +50,24 @@ export function useGetHouseDetail(id?: string) {
 
 // 获取房源列表
 export function useHouseList(params: HouseListRequest, enabled?: boolean) {
-  return useQuery({
+  const query = useQuery({
     queryKey: ["useHouseList", Object.values(params)],
     queryFn: async () => {
       const res = await getHouseList(params);
       return res;
     },
     enabled,
+    placeholderData: (data) => data,
   });
+
+  return query;
 }
 
 // 根据小区获取房源
 export function useGetCommunityByCommunity() {
   return useQuery({
     queryKey: ["useGetCommunityByCommunity"],
+    placeholderData: (data) => data,
     queryFn: async () => {
       const res = await getCommunityByCommunity();
       return res.data.data;
@@ -96,6 +100,7 @@ export function useAddComment() {
 export function useCommentList(house_id?: string) {
   return useQuery({
     queryKey: ["useCommentList", house_id],
+    placeholderData: (data) => data,
     queryFn: async () => {
       const res = await getCommentList(house_id!);
       return res;

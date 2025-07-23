@@ -80,7 +80,6 @@ export function HouseOwnerForm({
   value: propValue,
   onChange,
 }: HouseOwnerFormProps) {
-  console.log("propValue", propValue?.name);
   return (
     <>
       <FormControl required sx={{ gridColumn: "span 2" }}>

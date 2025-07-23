@@ -16,13 +16,14 @@ import {
   EditHouseDecoration,
   EditHouseOrientation,
 } from "./EditDetail";
-import { Autocomplete } from "@mui/joy";
+import { Autocomplete, CircularProgress } from "@mui/joy";
 
 export interface FiltersProps {
   // 交易类型
   transactionType: string;
   // 提交函数
   onFilterSubmit: (values: FiltersForm) => void;
+  loading?: boolean;
 }
 
 export interface FiltersForm {
@@ -40,6 +41,7 @@ export interface FiltersForm {
 export default function Filters({
   transactionType,
   onFilterSubmit,
+  loading,
 }: FiltersProps) {
   const [resetKey, setResetKey] = React.useState(Date.now());
   const [open, setOpen] = React.useState(false);
@@ -84,11 +86,13 @@ export default function Filters({
       <Button
         variant="outlined"
         color="neutral"
+        loading={loading}
         startDecorator={<FilterAltOutlined />}
         onClick={() => setOpen(true)}
       >
         条件过滤
       </Button>
+
       <form.Field
         name="purpose"
         children={(field) => {

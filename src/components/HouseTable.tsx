@@ -176,7 +176,7 @@ export default function HouseTable({}: HouseTable) {
         field: "rent_low_price",
         headerName: "出租低价",
         valueGetter: (params: any) =>
-          emptyToString(params.data?.building_area, "元/月"),
+          emptyToString(params.data?.rent_low_price, "元/月"),
       },
       {
         field: "down_payment",

@@ -23,6 +23,7 @@ import { Update } from "next/dist/build/swc/types";
 export function useRoleList() {
   return useQuery({
     queryKey: ["useRoleList"],
+    placeholderData: (data) => data,
     queryFn: async () => {
       const res = await getRoleList();
       return res.data.data.list;
@@ -43,6 +44,7 @@ export function useRoleMap() {
 export function useUserList() {
   return useQuery({
     queryKey: ["useUserList"],
+    placeholderData: (data) => data,
     queryFn: async () => {
       const res = await getUserList();
       return res.data.data.list;
@@ -53,6 +55,7 @@ export function useUserList() {
 export function usePermissionsDetailsList() {
   return useQuery({
     queryKey: ["usePermissionsDetailsList"],
+    placeholderData: (data) => data,
     queryFn: async () => {
       const res = await getPermissionsDetailsList();
       return res.data.data;
@@ -178,6 +181,7 @@ export function useDeleteUser() {
 export function useUserInfomation(user_id?: string) {
   return useQuery({
     queryKey: ["useUserInfomation"],
+    placeholderData: (data) => data,
     queryFn: async () => {
       const res = await getUserInfo(user_id!);
       return res.data.data;

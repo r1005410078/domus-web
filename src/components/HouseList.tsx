@@ -4,6 +4,7 @@ import {
   Card,
   CardContent,
   Chip,
+  CircularProgress,
   Drawer,
   List,
   ListItem,
@@ -17,9 +18,10 @@ import Filters, { FiltersForm } from "./Filters";
 import Pagination, { PaginationProps } from "./Pagination";
 import type { AmapBounds, CommunityWithHouseCount } from "@/components/AMap";
 import { Detail } from "./Detail";
-import React from "react";
+import React, { useEffect } from "react";
 import { isMobile } from "@/utils";
 import dynamic from "next/dynamic";
+import { EmptyState } from "./EmptyState";
 const DynamicAMapComponent = dynamic(() => import("@/components/AMap"), {
   loading: () => <p>加载中...</p>,
 });
@@ -30,6 +32,7 @@ export interface HouseListProps {
   aMapData: CommunityWithHouseCount[];
   onMapBoundsChange?: (bounds: AmapBounds) => void;
   loading?: boolean;
+  isFetched?: boolean;
   onPullLoadMore?: () => void;
   pagination: PaginationProps;
   onFilterSubmit: (values: FiltersForm) => void;
@@ -40,13 +43,13 @@ export function HouseList({
   transactionType,
   aMapData,
   loading,
+  isFetched,
   pagination,
   onMapBoundsChange,
   onPullLoadMore,
   onFilterSubmit,
 }: HouseListProps) {
   const [detail, setDetail] = React.useState<HouseForm>();
-
   return (
     <>
       <Layout.SidePane>
@@ -80,87 +83,91 @@ export function HouseList({
               key={transactionType}
               transactionType={transactionType}
               onFilterSubmit={onFilterSubmit}
+              loading={loading}
             />
-            {data.map((item) => (
-              <ListItem key={item.id} onClick={() => setDetail(item)}>
-                <Card
-                  variant="outlined"
-                  orientation="horizontal"
-                  sx={{
-                    width: "100%",
-                    p: 0,
-                    border: "none",
-                    "&:hover": {
-                      boxShadow: "md",
-                      borderColor: "neutral.outlinedHoverBorder",
-                      cursor: "pointer",
-                    },
-                  }}
-                >
-                  <AspectRatio ratio="1.2" sx={{ width: 140 }}>
-                    <img
-                      srcSet={
-                        item.images?.[0]?.url ?? "/images/shooting.png 2x"
-                      }
-                      loading="lazy"
-                    />
-                  </AspectRatio>
-                  <CardContent>
-                    <Typography level="title-lg" id="card-description">
-                      {item.title ?? item.community?.address ?? "-"}
-                    </Typography>
-                    <Typography
-                      level="body-sm"
-                      aria-describedby="card-description"
-                      sx={{ mb: 1 }}
-                    >
-                      {[
-                        apartmentTypeToString(item.apartment_type),
-                        (item.building_area ?? item.use_area ?? 1) + "㎡",
-                        item.community?.name,
-                      ]
-                        .filter(Boolean)
-                        .join("/")}
-                    </Typography>
-                    <Stack
-                      direction="row"
-                      useFlexGap
-                      sx={{ flexWrap: "wrap" }}
-                      spacing={1}
-                    >
-                      {item.tags?.map((tag) => (
-                        <Chip
-                          variant="outlined"
-                          color="primary"
-                          size="sm"
-                          sx={{ pointerEvents: "none" }}
-                        >
-                          {tag}
-                        </Chip>
-                      ))}
-                    </Stack>
-                    <Typography
-                      sx={{ fontSize: "lg", fontWeight: "lg" }}
-                      color="danger"
-                    >
-                      {transactionType === "出售"
-                        ? (item.sale_price || "- ") + "万元"
-                        : (item.rent_price || "- ") + "元/月"}
-                      {transactionType === "出售" && (
-                        <Typography level="body-xs" ml={1}>
-                          ¥
-                          {(
-                            (item.sale_price! * 10000) /
-                            (item.building_area ?? item.use_area ?? 1)
-                          ).toFixed(2)}
-                          元/平
-                        </Typography>
-                      )}
-                    </Typography>
-                  </CardContent>
-                </Card>
-              </ListItem>
-            ))}
+            <EmptyState isEmpty={data.length === 0 && !!isFetched}>
+              {data.map((item) => (
+                <ListItem key={item.id} onClick={() => setDetail(item)}>
+                  <Card
+                    variant="outlined"
+                    orientation="horizontal"
+                    sx={{
+                      width: "100%",
+                      p: 0,
+                      border: "none",
+                      "&:hover": {
+                        boxShadow: "md",
+                        borderColor: "neutral.outlinedHoverBorder",
+                        cursor: "pointer",
+                      },
+                    }}
+                  >
+                    <AspectRatio ratio="1.2" sx={{ width: 140 }}>
+                      <img
+                        srcSet={
+                          item.images?.[0]?.url ?? "/images/shooting.png 2x"
+                        }
+                        loading="lazy"
+                      />
+                    </AspectRatio>
+                    <CardContent>
+                      <Typography level="title-lg" id="card-description">
+                        {item.title ?? item.community?.address ?? "-"}
+                      </Typography>
+                      <Typography
+                        level="body-sm"
+                        aria-describedby="card-description"
+                        sx={{ mb: 1 }}
+                      >
+                        {[
+                          apartmentTypeToString(item.apartment_type),
+                          (item.building_area ?? item.use_area ?? 1) + "㎡",
+                          item.community?.name,
+                        ]
+                          .filter(Boolean)
+                          .join("/")}
+                      </Typography>
+                      <Stack
+                        direction="row"
+                        useFlexGap
+                        sx={{ flexWrap: "wrap" }}
+                        spacing={1}
+                      >
+                        {item.tags?.map((tag) => (
+                          <Chip
+                            key={tag}
+                            variant="outlined"
+                            color="primary"
+                            size="sm"
+                            sx={{ pointerEvents: "none" }}
+                          >
+                            {tag}
+                          </Chip>
+                        ))}
+                      </Stack>
+                      <Typography
+                        sx={{ fontSize: "lg", fontWeight: "lg" }}
+                        color="danger"
+                      >
+                        {transactionType === "出售"
+                          ? (item.sale_price || "- ") + "万元"
+                          : (item.rent_price || "- ") + "元/月"}
+                        {transactionType === "出售" && (
+                          <Typography level="body-xs" ml={1}>
+                            ¥
+                            {(
+                              (item.sale_price! * 10000) /
+                              (item.building_area ?? item.use_area ?? 1)
+                            ).toFixed(2)}
+                            元/平
+                          </Typography>
+                        )}
+                      </Typography>
+                    </CardContent>
+                  </Card>
+                </ListItem>
+              ))}
+            </EmptyState>
           </List>
         </Stack>
         <Pagination {...pagination} />

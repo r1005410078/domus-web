@@ -33,6 +33,7 @@ export function CommunitySelect({ value, onChange }: CommunitySelectProps) {
   const { data } = useQuery({
     queryKey: ["initMap"],
     queryFn: () => getCommunityList({ page: 1, page_size: 10000 }),
+    placeholderData: (data) => data,
   });
 
   useMemo(() => {
