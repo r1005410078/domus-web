@@ -84,7 +84,7 @@ export default function Filters({
       }}
     >
       <Button
-        variant="outlined"
+        variant="soft"
         color="neutral"
         loading={loading}
         startDecorator={<FilterAltOutlined />}

@@ -351,16 +351,27 @@ export default function HouseTable({}: HouseTable) {
     items.push(
       ...[
         "separator",
-        {
-          name: params.node ? (field ? "编辑房源" : "编辑行数据") : "新增房源",
-          action: () => {
-            setEditItem(params.node?.data ?? {});
-            setDetailEditField(field);
-            if (!field) {
-              openEditorHouse(true);
+        params.node?.data
+          ? {
+              name: "编辑房源",
+              action: () => {
+                setEditItem(params.node?.data ?? {});
+                if (field) {
+                  setDetailEditField(field);
+                } else {
+                  openEditorHouse(true);
+                }
+              },
+              icon: "✏️",
             }
+          : null,
+        {
+          name: "新增房源",
+          action: () => {
+            setEditItem(null);
+            openEditorHouse(true);
           },
-          icon: "✏️",
+          icon: "🏡",
         },
         params.node
           ? {
@@ -381,7 +392,7 @@ export default function HouseTable({}: HouseTable) {
               },
             }
           : null,
-      ]
+      ].filter(Boolean)
     );
 
     items.push(
