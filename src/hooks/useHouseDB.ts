@@ -4,7 +4,7 @@ import { createCollection, useLiveQuery } from "@tanstack/react-db";
 import { QueryClient } from "@tanstack/query-core";
 import { queryCollectionOptions } from "@tanstack/db-collections";
 import { use, useEffect, useMemo, useRef } from "react";
-import { getHouseList } from "@/services/house";
+import { deleteHouse, getHouseList } from "@/services/house";
 import "@/utils/crypto-polyfill";
 import { houseDataSchema } from "@/schema/house";
 import { queryClient } from "@/libs/QueryProvider";
@@ -34,7 +34,12 @@ const houseCollection = createCollection(
     },
     getKey: (item) => item.id,
     schema: houseDataSchema,
-    onInsert: async ({ transaction }) => {}, // any standard schema
+    onInsert: async ({ transaction }) => Promise.resolve(),
+    onUpdate: async ({ transaction }) => Promise.resolve(),
+    onDelete: async (item) => {
+      const house_id = item.transaction.mutations[0].changes.id;
+      await deleteHouse(house_id);
+    },
   })
 );
 
@@ -55,5 +60,6 @@ export function useHouseDB() {
       houseChache.clear();
       queryClient.refetchQueries({ queryKey: ["houseCollection"] });
     },
+    houseCollection,
   };
 }

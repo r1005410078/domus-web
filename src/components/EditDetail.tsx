@@ -47,6 +47,7 @@ export function registerHouseFormComponent(
 export interface EditDetailDrawerProps {
   detailEditField?: keyof HouseForm;
   houseDetail: HouseForm;
+  onSave?: (data: HouseForm) => void;
   onClose: () => void;
 }
 
@@ -54,6 +55,7 @@ export function EditDetailDrawer({
   detailEditField,
   houseDetail,
   onClose,
+  onSave,
 }: EditDetailDrawerProps) {
   const { uploads } = useUploadFiles();
   const { mutate } = useSaveHouse();
@@ -61,6 +63,7 @@ export function EditDetailDrawer({
   const form = useForm({
     defaultValues: houseDetail,
     onSubmit: async ({ value }) => {
+      onSave?.(value);
       mutate(value);
     },
   });

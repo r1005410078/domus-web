@@ -13,6 +13,13 @@ export function saveHouse(data: CreateHouseRequest) {
   );
 }
 
+// 删除房源
+export function deleteHouse(id: string) {
+  return apiClient.post<ResponseBody<any>>(
+    `/api/domus/management/house/delete/${id}`
+  );
+}
+
 export interface HouseListRequest {
   page: number;
   page_size: number;

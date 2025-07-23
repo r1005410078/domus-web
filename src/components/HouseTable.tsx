@@ -48,6 +48,7 @@ import House from "./House";
 import { useModalContent } from "@/hooks/useModalContent";
 import { AlertTableHelp } from "./AlertTableHelp";
 import { EditDetailDrawer } from "./EditDetail";
+import { mdComfirm } from "./Confirm";
 
 ModuleRegistry.registerModules([
   AllCommunityModule,
@@ -72,11 +73,11 @@ export default function HouseTable({}: HouseTable) {
   const [detailEditField, setDetailEditField] = useState<keyof HouseForm>();
   const [editItem, setEditItem] = useState<IRow | null>(null);
   const [visibleOpenEditorHouse, openEditorHouse] = useState<boolean>();
-
   const {
     houseDataSource: rowData,
     refreshHouse,
     forceRefreshHouse,
+    houseCollection,
   } = useHouseDB();
   const { openDetail, detailModal, openImages } = useModalContent({
     layout: "center",
@@ -314,52 +315,93 @@ export default function HouseTable({}: HouseTable) {
 
     let viewCell = field == "images" ? "查看图片" : "单元格详情";
 
+    const items = [];
+
+    if (params.node) {
+      items.push(
+        ...[
+          {
+            name: "查看行数据",
+            action: () => {
+              openTabelRowDetail(params.node);
+            },
+            icon: "👀",
+          },
+          {
+            name: viewCell,
+            action: () => {
+              if (field === "images") {
+                openImages(
+                  ((params.value as IRow["images"]) || []).map((item) => ({
+                    src: item.url,
+                    key: item.name,
+                  }))
+                );
+                return;
+              } else {
+                openDetail(params.value);
+              }
+            },
+            icon: "👀",
+          },
+        ]
+      );
+    }
+
+    items.push(
+      ...[
+        "separator",
+        {
+          name: params.node ? "编辑房源" : "新增房源",
+          action: () => {
+            setEditItem(params.node?.data ?? {});
+            setDetailEditField(field);
+            if (!field) {
+              openEditorHouse(true);
+            }
+          },
+          icon: "✏️",
+        },
+        params.node
+          ? {
+              name: "删除房源",
+              icon: "🗑️",
+              action: () => {
+                mdComfirm({
+                  title: "删除房源",
+                  content: "确定删除房源吗?",
+                  onOK: (state) => {
+                    houseCollection.delete(params.node?.data.id);
+                    state.close();
+                  },
+                  onCancel: (state) => {
+                    state.close();
+                  },
+                });
+              },
+            }
+          : null,
+      ]
+    );
+
+    items.push(
+      ...([
+        "separator",
+        {
+          name: "刷新",
+          action: () => refreshHouse(),
+          icon: "🔄",
+        },
+        {
+          name: "强制刷新",
+          action: () => forceRefreshHouse(),
+          icon: "🔃",
+        },
+      ] as any)
+    );
+
     return [
-      {
-        name: params.node ? "编辑房源" : "新增房源",
-        action: () => {
-          setEditItem(params.node?.data ?? {});
-          setDetailEditField(field);
-          if (!field) {
-            openEditorHouse(true);
-          }
-        },
-        icon: "✏️",
-      },
-      {
-        name: "查看行数据",
-        action: () => {
-          openTabelRowDetail(params.node);
-        },
-        icon: "👀",
-      },
-      {
-        name: viewCell,
-        action: () => {
-          if (field === "images") {
-            openImages(
-              ((params.value as IRow["images"]) || []).map((item) => ({
-                src: item.url,
-                key: item.name,
-              }))
-            );
-            return;
-          } else {
-            openDetail(params.value);
-          }
-        },
-        icon: "👀",
-      },
-      {
-        name: "刷新",
-        action: () => refreshHouse(),
-        icon: "🔄",
-      },
-      {
-        name: "强制刷新",
-        action: () => forceRefreshHouse(),
-        icon: "🔃",
-      },
+      ...items,
       "separator",
       ...defaultItems, // 包含默认菜单项
     ];
@@ -371,6 +413,18 @@ export default function HouseTable({}: HouseTable) {
       <EditDetailDrawer
         detailEditField={detailEditField}
         houseDetail={editItem as HouseForm}
+        onSave={(data) => {
+          if (data.id) {
+            houseCollection.update(data.id, (drafts) => {
+              return {
+                ...drafts,
+                ...data,
+              };
+            });
+          } else {
+            houseCollection.insert(data);
+          }
+        }}
         onClose={() => {
           setEditItem(null);
           setDetailEditField(undefined);
@@ -402,6 +456,15 @@ export default function HouseTable({}: HouseTable) {
             >
               备份导出
             </Button>
+            <Button
+              color="primary"
+              onClick={() => {
+                setEditItem(null);
+                openEditorHouse(true);
+              }}
+            >
+              新增房源
+            </Button>
           </Stack>
         </Stack>
         <AgGridReact
@@ -419,6 +482,7 @@ export default function HouseTable({}: HouseTable) {
           localeText={AG_GRID_LOCALE_CN}
           onCellDoubleClicked={handleCellClick}
           sideBar={{ toolPanels: ["columns"] }}
+          preventDefaultOnContextMenu={true}
           getContextMenuItems={getContextMenuItems}
         />
       </Stack>
@@ -449,7 +513,11 @@ export default function HouseTable({}: HouseTable) {
         <ModalClose />
         <DialogTitle>添加房源</DialogTitle>
         <Box sx={{ height: "100%", width: { xs: "100%", md: "430px" } }}>
-          <House.Form value={editItem} onSubmit={() => setEditItem(null)} />
+          <House.Form
+            key={editItem?.id ?? "new"}
+            value={editItem}
+            onSubmit={() => setEditItem(null)}
+          />
         </Box>
       </Drawer>
       {detailModal}

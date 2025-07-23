@@ -18,7 +18,7 @@ import Filters, { FiltersForm } from "./Filters";
 import Pagination, { PaginationProps } from "./Pagination";
 import type { AmapBounds, CommunityWithHouseCount } from "@/components/AMap";
 import { Detail } from "./Detail";
-import React, { useEffect } from "react";
+import React from "react";
 import { isMobile } from "@/utils";
 import dynamic from "next/dynamic";
 import { EmptyState } from "./EmptyState";
