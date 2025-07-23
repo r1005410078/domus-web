@@ -352,7 +352,7 @@ export default function HouseTable({}: HouseTable) {
       ...[
         "separator",
         {
-          name: params.node ? "编辑房源" : "新增房源",
+          name: params.node ? (field ? "编辑房源" : "编辑行数据") : "新增房源",
           action: () => {
             setEditItem(params.node?.data ?? {});
             setDetailEditField(field);
