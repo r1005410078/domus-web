@@ -89,7 +89,7 @@ export default function RoleList() {
       <Sheet sx={{ display: { xs: "flex", sm: "none" }, gap: 2 }}>
         <Input
           size="sm"
-          placeholder="Search"
+          placeholder="检索"
           startDecorator={<SearchIcon />}
           sx={{ flexGrow: 1 }}
           onChange={(e) => {

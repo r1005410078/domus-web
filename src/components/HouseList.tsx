@@ -187,7 +187,7 @@ export function HouseList({
             />
           )}
         </Box>
-        {detail && (
+        {detail && !isMobile && (
           <Sheet
             sx={{
               position: "absolute",

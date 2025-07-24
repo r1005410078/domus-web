@@ -49,6 +49,7 @@ import { PhotoProvider, PhotoView } from "react-photo-view";
 
 import "react-photo-view/dist/react-photo-view.css";
 import { UserInfomation } from "./UserAvatar";
+import CardMap from "./CardMap";
 
 // 插件注册
 dayjs.extend(utc);
@@ -1354,7 +1355,10 @@ export function Detail({ transactionType, house_id, onClose }: DetailProps) {
           </Accordion>
         </AccordionGroup>
       </CardContent>
-      <Divider />
+
+      <CardContent>
+        <CardMap community={detail.community} />
+      </CardContent>
 
       <CardContent>
         <HouseComment houseId={detail.id!} />
