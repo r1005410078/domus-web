@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@ag-grid-community/locale": "^34.0.2",
+    "@amap/amap-jsapi-loader": "^1.0.1",
     "@amap/amap-jsapi-types": "^0.0.15",
     "@emotion/cache": "^11.14.0",
     "@emotion/react": "^11.14.0",
@@ -44,6 +45,7 @@
     "react-transition-group": "^4.4.5",
     "tailwind-merge": "^3.3.1",
     "use-debounce": "^10.0.5",
+    "vaul": "^1.1.2",
     "zod": "^4.0.5",
     "zustand": "^5.0.6"
   },
