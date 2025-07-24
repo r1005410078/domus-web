@@ -187,7 +187,7 @@ export default function AMapComponent({
 
   return (
     <div style={{ width: "100%", height: "100%", position: "relative" }}>
-      <div id="container" style={{ height: "100%" }}></div>
+      <div id="home-map-container" style={{ height: "100%" }}></div>
       <Box sx={{ position: "absolute", top: 0, left: 0, p: 2 }}>
         <Select
           sx={{ width: 160 }}
@@ -258,7 +258,7 @@ function useAMap() {
     AMapRef.current = AMap;
 
     // 可选：地图初始化逻辑放这里
-    const map = new AMap.Map("container", {
+    const map = new AMap.Map("home-map-container", {
       zoom: 10,
       center: [117.060496, 30.507077],
       mapStyle: style,
@@ -318,7 +318,9 @@ function debounce(fn: Function, delay: number) {
     clearTimeout(timer);
     timer = setTimeout(() => {
       // @ts-ignore
-      fn.apply(this, args);
+      requestIdle(() => {
+        fn(...args);
+      });
     }, delay);
   };
 }
