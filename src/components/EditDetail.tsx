@@ -2,7 +2,6 @@ import { useSaveHouse } from "@/hooks/useHouse";
 import {
   ApartmentType,
   Community,
-  DoorNumber,
   FileInfo,
   FloorRange,
   HouseForm,
@@ -31,6 +30,7 @@ import React, { useMemo } from "react";
 import { Transition } from "react-transition-group";
 import { CommunityForm, HouseOwnerForm } from "./House/common";
 import DropZone, { useUploadFiles } from "./House/DropZone";
+import { Edit } from "lucide-react";
 
 const houseFormComponent: Partial<
   Record<keyof HouseForm, React.ComponentType<FormChange<any>>>
@@ -455,69 +455,48 @@ export function EditCommunity({ value, onChange, sx }: FormChange<Community>) {
   );
 }
 
-// 门牌号
-registerHouseFormComponent("door_number", EditDoorNumber);
+// 小区物业
+registerHouseFormComponent(
+  "property_management_company",
+  EditPropertyManagementCompany
+);
 
-export function EditDoorNumber({
+export function EditPropertyManagementCompany({
   value,
   onChange,
   sx,
-}: FormChange<DoorNumber>) {
+}: FormChange<string>) {
   return (
     <FormControl required sx={[...(Array.isArray(sx) ? sx : [sx])]}>
-      <FormLabel>门牌号</FormLabel>
-      <Stack direction="row" spacing={2} useFlexGap sx={{ flexWrap: "wrap" }}>
-        <Stack spacing={1} direction="row">
-          <FormControl>
-            <Input
-              style={{ width: "150px" }}
-              placeholder="请输入"
-              value={value?.building_number}
-              type="number"
-              onChange={(e) =>
-                onChange({
-                  ...((value ?? {}) as any),
-                  building_number: Number(e.target.value),
-                })
-              }
-              endDecorator={<span>号楼</span>}
-            />
-          </FormControl>
-          <Divider orientation="vertical" />
-          <FormControl>
-            <Input
-              style={{ width: "150px" }}
-              placeholder="请输入"
-              type="number"
-              value={value?.unit_number}
-              onChange={(e) =>
-                onChange({
-                  ...((value ?? {}) as any),
-                  unit_number: Number(e.target.value),
-                })
-              }
-              endDecorator={<span>单元</span>}
-            />
-          </FormControl>
-        </Stack>
-        <FormControl>
-          <Input
-            fullWidth
-            style={{ width: "150px" }}
-            placeholder="请输入"
-            type="number"
-            value={value?.door_number}
-            name="door_number"
-            onChange={(e) =>
-              onChange({
-                ...((value ?? {}) as any),
-                door_number: Number(e.target.value),
-              })
-            }
-            endDecorator={<span>号</span>}
-          />
-        </FormControl>
-      </Stack>
+      <FormLabel>小区物业</FormLabel>
+      <Input
+        placeholder="请输入"
+        name="property_management_company"
+        value={value}
+        onChange={(e) => {
+          onChange(e.target.value);
+        }}
+      />
+    </FormControl>
+  );
+}
+
+//
+registerHouseFormComponent("house_address", EditHouseAddress);
+
+export function EditHouseAddress({ value, onChange, sx }: FormChange<string>) {
+  return (
+    <FormControl required sx={[...(Array.isArray(sx) ? sx : [sx])]}>
+      <FormLabel>地址(楼号/单元/门牌号)</FormLabel>
+      <Textarea
+        placeholder="请输入"
+        name="house_address"
+        value={value}
+        minRows={2}
+        onChange={(e) => {
+          onChange(e.target.value);
+        }}
+      />
     </FormControl>
   );
 }
@@ -787,7 +766,7 @@ export function EditStairs({ value, onChange }: FormChange<Stairs>) {
             onChange={(e) => {
               onChange({
                 ...value,
-                stairs: e.target.value,
+                stairs: e.target.value as any,
               });
             }}
             endDecorator={<span>梯</span>}
@@ -804,7 +783,7 @@ export function EditStairs({ value, onChange }: FormChange<Stairs>) {
             onChange={(e) => {
               onChange({
                 ...value,
-                rooms: e.target.value,
+                rooms: e.target.value as any,
               });
             }}
           />

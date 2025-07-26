@@ -18,6 +18,7 @@ import {
   LicenseManager,
   ColumnsToolPanelModule,
 } from "ag-grid-enterprise";
+import dayjs from "dayjs";
 
 ModuleRegistry.registerModules([
   AllCommunityModule,
@@ -43,11 +44,25 @@ export default function CommunityTable() {
   // Row Data: The data to be displayed.
   // Column Definitions: Defines & controls grid columns.
   const [colDefs, setColDefs] = useState<ColDef<IRow>[]>([
+    {
+      headerName: "序号",
+      valueGetter: (params: any) => params.node!.rowIndex! + 1,
+      width: 100,
+      pinned: "left",
+      suppressMovable: true,
+      cellClass: "ag-cell-center",
+    },
     { field: "name", headerName: "小区名称", pinned: "left" },
     { field: "address", width: 500, headerName: "小区地址" },
-    { field: "year_built", headerName: "小区年限" },
+    {
+      field: "year_built",
+      headerName: "小区年限",
+      valueGetter: (params: any) =>
+        dayjs(params.data.year_built).format("YYYY年"),
+    },
     { field: "typecode", headerName: "小区类型" },
     { field: "district", headerName: "所属行政区" },
+    { field: "property_management_company", headerName: "物业公司" },
     {
       field: "description",
       headerName: "小区描述",
@@ -101,6 +116,7 @@ export default function CommunityTable() {
         columnDefs={colDefs}
         defaultColDef={defaultColDef}
         pagination={true}
+        paginationPageSizeSelector={[100, 200, 500, 1000]}
         localeText={AG_GRID_LOCALE_CN}
         onCellDoubleClicked={handleCellClick}
         sideBar={{ toolPanels: ["columns"] }}

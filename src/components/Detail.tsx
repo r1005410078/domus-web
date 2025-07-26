@@ -374,6 +374,7 @@ export function Detail({ transactionType, house_id, onClose }: DetailProps) {
                       }}
                     >
                       {detail.sale_price}
+                      <span>万元</span>
                       <KeyboardArrowRight />
                     </Typography>
                   </ListItemButton>
@@ -504,7 +505,7 @@ export function Detail({ transactionType, house_id, onClose }: DetailProps) {
                 <ListItem>
                   <ListItemButton
                     onClick={() => {
-                      openDetailEditor("door_number");
+                      openDetailEditor("house_address");
                     }}
                   >
                     <ListItemContent>门牌号</ListItemContent>
@@ -516,12 +517,7 @@ export function Detail({ transactionType, house_id, onClose }: DetailProps) {
                         alignItems: "center",
                       }}
                     >
-                      <span>
-                        {" "}
-                        {detail.door_number?.building_number}号楼
-                        {detail.door_number?.unit_number}单元
-                        {detail.door_number?.door_number}室
-                      </span>
+                      <span>{detail.house_address}</span>
                       <KeyboardArrowRight />
                     </Typography>
                   </ListItemButton>
@@ -629,7 +625,7 @@ export function Detail({ transactionType, house_id, onClose }: DetailProps) {
                         alignItems: "center",
                       }}
                     >
-                      <span>{detail.tags?.join(" ")}</span>
+                      <span>{detail.tags?.filter((t) => !!t).join(" ")}</span>
                       <KeyboardArrowRight />
                     </Typography>
                   </ListItemButton>

@@ -25,7 +25,6 @@ import {
   Community,
   communityToString,
   dateToString,
-  door_numberToString,
   emptyToString,
   floor_rangeToString,
   HouseForm,
@@ -109,11 +108,8 @@ export default function HouseTable({}: HouseTable) {
       { field: "transaction_type", width: 100, headerName: "交易类型" },
       { field: "house_status", width: 100, headerName: "状态" },
       {
-        field: "door_number",
-        headerName: "门牌号结构",
-        valueGetter: (params: any) => {
-          return door_numberToString(params.data.door_number);
-        },
+        field: "house_address",
+        headerName: "地址(楼号/单元/门牌号)",
       },
       {
         field: "apartment_type",
@@ -133,7 +129,7 @@ export default function HouseTable({}: HouseTable) {
         width: 500,
         valueGetter: (params: any) => communityToString(params.data.community),
       },
-
+      { field: "property_management_company", headerName: "物业公司" },
       {
         field: "building_area",
         headerName: "建筑面积",

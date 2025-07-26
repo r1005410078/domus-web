@@ -41,7 +41,7 @@ export default function Page() {
   useEffect(() => {
     if (!AMap) return;
     //构造地点查询类
-    var placeSearch = new AMap.PlaceSearch({
+    const placeSearch = new AMap.PlaceSearch({
       type: placeSearchType, // 兴趣点类别  交通设施服务 科教文化服务 政府机构及社会团体 商务住宅 风景名胜 医疗保健服务 餐饮服务
       pageSize: snap >= 1 ? 10 : 4, // 单页显示结果条数
       pageIndex: 1, // 页码
@@ -53,11 +53,11 @@ export default function Page() {
       autoFitView: true, // 是否自动调整地图视野使绘制的 Marker点都处于视口的可见范围
     });
 
-    var cpoint = [lng, lat]; //中心点坐标
+    const cpoint = [lng, lat]; //中心点坐标
     placeSearch.searchNearBy(
-      "",
+      "food",
       cpoint,
-      200,
+      1000,
       function (status: any, result: any) {
         var marker = new AMap.Marker({
           // icon: "//a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-default.png",
@@ -66,6 +66,10 @@ export default function Page() {
         marker.add(mapRef.current);
       }
     );
+
+    return () => {
+      placeSearch.clear();
+    };
   }, [AMap, placeSearchType, snap]);
 
   useEffect(() => {

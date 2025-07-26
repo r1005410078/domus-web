@@ -4,7 +4,6 @@ import timezone from "dayjs/plugin/timezone";
 import {
   apartmentTypeSchema,
   communitySchema,
-  doorNumberSchema,
   fileInfoSchema,
   floorRangeSchema,
   houseFormSchema,
@@ -12,12 +11,13 @@ import {
   stairsSchema,
 } from "@/schema/house";
 import z from "zod";
+import { en } from "zod/locales";
+
+z.config(en());
 
 // 插件注册
 dayjs.extend(utc);
 dayjs.extend(timezone);
-
-export type DoorNumber = z.infer<typeof doorNumberSchema>;
 
 export type FloorRange = z.infer<typeof floorRangeSchema>;
 
@@ -107,24 +107,6 @@ export function floor_rangeToString(data?: FloorRange) {
   }
 
   return `${data?.door_number_from}-${data?.door_number_to}层`;
-}
-
-export function door_numberToString(data?: DoorNumber) {
-  let str = "";
-
-  if (data?.building_number) {
-    str += `${data.building_number}号楼`;
-  }
-
-  if (data?.unit_number) {
-    str += `/${data.unit_number}单元`;
-  }
-
-  if (data?.door_number) {
-    str += `/${data.door_number}室`;
-  }
-
-  return str;
 }
 
 export function emptyToString<T>(data?: null | T, util?: string) {

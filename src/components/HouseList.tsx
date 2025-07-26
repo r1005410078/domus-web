@@ -102,7 +102,7 @@ export function HouseList({
                       },
                     }}
                   >
-                    <AspectRatio ratio="1.2" sx={{ width: 140 }}>
+                    <AspectRatio ratio="1.2" sx={{ width: 120 }}>
                       <img
                         srcSet={
                           item.images?.[0]?.url ?? "/images/shooting.png 2x"
@@ -110,7 +110,14 @@ export function HouseList({
                         loading="lazy"
                       />
                     </AspectRatio>
-                    <CardContent>
+                    <CardContent
+                      sx={{
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "flex-start",
+                        justifyContent: "center",
+                      }}
+                    >
                       <Typography level="title-lg" id="card-description">
                         {item.title ?? item.community?.address ?? "-"}
                       </Typography>
@@ -133,36 +140,41 @@ export function HouseList({
                         sx={{ flexWrap: "wrap" }}
                         spacing={1}
                       >
-                        {item.tags?.map((tag) => (
-                          <Chip
-                            key={tag}
-                            variant="outlined"
-                            color="primary"
-                            size="sm"
-                            sx={{ pointerEvents: "none" }}
-                          >
-                            {tag}
-                          </Chip>
-                        ))}
+                        {item.tags
+                          ?.filter((it) => it)
+                          ?.map((tag) => (
+                            <Chip
+                              key={tag}
+                              variant="outlined"
+                              color="primary"
+                              size="sm"
+                              sx={{ pointerEvents: "none" }}
+                            >
+                              {tag}
+                            </Chip>
+                          ))}
                       </Stack>
-                      <Typography
-                        sx={{ fontSize: "lg", fontWeight: "lg" }}
-                        color="danger"
-                      >
-                        {transactionType === "出售"
-                          ? (item.sale_price || "- ") + "万元"
-                          : (item.rent_price || "- ") + "元/月"}
-                        {transactionType === "出售" && (
-                          <Typography level="body-xs" ml={1}>
-                            ¥
-                            {(
-                              (item.sale_price! * 10000) /
-                              (item.building_area ?? item.use_area ?? 1)
-                            ).toFixed(2)}
-                            元/平
-                          </Typography>
-                        )}
-                      </Typography>
+                      {((transactionType === "出售" && item.sale_price) ||
+                        (transactionType === "出租" && item.rent_price)) && (
+                        <Typography
+                          sx={{ fontSize: "lg", fontWeight: "lg" }}
+                          color="danger"
+                        >
+                          {transactionType === "出售"
+                            ? (item.sale_price || "- ") + "万元"
+                            : (item.rent_price || "- ") + "元/月"}
+                          {transactionType === "出售" && (
+                            <Typography level="body-xs" ml={1}>
+                              ¥
+                              {(
+                                (item.sale_price! * 10000) /
+                                (item.building_area ?? item.use_area ?? 1)
+                              ).toFixed(2)}
+                              元/平
+                            </Typography>
+                          )}
+                        </Typography>
+                      )}
                     </CardContent>
                   </Card>
                 </ListItem>

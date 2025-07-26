@@ -33,7 +33,7 @@ import {
   EditCertificateDate,
   EditDegree,
   EditDiscountYearLimit,
-  EditDoorNumber,
+  EditHouseAddress,
   EditDoorWidth,
   EditDownPayment,
   EditExternalSync,
@@ -69,10 +69,12 @@ import {
   EditUrgent,
   EditUseArea,
   EditViewMethod,
+  EditPropertyManagementCompany,
 } from "../EditDetail";
 import { houseFormSchema } from "@/schema/house";
 import { useToast } from "@/libs/ToastProvider";
 import { getFirstError } from "@/utils";
+import { Edit } from "lucide-react";
 
 export interface Relation {
   purpose?: string;
@@ -386,10 +388,25 @@ export function Form({ defaultValues, value, onSubmit }: FormProps) {
               />
 
               <form.Field
-                name="door_number"
+                name="property_management_company"
                 children={(field) => {
                   return (
-                    <EditDoorNumber
+                    <FormControl required>
+                      <FormLabel>物业公司</FormLabel>
+                      <EditPropertyManagementCompany
+                        value={field.state.value}
+                        onChange={field.handleChange}
+                      />
+                    </FormControl>
+                  );
+                }}
+              />
+
+              <form.Field
+                name="house_address"
+                children={(field) => {
+                  return (
+                    <EditHouseAddress
                       value={field.state.value}
                       onChange={field.handleChange}
                     />

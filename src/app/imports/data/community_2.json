@@ -7,7 +7,7 @@
     "location": [117.094334, 30.540093],
     "address": "祥和路与朝阳路交叉口东北60米",
     "typecode": "100200",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "万象公寓",
       "region": "宜秀区",
@@ -32,7 +32,7 @@
     "location": [117.045471, 30.502089],
     "address": "建设路28号",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "万豪逸景",
       "region": "迎江区",
@@ -57,7 +57,7 @@
     "location": [117.065416, 30.546624],
     "address": "湖心北路78号",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "世纪名流",
       "region": "宜秀区",
@@ -82,7 +82,7 @@
     "location": [117.086982, 30.534275],
     "address": "天柱山东路南",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "东方天韵",
       "region": "宜秀区",
@@ -107,7 +107,7 @@
     "location": [117.064146, 30.540923],
     "address": "菱北街道开发区回祥路菱建小区39栋东方菜市场",
     "typecode": "060703",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "东方虹城",
       "region": "宜秀区",
@@ -132,7 +132,7 @@
     "location": [117.074403, 30.53031],
     "address": "元山路6号",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "东湖一品",
       "region": "宜秀区",
@@ -157,7 +157,7 @@
     "location": [117.060904, 30.509361],
     "address": "少年宫东路与程墩路交叉口西南120米",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "东苑小区",
       "region": "迎江区",
@@ -182,7 +182,7 @@
     "location": [117.054073, 30.547421],
     "address": "中兴大道",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "中宜卡法香谢园",
       "region": "大观区",
@@ -207,7 +207,7 @@
     "location": [117.060444, 30.544757],
     "address": "花亭湖路与宜煌路交叉口东20米",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "中宜时尚苑",
       "region": "宜秀区",
@@ -232,7 +232,7 @@
     "location": [117.106538, 30.512998],
     "address": "晴岚路",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "中海一期",
       "region": "迎江区",
@@ -257,7 +257,7 @@
     "location": [117.071464, 30.535554],
     "address": "盛唐湾路16号",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "丹桂花园",
       "region": "宜秀区",
@@ -282,7 +282,7 @@
     "location": [117.092002, 30.53771],
     "address": "天柱山东路116号",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "书香一品",
       "region": "宜秀区",
@@ -307,7 +307,7 @@
     "location": [117.053974, 30.544542],
     "address": "中兴大街125正西方向90米",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "云志苑",
       "region": "宜秀区",
@@ -332,7 +332,7 @@
     "location": [117.057345, 30.505371],
     "address": "人民路",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "人民新村",
       "region": "迎江区",
@@ -355,9 +355,9 @@
     "district": "安徽省安庆市迎江区",
     "adcode": "340802",
     "location": [117.039666, 30.503499],
-    "address": [],
+    "address": "",
     "typecode": "190301",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "任家坡",
       "region": "大观区",
@@ -382,7 +382,7 @@
     "location": [117.133451, 30.526527],
     "address": "新河路与港口路交叉口西南380米",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "余桥新村",
       "region": "迎江区",
@@ -407,7 +407,7 @@
     "location": [117.048304, 30.509733],
     "address": "健康路与铁佛庵巷交叉口北20米",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "健康公寓",
       "region": "大观区",
@@ -432,7 +432,7 @@
     "location": [117.072599, 30.544233],
     "address": "深圳路与雷池路交叉口东北160米",
     "typecode": "060700",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "光彩大市场一期",
       "region": "宜秀区",
@@ -457,7 +457,7 @@
     "location": [117.072506, 30.537966],
     "address": "南京西路与北京路交叉口东20米",
     "typecode": "060700",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "光彩大市场三期",
       "region": "宜秀区",
@@ -482,7 +482,7 @@
     "location": [117.0726, 30.541069],
     "address": "深圳路与天柱山西路交叉口东北180米",
     "typecode": "061208",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "光彩大市场二期",
       "region": "宜秀区",
@@ -507,7 +507,7 @@
     "location": [117.079877, 30.540861],
     "address": "天柱山东路",
     "typecode": "120301",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "光彩商务花园",
       "region": "宜秀区",
@@ -532,7 +532,7 @@
     "location": [117.079034, 30.538416],
     "address": "纬四街与纬四路交叉口西南200米",
     "typecode": "120302|060600",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "光彩大市场四期",
       "region": "宜秀区",
@@ -557,7 +557,7 @@
     "location": [117.05852, 30.533819],
     "address": "菱湖北路与湖心北路交叉口西北200米",
     "typecode": "190403",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "公交宿舍",
       "region": "宜秀区",
@@ -580,9 +580,9 @@
     "district": "安徽省安庆市大观区",
     "adcode": "340803",
     "location": [117.036764, 30.511362],
-    "address": [],
+    "address": "",
     "typecode": "190301",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "关岳庙街",
       "region": "宜秀区",
@@ -607,7 +607,7 @@
     "location": [117.042145, 30.515907],
     "address": "集贤南路",
     "typecode": "120201",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "兴利达大厦",
       "region": "大观区",
@@ -632,7 +632,7 @@
     "location": [117.095908, 30.533861],
     "address": "天柱山东路与独秀大道交汇处",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "凯旋尊邸",
       "region": "宜秀区",
@@ -657,7 +657,7 @@
     "location": [116.976031, 30.620385],
     "address": "凤鸣路与天仙河路交叉口西北220米",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "北城秀里",
       "region": "宜秀区",
@@ -680,9 +680,9 @@
     "district": "安徽省安庆市大观区",
     "adcode": "340803",
     "location": [117.038766, 30.513565],
-    "address": [],
+    "address": "",
     "typecode": "190700",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "北正街",
       "region": "大观区",
@@ -707,7 +707,7 @@
     "location": [117.045133, 30.541595],
     "address": "黄土坑东路十六中隔壁巷子笔直走到底",
     "typecode": "120303",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "十里教委宿舍",
       "region": "大观区",
@@ -732,7 +732,7 @@
     "location": [117.025922, 30.555062],
     "address": "集贤北路518-13十里春风美发工作室",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "十里春天",
       "region": "大观区",
@@ -757,7 +757,7 @@
     "location": [117.084039, 30.513232],
     "address": "华中东路309号正东方向110米",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "千和花园",
       "region": "迎江区",
@@ -782,7 +782,7 @@
     "location": [117.0463, 30.53353],
     "address": "菱湖北路与花亭路交叉口西240米",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "华亭北村",
       "region": "大观区",
@@ -807,7 +807,7 @@
     "location": [117.04604, 30.531406],
     "address": "集贤南路与石化四路交叉口东北260米",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "华亭南村",
       "region": "大观区",
@@ -832,7 +832,7 @@
     "location": [117.049614, 30.521077],
     "address": "双岗路50号",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "华茂1958",
       "region": "大观区",
@@ -857,7 +857,7 @@
     "location": [117.049066, 30.533412],
     "address": "花亭路193号",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "华茂新村",
       "region": "大观区",
@@ -882,7 +882,7 @@
     "location": [117.042402, 30.525154],
     "address": "集贤南路163号",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "南园山庄",
       "region": "大观区",
@@ -907,7 +907,7 @@
     "location": [117.095169, 30.542634],
     "address": "迎宾东路与C-8二号路交叉口西南180米",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "博雅花苑",
       "region": "宜秀区",
@@ -932,7 +932,7 @@
     "location": [117.092066, 30.542794],
     "address": "迎宾东路与朝阳路交汇处西南角",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "印象江南",
       "region": "宜秀区",
@@ -957,7 +957,7 @@
     "location": [112.905626, 35.560948],
     "address": "畅安路与中心街交叉口东160米",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "厂东小区",
       "region": "大观区",
@@ -980,9 +980,9 @@
     "district": "安徽省安庆市迎江区",
     "adcode": "340802",
     "location": [117.044449, 30.510223],
-    "address": [],
+    "address": "",
     "typecode": "190301",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "双井街",
       "region": "迎江区",
@@ -1007,7 +1007,7 @@
     "location": [117.085842, 30.542302],
     "address": "迎宾东路115号",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "叶祠东苑",
       "region": "宜秀区",
@@ -1032,7 +1032,7 @@
     "location": [117.082221, 30.533305],
     "address": "天柱山东路与官圣公路交叉口南340米",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "叶祠南苑",
       "region": "宜秀区",
@@ -1057,7 +1057,7 @@
     "location": [117.072886, 30.534332],
     "address": "裕庆路10号",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "吉祥中宜苑",
       "region": "宜秀区",
@@ -1082,7 +1082,7 @@
     "location": [117.073462, 30.534959],
     "address": "盛唐湾路16-72号附近",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "吉祥家园",
       "region": "宜秀区",
@@ -1107,7 +1107,7 @@
     "location": [117.053954, 30.53506],
     "address": "中兴大街(全羊宴隔壁)",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "同兴花园",
       "region": "大观区",
@@ -1132,7 +1132,7 @@
     "location": [117.068354, 30.54464],
     "address": "同安路与雷池路交汇处",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "同安府",
       "region": "宜秀区",
@@ -1157,7 +1157,7 @@
     "location": [117.077661, 30.540794],
     "address": "龙眠山路254号",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "同庆北苑",
       "region": "宜秀区",
@@ -1182,7 +1182,7 @@
     "location": [117.078107, 30.53547],
     "address": "龙眠山路",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "同庆南苑",
       "region": "宜秀区",
@@ -1207,7 +1207,7 @@
     "location": [117.070984, 30.556525],
     "address": "青园农机城正对面",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "吴嘴小区",
       "region": "宜秀区",
@@ -1232,7 +1232,7 @@
     "location": [117.074014, 30.509797],
     "address": "华中西路",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "吾悦华府",
       "region": "迎江区",
@@ -1257,7 +1257,7 @@
     "location": [117.076254, 30.513282],
     "address": "菱湖南路1号",
     "typecode": "060101",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "吾悦广场",
       "region": "迎江区",
@@ -1282,7 +1282,7 @@
     "location": [117.148949, 30.548698],
     "address": "和平西路与迎宾东路交叉口南约280米",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "和平苑",
       "region": "宜秀区",
@@ -1307,7 +1307,7 @@
     "location": [117.036458, 30.54664],
     "address": "集贤路街道集贤北路五里大修厂旁",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "和谐家苑",
       "region": "大观区",
@@ -1325,31 +1325,6 @@
     }
   },
   {
-    "id": "",
-    "name": "嘉禾东苑",
-    "district": "",
-    "adcode": "",
-    "location": "",
-    "address": [],
-    "typecode": [],
-    "city": [],
-    "item": {
-      "community_name": "嘉禾东苑",
-      "region": "宜秀区",
-      "city": "安庆",
-      "state": "安徽省",
-      "postal_code": "246000",
-      "year_built": 2018,
-      "community_type": "普通住宅",
-      "property_management_company": null,
-      "description": null,
-      "created_by": "meida",
-      "updated_by": "meida",
-      "created_at": "2024-12-29 08:26:40",
-      "updated_at": "2024-12-29 08:26:40"
-    }
-  },
-  {
     "id": "B022C0S8FA",
     "name": "嘉禾园小区",
     "district": "安徽省安庆市宜秀区",
@@ -1357,7 +1332,7 @@
     "location": [117.090874, 30.541066],
     "address": "文苑路176号",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "嘉禾园",
       "region": "宜秀区",
@@ -1382,7 +1357,7 @@
     "location": [117.089426, 30.54291],
     "address": "文苑路176号-16",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "嘉禾至尊",
       "region": "宜秀区",
@@ -1407,7 +1382,7 @@
     "location": [117.035119, 30.508341],
     "address": "四方城街与玉虹街交叉口东北120米",
     "typecode": "190403",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "四方城东区",
       "region": "大观区",
@@ -1432,7 +1407,7 @@
     "location": [117.066769, 30.540978],
     "address": "天柱山西路与浮山路交叉口东南60米",
     "typecode": "190403",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "回祥东村",
       "region": "宜秀区",
@@ -1457,7 +1432,7 @@
     "location": [117.065439, 30.537141],
     "address": "回祥路98号",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "回祥小区",
       "region": "宜秀区",
@@ -1482,7 +1457,7 @@
     "location": [117.064495, 30.541599],
     "address": "天柱山西路与湖心北路交叉口东南160米",
     "typecode": "190403",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "回祥西村",
       "region": "宜秀区",
@@ -1507,7 +1482,7 @@
     "location": [117.06576, 30.542424],
     "address": "浮山路48正西方向120米",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "国泰花园",
       "region": "宜秀区",
@@ -1532,7 +1507,7 @@
     "location": [117.089449, 30.537065],
     "address": "天柱山东路129号",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "国瑞花苑",
       "region": "宜秀区",
@@ -1557,7 +1532,7 @@
     "location": [117.087314, 30.5302],
     "address": "文苑路158号",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "圣埠小区",
       "region": "宜秀区",
@@ -1580,9 +1555,9 @@
     "district": "安徽省安庆市迎江区",
     "adcode": "340802",
     "location": [117.039339, 30.504632],
-    "address": [],
+    "address": "",
     "typecode": "190301",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "墨子巷",
       "region": "迎江区",
@@ -1605,9 +1580,9 @@
     "district": "安徽省安庆市大观区",
     "adcode": "340803",
     "location": [117.039311, 30.517566],
-    "address": [],
+    "address": "",
     "typecode": "190301",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "壕梗街",
       "region": "大观区",
@@ -1632,7 +1607,7 @@
     "location": [116.573238, 30.624706],
     "address": "天柱山路与045县道交叉口东80米",
     "typecode": "990000",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "大南门",
       "region": "迎江区",
@@ -1657,7 +1632,7 @@
     "location": [117.090779, 30.544564],
     "address": "迎宾东路与月池路交叉口北80米",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "大发 融悦四季",
       "region": "宜秀区",
@@ -1682,7 +1657,7 @@
     "location": [117.126207, 30.518093],
     "address": "华中东路与潜江路交叉口东400米",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "大发怡景城一期",
       "region": "迎江区",
@@ -1707,7 +1682,7 @@
     "location": [117.125397, 30.519817],
     "address": "华中东路与华中路交叉口北300米",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "大发怡景城三期",
       "region": "迎江区",
@@ -1732,7 +1707,7 @@
     "location": [117.130532, 30.51911],
     "address": "皖江大道与老华中路交汇处",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "大发怡景城二期",
       "region": "迎江区",
@@ -1757,7 +1732,7 @@
     "location": [117.126702, 30.520639],
     "address": "华中东路与华中路交叉口北300米",
     "typecode": "190403",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "大发怡景城四期",
       "region": "迎江区",
@@ -1782,7 +1757,7 @@
     "location": [117.046706, 30.520431],
     "address": "戏校南路北二巷与公园西路交叉口北120米",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "大园小区",
       "region": "大观区",
@@ -1807,7 +1782,7 @@
     "location": [116.983391, 30.616778],
     "address": "北部新城兴宜路8号(新宜秀区政府大楼旁)",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "大地凤凰城",
       "region": "宜秀区",
@@ -1832,7 +1807,7 @@
     "location": [117.049905, 30.53596],
     "address": "中兴大街102号英德利花园西苑",
     "typecode": "141204",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "大湖春天",
       "region": "大观区",
@@ -1857,7 +1832,7 @@
     "location": [117.028323, 30.506727],
     "address": "德宽路75号",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "大观亭小区",
       "region": "大观区",
@@ -1882,7 +1857,7 @@
     "location": [117.034936, 30.504571],
     "address": "大观家居商城(玉琳路店)",
     "typecode": "190403",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "大观商城",
       "region": "大观区",
@@ -1907,7 +1882,7 @@
     "location": [117.065548, 30.508888],
     "address": "棋盘山路",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "天一家园",
       "region": "大观区",
@@ -1932,7 +1907,7 @@
     "location": [117.126483, 30.531092],
     "address": "辉煌路与振风大道交汇处西北",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "天下名筑",
       "region": "迎江区",
@@ -1957,7 +1932,7 @@
     "location": [117.072717, 30.546771],
     "address": "迎宾路20号",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "天宝商城",
       "region": "宜秀区",
@@ -1982,7 +1957,7 @@
     "location": [117.070419, 30.547354],
     "address": "宜秀区开发区迎宾路168号",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "天宝新苑",
       "region": "宜秀区",
@@ -2005,9 +1980,9 @@
     "district": "安徽省安庆市宜秀区",
     "adcode": "340811",
     "location": [117.061905, 30.547867],
-    "address": [],
+    "address": "",
     "typecode": "190403",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "天柱商贸城",
       "region": "宜秀区",
@@ -2030,9 +2005,9 @@
     "district": "安徽省安庆市潜山市",
     "adcode": "340882",
     "location": [116.572031, 30.627972],
-    "address": [],
+    "address": "",
     "typecode": "190301",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "天柱山路",
       "region": "宜秀区",
@@ -2057,7 +2032,7 @@
     "location": [117.028004, 30.553777],
     "address": "安庆市开发区十魏路",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "天柱栖庭",
       "region": "宜秀区",
@@ -2082,7 +2057,7 @@
     "location": [117.075536, 30.529192],
     "address": "菱湖北路与元山路交叉口东200米",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "天盟 。阅江山",
       "region": "宜秀区",
@@ -2107,7 +2082,7 @@
     "location": [117.041316, 30.552684],
     "address": "迎宾西路321号",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "天盟。大溪地",
       "region": "大观区",
@@ -2132,7 +2107,7 @@
     "location": [117.062469, 30.539162],
     "address": "湖心北路12开发区附近",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "天赐良缘",
       "region": "宜秀区",
@@ -2157,7 +2132,7 @@
     "location": [117.057166, 30.544787],
     "address": "天柱山路90号",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "天骄花园",
       "region": "大观区",
@@ -2180,9 +2155,9 @@
     "district": "安徽省安庆市大观区",
     "adcode": "340803",
     "location": [117.040185, 30.513315],
-    "address": [],
+    "address": "",
     "typecode": "190301",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "孝子坊",
       "region": "大观区",
@@ -2207,7 +2182,7 @@
     "location": [117.049577, 30.507798],
     "address": "孝肃路42号安庆市第一人民医院孝肃路院区",
     "typecode": "090101",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "孝肃路综合楼",
       "region": "大观区",
@@ -2232,7 +2207,7 @@
     "location": [117.089421, 30.538945],
     "address": "祥和路与月池路交叉口西南160米",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "学府花园",
       "region": "宜秀区",
@@ -2257,7 +2232,7 @@
     "location": [117.03967, 30.54003],
     "address": "集贤路街道集贤北路117号",
     "typecode": "060000",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "安庆商城",
       "region": "迎江区",
@@ -2282,7 +2257,7 @@
     "location": [117.0457, 30.526856],
     "address": "集贤南路200号",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "宏祥山庄",
       "region": "大观区",
@@ -2307,7 +2282,7 @@
     "location": [117.053517, 30.521847],
     "address": "宜园路80号",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "宜园小区",
       "region": "宜秀区",
@@ -2332,7 +2307,7 @@
     "location": [117.095114, 30.522332],
     "address": "皖江大道",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "宜海。格林镇",
       "region": "迎江区",
@@ -2357,7 +2332,7 @@
     "location": [116.982611, 30.610255],
     "address": "稼先大道与龙潭路交叉口",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "宜秀蓝湾",
       "region": "大观区",
@@ -2382,7 +2357,7 @@
     "location": [117.056681, 30.520801],
     "address": "宜园路1号",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "宜铜新村",
       "region": "大观区",
@@ -2407,7 +2382,7 @@
     "location": [117.050415, 30.509598],
     "address": "百花亭街与宜城路交叉口西120米",
     "typecode": "110200",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "宝善庵",
       "region": "迎江区",
@@ -2432,7 +2407,7 @@
     "location": [117.045337, 30.509149],
     "address": "宣家花园街38号",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "宣家花园",
       "region": "大观区",
@@ -2457,7 +2432,7 @@
     "location": [117.023057, 30.552118],
     "address": "集贤北路513号",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "富春国际",
       "region": "大观区",
@@ -2480,9 +2455,9 @@
     "district": "安徽省安庆市大观区",
     "adcode": "340803",
     "location": [117.040633, 30.512021],
-    "address": [],
+    "address": "",
     "typecode": "190301",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "小珠子巷",
       "region": "大观区",
@@ -2507,7 +2482,7 @@
     "location": [117.054451, 30.549905],
     "address": "中兴大街149号",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "山圆小区",
       "region": "大观区",
@@ -2532,7 +2507,7 @@
     "location": [117.063453, 30.541791],
     "address": "湖心北路72号",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "山城公寓",
       "region": "宜秀区",
@@ -2557,7 +2532,7 @@
     "location": [117.063909, 30.547188],
     "address": "湖心北路",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "山城大厦",
       "region": "宜秀区",
@@ -2582,7 +2557,7 @@
     "location": [117.063909, 30.547188],
     "address": "湖心北路",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "山城花园",
       "region": "宜秀区",
@@ -2607,7 +2582,7 @@
     "location": [117.09767, 30.544353],
     "address": "大桥街道迎宾东路",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "峻泓馨居",
       "region": "宜秀区",
@@ -2630,9 +2605,9 @@
     "district": "安徽省安庆市大观区",
     "adcode": "340803",
     "location": [117.04118, 30.518353],
-    "address": [],
+    "address": "",
     "typecode": "190301",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "工农街",
       "region": "大观区",
@@ -2657,7 +2632,7 @@
     "location": [117.053899, 30.536749],
     "address": "中兴大道",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "巨源小区",
       "region": "宜秀区",
@@ -2682,7 +2657,7 @@
     "location": [117.054273, 30.524799],
     "address": "市府路4号",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "市府小区",
       "region": "大观区",
@@ -2705,9 +2680,9 @@
     "district": "安徽省安庆市大观区",
     "adcode": "340803",
     "location": [117.052044, 30.522461],
-    "address": [],
+    "address": "",
     "typecode": "190301",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "市府路南一巷",
       "region": "大观区",
@@ -2730,9 +2705,9 @@
     "district": "安徽省安庆市大观区",
     "adcode": "340803",
     "location": [117.047237, 30.522538],
-    "address": [],
+    "address": "",
     "typecode": "190301",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "市府路南三巷",
       "region": "大观区",
@@ -2757,7 +2732,7 @@
     "location": [106.776451, 30.377749],
     "address": "清溪路5号",
     "typecode": "120201",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "广安综合楼",
       "region": "宜秀区",
@@ -2782,7 +2757,7 @@
     "location": [117.0576, 30.547077],
     "address": "中兴大道",
     "typecode": "190403",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "广汇综合楼",
       "region": "宜秀区",
@@ -2807,7 +2782,7 @@
     "location": [117.061168, 30.54537],
     "address": "开发区雷池路十九号",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "广汇花园",
       "region": "宜秀区",
@@ -2832,7 +2807,7 @@
     "location": [117.056901, 30.507836],
     "address": "湖心南路212号",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "康居里",
       "region": "大观区",
@@ -2857,7 +2832,7 @@
     "location": [117.074701, 30.532248],
     "address": "盛唐湾路1号",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "康莱特家苑",
       "region": "宜秀区",
@@ -2882,7 +2857,7 @@
     "location": [117.066605, 30.508903],
     "address": "棋盘山路与华中西路交叉口北180米",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "建司大院",
       "region": "大观区",
@@ -2907,7 +2882,7 @@
     "location": [117.066605, 30.508903],
     "address": "棋盘山路与华中西路交叉口北180米",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "建司宿舍",
       "region": "大观区",
@@ -2932,7 +2907,7 @@
     "location": [117.054671, 30.511668],
     "address": "宜城路街道宜城路吉祥街228号",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "弘信花园",
       "region": "大观区",
@@ -2957,7 +2932,7 @@
     "location": [117.099013, 30.546145],
     "address": "朝阳路91号弘阳上城一期",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "弘阳上城",
       "region": "宜秀区",
@@ -2982,7 +2957,7 @@
     "location": [117.05344, 30.512443],
     "address": "菱湖南路271号",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "御景国际",
       "region": "大观区",
@@ -3007,7 +2982,7 @@
     "location": [117.061398, 30.54722],
     "address": "菱北街道开发区",
     "typecode": "120200",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "思创综合楼",
       "region": "宜秀区",
@@ -3032,7 +3007,7 @@
     "location": [117.101999, 30.517724],
     "address": "独秀大道与皖江大道交叉口东南160米",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "恒大优公馆",
       "region": "迎江区",
@@ -3057,7 +3032,7 @@
     "location": [117.10233, 30.537317],
     "address": "独秀大道和天柱山东路市立医院分院对面",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "恒大珺睿府",
       "region": "宜秀区",
@@ -3082,7 +3057,7 @@
     "location": [117.104079, 30.516613],
     "address": "龙狮桥乡皖江大道162号",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "恒大绿洲",
       "region": "迎江区",
@@ -3107,7 +3082,7 @@
     "location": [117.097927, 30.55049],
     "address": "独秀大道与白泽路交汇处",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "恒大观澜府",
       "region": "宜秀区",
@@ -3132,7 +3107,7 @@
     "location": [117.102804, 30.541317],
     "address": "独秀大道与安庆七街交汇处",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "恒禾东尚",
       "region": "宜秀区",
@@ -3155,9 +3130,9 @@
     "district": "安徽省安庆市大观区",
     "adcode": "340803",
     "location": [117.045252, 30.518522],
-    "address": [],
+    "address": "",
     "typecode": "190301",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "戏校南路",
       "region": "大观区",
@@ -3182,7 +3157,7 @@
     "location": [117.090041, 30.528843],
     "address": "振风大道与文苑路交叉口东北120米",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "振风苑",
       "region": "宜秀区",
@@ -3207,7 +3182,7 @@
     "location": [117.064359, 30.509977],
     "address": "宜光西路与棋盘山路交叉口西240米",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "文教花园",
       "region": "大观区",
@@ -3232,7 +3207,7 @@
     "location": [117.086355, 30.539076],
     "address": "安庆天柱山东路与文苑路交汇处",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "文苑世家",
       "region": "宜秀区",
@@ -3257,7 +3232,7 @@
     "location": [117.092513, 30.522727],
     "address": "新河支路与规划二路交叉口西北260米",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "新宜小区",
       "region": "宜秀区",
@@ -3282,7 +3257,7 @@
     "location": [117.175111, 30.55124],
     "address": "老峰镇西湖社区",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "方兴苑",
       "region": "宜秀区",
@@ -3307,7 +3282,7 @@
     "location": [117.043104, 30.526581],
     "address": "集贤路街道",
     "typecode": "120000",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "旗杆新村",
       "region": "大观区",
@@ -3332,7 +3307,7 @@
     "location": [117.066999, 30.546921],
     "address": "迎宾路99号",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "时代嘉苑",
       "region": "宜秀区",
@@ -3357,7 +3332,7 @@
     "location": [117.071213, 30.532729],
     "address": "裕庆路与盛唐湾路交叉口西南160米",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "旺园小区",
       "region": "宜秀区",
@@ -3382,7 +3357,7 @@
     "location": [117.086542, 30.537537],
     "address": "元山路",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "旺旺家缘",
       "region": "宜秀区",
@@ -3407,7 +3382,7 @@
     "location": [117.092513, 30.522727],
     "address": "新河支路与规划二路交叉口西北260米",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "星宜小区",
       "region": "宜秀区",
@@ -3432,7 +3407,7 @@
     "location": [117.073348, 30.531005],
     "address": "旺园路3号",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "景湖嘉苑",
       "region": "宜秀区",
@@ -3457,7 +3432,7 @@
     "location": [117.051995, 30.535245],
     "address": "中兴大道101号",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "晶海花园",
       "region": "宜秀区",
@@ -3482,7 +3457,7 @@
     "location": [117.034372, 30.506398],
     "address": "玉虹街",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "月亮城",
       "region": "大观区",
@@ -3505,9 +3480,9 @@
     "district": "安徽省安庆市迎江区",
     "adcode": "340802",
     "location": [117.041143, 30.503698],
-    "address": [],
+    "address": "",
     "typecode": "190301",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "月牙宫",
       "region": "迎江区",
@@ -3532,7 +3507,7 @@
     "location": [117.093441, 30.545992],
     "address": "朝阳路18号",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "朝阳小区",
       "region": "宜秀区",
@@ -3557,7 +3532,7 @@
     "location": [117.108309, 30.517616],
     "address": "皖江大道168号",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "林语堂",
       "region": "迎江区",
@@ -3582,7 +3557,7 @@
     "location": [117.033981, 30.503321],
     "address": "沿江西路与程良路交叉口东120米",
     "typecode": "190403",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "枸杞山",
       "region": "大观区",
@@ -3607,7 +3582,7 @@
     "location": [117.053164, 30.543623],
     "address": "春华路与余店路交叉口东北120米",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "梦祯北苑",
       "region": "大观区",
@@ -3632,7 +3607,7 @@
     "location": [117.052627, 30.542004],
     "address": "余店路与春华路交叉口南100米",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "梦祯南苑",
       "region": "宜秀区",
@@ -3657,7 +3632,7 @@
     "location": [117.062448, 30.544659],
     "address": "湖心北路89号",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "欧风怡庭",
       "region": "宜秀区",
@@ -3682,7 +3657,7 @@
     "location": [117.051737, 30.536892],
     "address": "黄土坑东路40号毛纺厂综合楼",
     "typecode": "190403",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "毛纺厂宿舍",
       "region": "大观区",
@@ -3707,7 +3682,7 @@
     "location": [117.098284, 30.51108],
     "address": "华中路与乔年路交叉口东南200米",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "水岸花都",
       "region": "迎江区",
@@ -3730,9 +3705,9 @@
     "district": "安徽省安庆市怀宁县",
     "adcode": "340822",
     "location": [116.831929, 30.736378],
-    "address": [],
+    "address": "",
     "typecode": "190301",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "永安街",
       "region": "大观区",
@@ -3757,7 +3732,7 @@
     "location": [117.05617, 30.525013],
     "address": "湖心中路与市府路交叉口西北160米",
     "typecode": "120000",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "汇丰广场",
       "region": "大观区",
@@ -3782,7 +3757,7 @@
     "location": [117.066585, 30.545653],
     "address": "雷池路6号",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "江菱商贸城",
       "region": "宜秀区",
@@ -3807,7 +3782,7 @@
     "location": [117.068872, 30.546344],
     "address": "迎宾西路",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "海信苑",
       "region": "宜秀区",
@@ -3832,7 +3807,7 @@
     "location": [117.054007, 30.541269],
     "address": "中兴大道",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "海燕北村",
       "region": "大观区",
@@ -3857,7 +3832,7 @@
     "location": [116.979912, 30.620674],
     "address": "龙珠路与龙城路交叉口西南240米",
     "typecode": "120300",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "清华府",
       "region": "大观区",
@@ -3882,7 +3857,7 @@
     "location": [117.064564, 30.505212],
     "address": "棋盘山路21号",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "滨江至尊",
       "region": "迎江区",
@@ -3907,7 +3882,7 @@
     "location": [117.037174, 30.502593],
     "address": "滨江苑小区门口3号门面",
     "typecode": "050121",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "滨江苑",
       "region": "大观区",
@@ -3925,31 +3900,6 @@
     }
   },
   {
-    "id": "",
-    "name": "火车站车务段",
-    "district": "",
-    "adcode": "",
-    "location": "",
-    "address": [],
-    "typecode": [],
-    "city": [],
-    "item": {
-      "community_name": "火车站车务段",
-      "region": "宜秀区",
-      "city": "安庆",
-      "state": "安徽省",
-      "postal_code": "246000",
-      "year_built": 2003,
-      "community_type": "普通住宅",
-      "property_management_company": null,
-      "description": null,
-      "created_by": "meida",
-      "updated_by": "meida",
-      "created_at": "2024-10-31 09:33:16",
-      "updated_at": "2024-10-31 09:33:16"
-    }
-  },
-  {
     "id": "B0FFG17DJC",
     "name": "金回回牛肉面馆",
     "district": "安徽省安庆市大观区",
@@ -3957,7 +3907,7 @@
     "location": [117.032151, 30.504512],
     "address": "玉琳路布市6号区6幢5号、6号门面",
     "typecode": "050121",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "玉琳布市",
       "region": "大观区",
@@ -3980,9 +3930,9 @@
     "district": "安徽省安庆市大观区",
     "adcode": "340803",
     "location": [117.03452, 30.504531],
-    "address": [],
+    "address": "",
     "typecode": "190700",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "玉琳路",
       "region": "大观区",
@@ -4007,7 +3957,7 @@
     "location": [117.03683, 30.555862],
     "address": "迎宾西路428号附近",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "瓜园小区",
       "region": "宜秀区",
@@ -4032,7 +3982,7 @@
     "location": [117.053712, 30.540212],
     "address": "中兴大街109号",
     "typecode": "190403",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "白中小区",
       "region": "大观区",
@@ -4057,7 +4007,7 @@
     "location": [117.031827, 30.506781],
     "address": "德宽路与观音街交叉口东200米",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "白云小区",
       "region": "大观区",
@@ -4082,7 +4032,7 @@
     "location": [117.041069, 30.50712],
     "address": "人民路520号正南方向40米",
     "typecode": "120203",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "皖宁公寓",
       "region": "大观区",
@@ -4107,7 +4057,7 @@
     "location": [117.041958, 30.545776],
     "address": "规划二路与天柱山西路交叉口南220米",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "皖江华府",
       "region": "大观区",
@@ -4132,7 +4082,7 @@
     "location": [117.037864, 30.529618],
     "address": "石化4路37号西北方向180米",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "石化一村",
       "region": "大观区",
@@ -4157,7 +4107,7 @@
     "location": [117.033237, 30.517279],
     "address": "蔡山路与油化二路交叉口西南340米",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "石化三村",
       "region": "大观区",
@@ -4182,7 +4132,7 @@
     "location": [117.027174, 30.514857],
     "address": "蔡山路151号",
     "typecode": "120000",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "石化五村",
       "region": "大观区",
@@ -4207,7 +4157,7 @@
     "location": [117.043115, 30.528018],
     "address": "石化四路35号",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "石化四村",
       "region": "大观区",
@@ -4232,7 +4182,7 @@
     "location": [117.050331, 30.526763],
     "address": "双岗路5号",
     "typecode": "190403",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "石化大湖南区",
       "region": "宜秀区",
@@ -4257,7 +4207,7 @@
     "location": [117.05151, 30.525354],
     "address": "市府路与市府路南一巷交叉口北160米",
     "typecode": "120303",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "石化大湖教师楼",
       "region": "大观区",
@@ -4282,7 +4232,7 @@
     "location": [117.049027, 30.530434],
     "address": "水上公园路2-1号",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "石化大湖新北区",
       "region": "宜秀区",
@@ -4307,7 +4257,7 @@
     "location": [117.047748, 30.52869],
     "address": "燎原路与军械厂巷交叉口东北140米",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "石化大湖老北区",
       "region": "大观区",
@@ -4332,7 +4282,7 @@
     "location": [117.064484, 30.535997],
     "address": "石化一小对面",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "石化菱北",
       "region": "宜秀区",
@@ -4357,7 +4307,7 @@
     "location": [117.063254, 30.534468],
     "address": "石化菱南3号门面",
     "typecode": "060501",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "石化菱南",
       "region": "宜秀区",
@@ -4382,7 +4332,7 @@
     "location": [117.102148, 30.55487],
     "address": "独秀大道与中山大道交口",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "碧桂园。中梁东方印",
       "region": "宜秀区",
@@ -4407,7 +4357,7 @@
     "location": [117.141841, 30.529258],
     "address": "港口路78附近皖江大道北侧",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "碧桂园。凤凰新天地",
       "region": "迎江区",
@@ -4432,7 +4382,7 @@
     "location": [117.121834, 30.540603],
     "address": "潜江路与祥和路交汇处东北角",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "碧桂园。时代之光",
       "region": "宜秀区",
@@ -4457,7 +4407,7 @@
     "location": [117.146017, 30.530851],
     "address": "龙狮桥乡皖江大道1198号",
     "typecode": "120301",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "碧桂园。秦谭凤舞",
       "region": "迎江区",
@@ -4482,7 +4432,7 @@
     "location": [117.142792, 30.524774],
     "address": "皖江大道1198号",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "碧桂园一号公园",
       "region": "迎江区",
@@ -4507,7 +4457,7 @@
     "location": [117.146466, 30.529436],
     "address": "龙狮桥乡皖江大道碧桂园1号公园斜对面",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "碧桂园凤凰湾",
       "region": "迎江区",
@@ -4532,7 +4482,7 @@
     "location": [117.134635, 30.522551],
     "address": "皖江大道与港口路交叉口西南460米",
     "typecode": "120300",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "碧桂园山水云间",
       "region": "迎江区",
@@ -4557,7 +4507,7 @@
     "location": [117.106862, 30.541426],
     "address": "祥和路恒禾东尚104号",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "祥和北苑",
       "region": "宜秀区",
@@ -4582,7 +4532,7 @@
     "location": [117.106692, 30.537748],
     "address": "祥和路与晴岚路交叉口东南240米",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "祥和南苑",
       "region": "宜秀区",
@@ -4607,7 +4557,7 @@
     "location": [117.057319, 30.533638],
     "address": "菱湖北路60号",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "秀水华庭",
       "region": "大观区",
@@ -4630,9 +4580,9 @@
     "district": "安徽省安庆市大观区",
     "adcode": "340803",
     "location": [117.032992, 30.504032],
-    "address": [],
+    "address": "",
     "typecode": "190301",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "程良路",
       "region": "大观区",
@@ -4655,9 +4605,9 @@
     "district": "安徽省安庆市迎江区",
     "adcode": "340802",
     "location": [117.141798, 30.557527],
-    "address": [],
+    "address": "",
     "typecode": "190301",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "站南路",
       "region": "宜秀区",
@@ -4682,7 +4632,7 @@
     "location": [115.783373, 28.629873],
     "address": "达智路与平安西二街交叉口西北120米",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "站西花园",
       "region": "宜秀区",
@@ -4707,7 +4657,7 @@
     "location": [117.060596, 30.541425],
     "address": "天柱山西路与平安路交叉口西南约180米",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "竹苑小区",
       "region": "宜秀区",
@@ -4732,7 +4682,7 @@
     "location": [117.081381, 30.512622],
     "address": "龙狮桥乡华中路309号",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "红旗小区",
       "region": "迎江区",
@@ -4755,9 +4705,9 @@
     "district": "安徽省安庆市宿松县",
     "adcode": "340826",
     "location": [116.333659, 30.197917],
-    "address": [],
+    "address": "",
     "typecode": "190109",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "纱帽公寓",
       "region": "宜秀区",
@@ -4782,7 +4732,7 @@
     "location": [117.045882, 30.523378],
     "address": "纺织西路14号",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "纺织西村",
       "region": "大观区",
@@ -4807,7 +4757,7 @@
     "location": [117.059826, 30.541613],
     "address": "中兴大街132正东方向80米",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "绿叶小区",
       "region": "宜秀区",
@@ -4832,7 +4782,7 @@
     "location": [117.107652, 30.521914],
     "address": "皖江大道99号",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "绿地一期",
       "region": "迎江区",
@@ -4857,7 +4807,7 @@
     "location": [117.101293, 30.524548],
     "address": "独秀大道与康熙河路交叉口东南180米",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "绿地云公馆",
       "region": "迎江区",
@@ -4882,7 +4832,7 @@
     "location": [117.104387, 30.52001],
     "address": "皖江大道与晴岚路交叉口西100米",
     "typecode": "120201",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "绿地启航社",
       "region": "迎江区",
@@ -4907,7 +4857,7 @@
     "location": [117.107213, 30.523258],
     "address": "龙狮桥乡皖江大道绿地二期(卡莎公馆旁)迎江世纪城幼儿园",
     "typecode": "190403",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "绿地巴赫公馆",
       "region": "迎江区",
@@ -4932,7 +4882,7 @@
     "location": [117.111967, 30.522377],
     "address": "皖江大道与顺安路交叉口",
     "typecode": "120203",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "绿地微公馆",
       "region": "迎江区",
@@ -4957,7 +4907,7 @@
     "location": [117.1561, 30.561895],
     "address": "高琦小学圆梦新区分校对面",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "绿地新里城。凤鸣公馆",
       "region": "迎江区",
@@ -4982,7 +4932,7 @@
     "location": [117.153678, 30.559193],
     "address": "迎宾路与老峰路交口向北500米绿地新里城",
     "typecode": "190403",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "绿地新里城。翰林公馆",
       "region": "迎江区",
@@ -5007,7 +4957,7 @@
     "location": [117.111967, 30.522377],
     "address": "皖江大道与顺安路交叉口",
     "typecode": "120203",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "绿地蓝海",
       "region": "迎江区",
@@ -5032,7 +4982,7 @@
     "location": [117.113371, 30.50879],
     "address": "晴岚路316号",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "置地天熙二期",
       "region": "迎江区",
@@ -5057,7 +5007,7 @@
     "location": [117.098545, 30.523536],
     "address": "启航路",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "置地康熙左岸",
       "region": "迎江区",
@@ -5082,7 +5032,7 @@
     "location": [117.102107, 30.531157],
     "address": "振风大道与独秀大道交叉口东北200米",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "置地百悦府",
       "region": "迎江区",
@@ -5107,7 +5057,7 @@
     "location": [117.111966, 30.517737],
     "address": "育才路与顺安路交叉口西南140米",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "置地皖江四季",
       "region": "迎江区",
@@ -5132,7 +5082,7 @@
     "location": [117.075157, 30.534278],
     "address": "回祥东路5号",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "美格名居",
       "region": "宜秀区",
@@ -5157,7 +5107,7 @@
     "location": [117.054692, 30.545583],
     "address": "天柱山西路98号",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "联富新苑",
       "region": "大观区",
@@ -5182,7 +5132,7 @@
     "location": [117.047555, 30.53748],
     "address": "黄土坑东路57号",
     "typecode": "120303|170000",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "胡玉美宿舍",
       "region": "大观区",
@@ -5207,7 +5157,7 @@
     "location": [117.056494, 30.542852],
     "address": "中兴大街132号",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "舒乐小区",
       "region": "大观区",
@@ -5232,7 +5182,7 @@
     "location": [117.049741, 30.53909],
     "address": "黄土坑东路",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "舒园小区",
       "region": "大观区",
@@ -5257,7 +5207,7 @@
     "location": [117.058069, 30.541122],
     "address": "司空山路与竹园路交叉口西南200米",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "舒欣苑",
       "region": "宜秀区",
@@ -5282,7 +5232,7 @@
     "location": [117.058067, 30.542278],
     "address": "菱北街道科技园",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "舒福苑",
       "region": "宜秀区",
@@ -5307,7 +5257,7 @@
     "location": [117.04604, 30.531406],
     "address": "集贤南路与石化四路交叉口东北260米",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "花亭南村",
       "region": "大观区",
@@ -5332,7 +5282,7 @@
     "location": [117.043498, 30.530477],
     "address": "集贤路街道高花社区",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "花亭西村",
       "region": "大观区",
@@ -5357,7 +5307,7 @@
     "location": [117.101171, 30.511867],
     "address": "独秀大道与华中路交叉口西南180米",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "苏宁悦城",
       "region": "宜秀区",
@@ -5382,7 +5332,7 @@
     "location": [117.064437, 30.571207],
     "address": "石塘湖路8号安庆国际汽车城车管所对面",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "英德利商务花园",
       "region": "大观区",
@@ -5407,7 +5357,7 @@
     "location": [117.06137, 30.534627],
     "address": "国华路与湖心北路交叉口东100米",
     "typecode": "060000",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "荣庆商城",
       "region": "宜秀区",
@@ -5432,7 +5382,7 @@
     "location": [117.066335, 30.540033],
     "address": "同安路",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "菱建小区",
       "region": "宜秀区",
@@ -5457,7 +5407,7 @@
     "location": [117.044267, 30.51549],
     "address": "干校小区西北侧80米",
     "typecode": "190403",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "菱湖南路北二巷",
       "region": "大观区",
@@ -5482,7 +5432,7 @@
     "location": [117.049114, 30.517366],
     "address": "纺织南路116号",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "菱湖新村",
       "region": "大观区",
@@ -5505,9 +5455,9 @@
     "district": "安徽省安庆市大观区",
     "adcode": "340803",
     "location": [117.037124, 30.504558],
-    "address": [],
+    "address": "",
     "typecode": "190301",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "蓬莱街",
       "region": "大观区",
@@ -5532,7 +5482,7 @@
     "location": [117.101151, 30.550678],
     "address": "独秀大道与白泽路交叉口",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "融创时代宜城",
       "region": "宜秀区",
@@ -5557,7 +5507,7 @@
     "location": [117.067928, 30.551196],
     "address": "西湖绿洲城双峰阁3幢",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "西湖绿洲城三期",
       "region": "宜秀区",
@@ -5582,7 +5532,7 @@
     "location": [117.069509, 30.55345],
     "address": "龙腾路",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "西湖绿洲城二期",
       "region": "宜秀区",
@@ -5607,7 +5557,7 @@
     "location": [117.072804, 30.551032],
     "address": "民生路2号",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "西湖绿洲城五期",
       "region": "宜秀区",
@@ -5632,7 +5582,7 @@
     "location": [117.067217, 30.555382],
     "address": "民生路16号",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "西湖绿洲城四期",
       "region": "宜秀区",
@@ -5657,7 +5607,7 @@
     "location": [117.071132, 30.550748],
     "address": "龙腾路与九塘路交叉口南260米",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "西湖绿洲成一期",
       "region": "宜秀区",
@@ -5682,7 +5632,7 @@
     "location": [117.061454, 30.503176],
     "address": "沿江东路15号",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "谐水湾。迎江府",
       "region": "迎江区",
@@ -5707,7 +5657,7 @@
     "location": [117.065583, 30.503312],
     "address": "人民东路77附近",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "谐水湾一期",
       "region": "迎江区",
@@ -5732,7 +5682,7 @@
     "location": [117.052286, 30.553216],
     "address": "民生路迎宾小区",
     "typecode": "991400",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "迎宾小区北苑",
       "region": "大观区",
@@ -5757,7 +5707,7 @@
     "location": [117.049002, 30.553177],
     "address": "迎宾小区古树南苑菜市场9号门面66栋",
     "typecode": "070500",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "迎宾小区南苑",
       "region": "大观区",
@@ -5780,9 +5730,9 @@
     "district": "安徽省安庆市宜秀区",
     "adcode": "340811",
     "location": [117.055645, 30.550637],
-    "address": [],
+    "address": "",
     "typecode": "190301",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "迎宾路",
       "region": "宜秀区",
@@ -5807,7 +5757,7 @@
     "location": [117.074236, 30.55499],
     "address": "28路;305路(机场专线);32路;6路",
     "typecode": "150700",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "迎春花苑",
       "region": "宜秀区",
@@ -5832,7 +5782,7 @@
     "location": [117.096757, 30.53789],
     "address": "大桥街道天柱山东路",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "迎春颐和城",
       "region": "宜秀区",
@@ -5857,7 +5807,7 @@
     "location": [117.13134, 30.516213],
     "address": "华中东路1088号",
     "typecode": "120300",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "迎江御墅",
       "region": "迎江区",
@@ -5880,9 +5830,9 @@
     "district": "安徽省安庆市大观区",
     "adcode": "340803",
     "location": [117.039563, 30.509985],
-    "address": [],
+    "address": "",
     "typecode": "190301",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "近圣街",
       "region": "大观区",
@@ -5907,7 +5857,7 @@
     "location": [117.067279, 30.542838],
     "address": "同安路与雷池路交汇处",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "逸泉湾",
       "region": "宜秀区",
@@ -5932,7 +5882,7 @@
     "location": [117.051608, 30.546994],
     "address": "十同路",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "逸龙府",
       "region": "大观区",
@@ -5955,9 +5905,9 @@
     "district": "安徽省安庆市桐城市",
     "adcode": "340881",
     "location": [116.972446, 31.068541],
-    "address": [],
+    "address": "",
     "typecode": "190109",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "金三角",
       "region": "宜秀区",
@@ -5982,7 +5932,7 @@
     "location": [117.103547, 30.550851],
     "address": "独秀大道与九塘东路交口向东300米",
     "typecode": "120300",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "金地城市星光",
       "region": "宜秀区",
@@ -6007,7 +5957,7 @@
     "location": [117.125247, 30.534927],
     "address": "老峰镇辉煌路",
     "typecode": "190403",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "金大地天元府",
       "region": "迎江区",
@@ -6032,7 +5982,7 @@
     "location": [117.082354, 30.535362],
     "address": "元山路27号",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "金桂丽园",
       "region": "宜秀区",
@@ -6057,7 +6007,7 @@
     "location": [117.057688, 30.550644],
     "address": "迎宾西路与中兴大道交叉口东160米",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "鑫园小区",
       "region": "宜秀区",
@@ -6082,7 +6032,7 @@
     "location": [117.045039, 30.503724],
     "address": "建设路与天后宫街交叉口西40米",
     "typecode": "120000",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "钱牌楼",
       "region": "迎江区",
@@ -6107,7 +6057,7 @@
     "location": [117.062153, 30.546388],
     "address": "宜秀区开发区雷池路16号",
     "typecode": "060000",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "银都商城",
       "region": "宜秀区",
@@ -6132,7 +6082,7 @@
     "location": [117.066086, 30.543894],
     "address": "浮山路39号",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "银馨花园",
       "region": "宜秀区",
@@ -6155,9 +6105,9 @@
     "district": "内蒙古自治区锡林郭勒盟二连浩特市",
     "adcode": "152501",
     "location": [111.97635, 43.648646],
-    "address": [],
+    "address": "",
     "typecode": "190301",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "锡林街",
       "region": "大观区",
@@ -6180,9 +6130,9 @@
     "district": "安徽省安庆市迎江区",
     "adcode": "340802",
     "location": [117.048182, 30.506666],
-    "address": [],
+    "address": "",
     "typecode": "190301",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "锡麟街",
       "region": "迎江区",
@@ -6207,7 +6157,7 @@
     "location": [117.074946, 30.535295],
     "address": "回祥东路3号",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "锦绣人家",
       "region": "宜秀区",
@@ -6232,7 +6182,7 @@
     "location": [117.212571, 30.56892],
     "address": "安风路与春台路交叉口西160米",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "长宁小区 ",
       "region": "宜秀区",
@@ -6257,7 +6207,7 @@
     "location": [117.056707, 30.503407],
     "address": "湖心南路与杨家山街交叉口东100米",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "阳光花园一期",
       "region": "迎江区",
@@ -6282,7 +6232,7 @@
     "location": [117.026509, 30.551992],
     "address": "集贤北路与显伟路交叉口东北80米",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "集贤北苑",
       "region": "大观区",
@@ -6307,7 +6257,7 @@
     "location": [117.09809, 30.520062],
     "address": "皖江大道39号",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "雨润中央新城二期",
       "region": "迎江区",
@@ -6332,7 +6282,7 @@
     "location": [117.035702, 30.514203],
     "address": "德宽路街道德宽路",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "青年新村",
       "region": "大观区",
@@ -6357,7 +6307,7 @@
     "location": [117.115311, 30.519649],
     "address": "顺安路与育才路交叉口东北240米",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "顺安北苑",
       "region": "迎江区",
@@ -6380,9 +6330,9 @@
     "district": "安徽省安庆市大观区",
     "adcode": "340803",
     "location": [117.038453, 30.525213],
-    "address": [],
+    "address": "",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "领尚人家",
       "region": "大观区",
@@ -6407,7 +6357,7 @@
     "location": [117.05917, 30.535431],
     "address": "菱北街道菱湖北路13号",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "香樟里",
       "region": "宜秀区",
@@ -6432,7 +6382,7 @@
     "location": [117.087108, 30.518215],
     "address": "皖江大道23号",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "香水百合",
       "region": "迎江区",
@@ -6455,9 +6405,9 @@
     "district": "安徽省安庆市潜山市",
     "adcode": "340882",
     "location": [116.591825, 30.950949],
-    "address": [],
+    "address": "",
     "typecode": "190203",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "马家岭",
       "region": "大观区",
@@ -6480,9 +6430,9 @@
     "district": "安徽省安庆市大观区",
     "adcode": "340803",
     "location": [117.038917, 30.50965],
-    "address": [],
+    "address": "",
     "typecode": "190301",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "高崎巷",
       "region": "宜秀区",
@@ -6507,7 +6457,7 @@
     "location": [117.097984, 30.554607],
     "address": "中山大道与独秀大道交叉口",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "高速时代公馆",
       "region": "宜秀区",
@@ -6532,7 +6482,7 @@
     "location": [117.070166, 30.512213],
     "address": "宜光东路与菱湖南路交叉口东南180米",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "高速菱湖公馆",
       "region": "迎江区",
@@ -6557,7 +6507,7 @@
     "location": [117.039478, 30.520244],
     "address": "蔡山路43号",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "龙井小区",
       "region": "大观区",
@@ -6582,7 +6532,7 @@
     "location": [116.987581, 30.607194],
     "address": "稼先大道与集贤北路交叉口",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "龙城天悦",
       "region": "宜秀区",
@@ -6607,7 +6557,7 @@
     "location": [117.040908, 30.509089],
     "address": "孝肃路",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "龙山公寓",
       "region": "大观区",
@@ -6632,7 +6582,7 @@
     "location": [116.978948, 30.617286],
     "address": "大龙山镇中心村",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "龙山花苑",
       "region": "宜秀区",
@@ -6657,7 +6607,7 @@
     "location": [117.036192, 30.50682],
     "address": "龙门口街141号",
     "typecode": "190403",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "龙门口小区",
       "region": "大观区",
@@ -6682,7 +6632,7 @@
     "location": [117.035885, 30.506392],
     "address": "龙门口街141号",
     "typecode": "120302",
-    "city": [],
+    "city": "安庆",
     "item": {
       "community_name": "龙门小区",
       "region": "大观区",
