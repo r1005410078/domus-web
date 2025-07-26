@@ -7,58 +7,46 @@ import Typography from "@mui/joy/Typography";
 import { AspectRatio, Button, IconButton, useColorScheme } from "@mui/joy";
 import { Community } from "@/models/house";
 import PinDropOutlinedIcon from "@mui/icons-material/PinDropOutlined";
+import AMapLoader from "@amap/amap-jsapi-loader";
+
+(global as any)._AMapSecurityConfig = {
+  securityJsCode: "643afd6680cc38718fd6892c62f9045c",
+};
+
 interface CardMapProps {
   community: Community;
 }
 
-(globalThis as any)._AMapSecurityConfig = {
-  securityJsCode: "643afd6680cc38718fd6892c62f9045c",
-};
-
 export default function CardMap({ community }: CardMapProps) {
-  const AMapRef = React.useRef<any>(null);
-  const { mode } = useColorScheme();
-
-  const initMap = () => {
-    const style =
-      mode === "dark" ? "amap://styles/darkblue" : "amap://styles/normal";
-
-    const AMap = (window as any).AMap as any;
-
-    AMapRef.current = AMap;
-    console.log("community", community.lng, community.lat);
-    // 可选：地图初始化逻辑放这里
-    const map = new AMap.Map("CardMap", {
-      zoom: 16,
-      resizeEnable: true,
-      center: [community.lng, community.lat],
-      mapStyle: style,
-    });
-
-    var marker = new AMap.Marker({
-      // icon: "//a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-default.png",
-      position: [community.lng, community.lat],
-    });
-    marker.setMap(map);
-  };
+  const [amap, setMap] = React.useState<any>();
 
   React.useEffect(() => {
-    const existing = document.getElementById("amap-script");
-    if (existing) existing.remove();
+    AMapLoader.load({
+      key: "beb2c304f924eedf108a4632603711b4", // 申请好的Web端开发者Key，首次调用 load 时必填
+      version: "2.0", // 指定要加载的 JSAPI 的版本，缺省时默认为 1.4.15
+    })
+      .then((AMap) => {
+        const amap = new AMap.Map("CardMap", {
+          // 设置地图容器id
+          zoom: 16, // 初始化地图级别
+          center: [community.lng, community.lat],
+        });
 
-    const script = document.createElement("script");
-    script.src =
-      "https://webapi.amap.com/maps?v=2.0&key=beb2c304f924eedf108a4632603711b4";
-    script.id = "amap-script";
-    script.async = true;
-    script.onload = initMap;
+        const marker = new AMap.Marker({
+          // icon: "//a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-default.png",
+          position: [community.lng, community.lat],
+        });
 
-    document.body.appendChild(script);
+        marker.setMap(amap);
+      })
+      .catch((e) => {
+        console.error("Amap error", e);
+      });
 
     return () => {
-      document.getElementById("amap-script")?.remove();
+      amap?.destroy();
     };
-  }, []);
+  }, [community]);
 
   return (
     <Card>

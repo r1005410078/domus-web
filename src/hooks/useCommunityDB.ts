@@ -8,6 +8,7 @@ import "@/utils/crypto-polyfill";
 import { communitySchema } from "@/schema/house";
 import { queryClient } from "@/libs/QueryProvider";
 import { CollectionChache } from "@/utils/CollectionChache";
+import { Community } from "@/models/house";
 
 const PAGE_SIZE = 100;
 const communityChache = new CollectionChache({
@@ -26,7 +27,7 @@ const communityCollection = createCollection(
     queryKey: ["communitysCollection"],
     queryClient,
     queryFn: async () => {
-      return communityChache.syncData();
+      return communityChache.syncData() as Promise<Community[]>;
     },
     getKey: (item) => item.id,
     schema: communitySchema,

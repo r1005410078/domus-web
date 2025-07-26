@@ -388,21 +388,6 @@ export function Form({ defaultValues, value, onSubmit }: FormProps) {
               />
 
               <form.Field
-                name="property_management_company"
-                children={(field) => {
-                  return (
-                    <FormControl required>
-                      <FormLabel>物业公司</FormLabel>
-                      <EditPropertyManagementCompany
-                        value={field.state.value}
-                        onChange={field.handleChange}
-                      />
-                    </FormControl>
-                  );
-                }}
-              />
-
-              <form.Field
                 name="house_address"
                 children={(field) => {
                   return (
@@ -440,6 +425,17 @@ export function Form({ defaultValues, value, onSubmit }: FormProps) {
                 children={(field) => {
                   return (
                     <EditHouseTitle
+                      value={field.state.value}
+                      onChange={field.handleChange}
+                    />
+                  );
+                }}
+              />
+              <form.Field
+                name="property_management_company"
+                children={(field) => {
+                  return (
+                    <EditPropertyManagementCompany
                       value={field.state.value}
                       onChange={field.handleChange}
                     />

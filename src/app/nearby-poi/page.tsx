@@ -34,8 +34,6 @@ export default function Page() {
   const lat = searchParams.get("lat");
   const lng = searchParams.get("lng");
 
-  console.log(lat, lng);
-
   let mapRef = useRef<any>(null);
 
   useEffect(() => {

@@ -467,8 +467,8 @@ export function EditPropertyManagementCompany({
   sx,
 }: FormChange<string>) {
   return (
-    <FormControl required sx={[...(Array.isArray(sx) ? sx : [sx])]}>
-      <FormLabel>小区物业</FormLabel>
+    <FormControl sx={[...(Array.isArray(sx) ? sx : [sx])]}>
+      <FormLabel>物业公司</FormLabel>
       <Input
         placeholder="请输入"
         name="property_management_company"

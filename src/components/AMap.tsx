@@ -3,10 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import "@amap/amap-jsapi-types";
 import { Select, useColorScheme, Option, Box } from "@mui/joy";
-
-(global as any)._AMapSecurityConfig = {
-  securityJsCode: "643afd6680cc38718fd6892c62f9045c",
-};
+import { useAMap, useBindAMapToolBar } from "@/hooks/useAMap";
 
 export interface CommunityWithHouseCount {
   // 小区
@@ -40,12 +37,15 @@ export default function AMapComponent({
   data,
   onMapBoundsChange,
 }: MapPageProps) {
-  const { amap, AMapRef } = useAMap();
+  const { amap, AMap } = useAMap("home-map-container");
   const polygons = useRef<any[]>([]);
   const clearPolygons = () => {
     polygons.current.forEach((polygon) => polygon.setMap(null));
     polygons.current = [];
   };
+
+  // 绑定工具
+  useBindAMapToolBar(amap, AMap);
 
   // 绑定地图移动与缩放事件
   useEffect(() => {
@@ -81,7 +81,6 @@ export default function AMapComponent({
   // 点聚合
   useEffect(() => {
     if (!amap || data.length === 0) return;
-
     const points = data.map((item) => {
       return {
         lnglat: [item.lng, item.lat],
@@ -131,7 +130,7 @@ export default function AMapComponent({
       }
     };
 
-    const cluster = new AMapRef.current.MarkerCluster(amap, points, {
+    const cluster = new AMap.MarkerCluster(amap, points, {
       gridSize: 10, // 设置网格像素大小
       // renderClusterMarker: _renderClusterMarker, // 自定义聚合点样式
       renderMarker: _renderMarker, // 自定义非聚合点样式
@@ -183,7 +182,7 @@ export default function AMapComponent({
     });
 
     amap.setFitView();
-  }, [amap, data]);
+  }, [amap, AMap, data]);
 
   return (
     <div style={{ width: "100%", height: "100%", position: "relative" }}>
@@ -198,7 +197,7 @@ export default function AMapComponent({
             // 清除上一次绘制
             clearPolygons();
 
-            const district = new AMapRef.current.DistrictSearch({
+            const district = new AMap.DistrictSearch({
               subdistrict: 1, //返回下一级行政区
               showbiz: false, //最后一级返回街道信息
             });
@@ -213,7 +212,7 @@ export default function AMapComponent({
                 var bounds = data.districtList[0].boundaries;
                 if (bounds) {
                   for (var i = 0, l = bounds.length; i < l; i++) {
-                    var polygon = new AMapRef.current.Polygon({
+                    var polygon = new AMap.Polygon({
                       map: amap,
                       strokeWeight: 1,
                       strokeColor: "#0091ea",
@@ -224,6 +223,7 @@ export default function AMapComponent({
 
                     polygons.current.push(polygon);
                   }
+
                   amap.setFitView(); //地图自适应
                 }
               }
@@ -242,74 +242,6 @@ export default function AMapComponent({
       </Box>
     </div>
   );
-}
-
-function useAMap() {
-  const AMapRef = useRef<any>(null);
-  const { mode } = useColorScheme();
-  const [amap, setAMap] = useState<any>();
-
-  const initMap = () => {
-    const style =
-      mode === "dark" ? "amap://styles/darkblue" : "amap://styles/normal";
-
-    const AMap = (window as any).AMap as any;
-
-    AMapRef.current = AMap;
-
-    // 可选：地图初始化逻辑放这里
-    const map = new AMap.Map("home-map-container", {
-      zoom: 10,
-      center: [117.060496, 30.507077],
-      mapStyle: style,
-    });
-
-    const scale = new AMap.Scale({
-      visible: true,
-    });
-
-    const toolBar = new AMap.ToolBar({
-      visible: true,
-      position: {
-        top: "110px",
-        right: "40px",
-      },
-    });
-
-    const controlBar = new AMap.ControlBar({
-      visible: true,
-      position: {
-        top: "10px",
-        right: "10px",
-      },
-    });
-
-    map.addControl(scale);
-    map.addControl(toolBar);
-    map.addControl(controlBar);
-
-    setAMap(map);
-  };
-
-  useEffect(() => {
-    const existing = document.getElementById("amap-script");
-    if (existing) existing.remove();
-
-    const script = document.createElement("script");
-    script.src =
-      "https://webapi.amap.com/maps?v=2.0&key=beb2c304f924eedf108a4632603711b4&plugin=AMap.MarkerCluster,AMap.Scale,AMap.ToolBar,AMap.ControlBar,AMap.DistrictSearch";
-    script.id = "amap-script";
-    script.async = true;
-    script.onload = initMap;
-
-    document.body.appendChild(script);
-
-    return () => {
-      document.getElementById("amap-script")?.remove();
-    };
-  }, []);
-
-  return { amap, AMapRef };
 }
 
 function debounce(fn: Function, delay: number) {

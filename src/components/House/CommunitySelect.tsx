@@ -8,15 +8,11 @@ import {
   Typography,
 } from "@mui/joy";
 import "@amap/amap-jsapi-types";
-import { useEffect, useMemo, useRef, useState } from "react";
-import Script from "next/script";
-import { useQuery } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
 import MapsHomeWorkIcon from "@mui/icons-material/MapsHomeWork";
-import { getCommunityList } from "@/services/house";
-
-(global as any)._AMapSecurityConfig = {
-  securityJsCode: "643afd6680cc38718fd6892c62f9045c",
-};
+import { useAMapAutoComplete } from "@/hooks/useAMap";
+import { useCommunityDB } from "@/hooks/useCommunityDB";
+import { useDebouncedCallback } from "use-debounce";
 
 // 检索缓存
 const cache = new Map<string, Poi>();
@@ -27,16 +23,12 @@ interface CommunitySelectProps {
 }
 
 export function CommunitySelect({ value, onChange }: CommunitySelectProps) {
-  const placeSearchRef = useRef<any>(null);
-  const [keyword, seKeyword] = useState<string>("");
   const [options, setOptions] = useState<Poi[]>([]);
-  const { data } = useQuery({
-    queryKey: ["initMap"],
-    queryFn: () => getCommunityList({ page: 1, page_size: 10000 }),
-    placeholderData: (data) => data,
-  });
+  const { communitys: data } = useCommunityDB();
+  const autocomplete = useAMapAutoComplete();
+  const lastUpdateTime = data?.[data.length - 1]?.updated_at;
 
-  useMemo(() => {
+  useEffect(() => {
     if (data) {
       for (const poi of data) {
         if (poi.id) {
@@ -55,37 +47,9 @@ export function CommunitySelect({ value, onChange }: CommunitySelectProps) {
           });
         }
       }
+      setOptions(Array.from(cache.values()));
     }
-  }, [data]);
-
-  useEffect(() => {
-    if (keyword) {
-      let isHas = cache.values().some((item) => item.name.includes(keyword));
-      if (!isHas) {
-        const placeSearch = placeSearchRef.current;
-        if (placeSearch) {
-          placeSearch.search(keyword, function (_: any, result: SearchData) {
-            // 搜索成功时，result即是对应的匹配数据
-            if (result.info === "OK") {
-              const pois = result.tips;
-              if (pois && pois.length) {
-                const poiList = pois.map(
-                  ({ ...item }) => ({ ...item, city: ["安庆"] } as Poi)
-                );
-
-                for (let poi of poiList) {
-                  if (!cache.has(poi.id)) {
-                    cache.set(poi.id, poi);
-                  }
-                }
-              }
-              setOptions(Array.from(cache.values()));
-            }
-          });
-        }
-      }
-    }
-  }, [keyword]);
+  }, [lastUpdateTime]);
 
   useEffect(() => {
     const id = value?.id;
@@ -95,26 +59,10 @@ export function CommunitySelect({ value, onChange }: CommunitySelectProps) {
     setOptions(Array.from(cache.values()));
   }, [value]);
 
-  useEffect(() => {
-    (global as any).initMap = () => {
-      AMap.plugin("AMap.AutoComplete", function () {
-        var autoOptions = {
-          city: "安庆",
-          type: "12",
-          pageSize: 20,
-          citylimit: true,
-        };
-        placeSearchRef.current = new (AMap as any).AutoComplete(autoOptions);
-      });
-    };
-  }, []);
+  const onInputChangeHandler = useDebouncedCallback(onInputChange, 300);
 
   return (
     <>
-      <Script
-        src="https://webapi.amap.com/maps?v=2.0&key=beb2c304f924eedf108a4632603711b4&callback=initMap"
-        strategy="afterInteractive"
-      />
       <Autocomplete
         options={options}
         placeholder="请输入"
@@ -123,9 +71,7 @@ export function CommunitySelect({ value, onChange }: CommunitySelectProps) {
           return option?.id === value?.id;
         }}
         getOptionLabel={(option) => option.name}
-        onInputChange={(_, keyword) => {
-          seKeyword(keyword);
-        }}
+        onInputChange={(_, keyword) => onInputChangeHandler(keyword)}
         onChange={(_, value) => {
           onChange(value);
         }}
@@ -145,140 +91,34 @@ export function CommunitySelect({ value, onChange }: CommunitySelectProps) {
       />
     </>
   );
-}
 
-const options_debuf = [
-  {
-    id: "A3FFGA9AAU",
-    name: "华东小区-东区",
-    typecode: "residential",
-    district: null,
-    adcode: null,
-    city: ["安庆"],
-    location: {
-      lat: 40.7128,
-      lng: -74.006,
-    },
-    address: "华中路与港华路交叉口东北112米",
-  },
-  {
-    id: "B022C02C8Q",
-    name: "红旗小区",
-    typecode: "120302",
-    district: null,
-    adcode: null,
-    city: ["安庆"],
-    location: {
-      lat: 30.512622,
-      lng: 117.081381,
-    },
-    address: "龙狮桥乡华中路309号",
-  },
-  {
-    id: "B022C05S27",
-    name: "月亮城小区",
-    typecode: "120302",
-    district: null,
-    adcode: null,
-    city: ["安庆"],
-    location: {
-      lat: 30.506398,
-      lng: 117.034372,
-    },
-    address: "玉虹街",
-  },
-  {
-    id: "B0FFFAL9T0",
-    name: "东方天韵",
-    typecode: "120302",
-    district: null,
-    adcode: null,
-    city: ["安庆"],
-    location: {
-      lat: 30.534275,
-      lng: 117.086982,
-    },
-    address: "天柱山东路南",
-  },
-  {
-    id: "B0FFG4ZYFW",
-    name: "东湖一品",
-    typecode: "120302",
-    district: null,
-    adcode: null,
-    city: ["安庆"],
-    location: {
-      lat: 30.53031,
-      lng: 117.074403,
-    },
-    address: "元山路6号",
-  },
-  {
-    id: "B0FFGA9AAU",
-    name: "东安花园",
-    typecode: "120302",
-    district: null,
-    adcode: null,
-    city: ["安庆"],
-    location: {
-      lat: 30.511163,
-      lng: 117.087754,
-    },
-    address: "华中路与港华路交叉口东北100米",
-  },
-  {
-    id: "B0FFH23I4R",
-    name: "逸龙湾",
-    typecode: "120302",
-    district: null,
-    adcode: null,
-    city: ["安庆"],
-    location: {
-      lat: 30.540835,
-      lng: 117.096881,
-    },
-    address: "独秀大道附近",
-  },
-  {
-    id: "B0FFJ8T9MS",
-    name: "大发·融悦四季",
-    typecode: "120302",
-    district: "安徽省安庆市宜秀区",
-    adcode: "340811",
-    city: ["安庆"],
-    location: {
-      lat: 30.544564,
-      lng: 117.090779,
-    },
-    address: "迎宾东路与月池路交叉口北80米",
-  },
-  {
-    id: "B0JGLCJQ8I",
-    name: "大发宜景城三期",
-    typecode: "120302",
-    district: "安徽省安庆市迎江区",
-    adcode: "340802",
-    city: ["安庆"],
-    location: {
-      lat: 30.519817,
-      lng: 117.125397,
-    },
-    address: "华中东路与华中路交叉口北300米",
-  },
-  {
-    id: "K3FFGA9AAU",
-    name: "回祥小区-西区",
-    typecode: "residential",
-    district: null,
-    adcode: null,
-    city: ["安庆"],
-    location: {
-      lat: 40.7128,
-      lng: -74.006,
-    },
-    address: "华中路与港华路交叉口东北112米",
-  },
-];
+  function onInputChange(keyword: string) {
+    console.log("keyword", keyword);
+    let isHas = cache.values().some((item) => item.name.includes(keyword));
+    if (!isHas) {
+      if (autocomplete) {
+        autocomplete.search(keyword, function (_: any, result: SearchData) {
+          // 搜索成功时，result即是对应的匹配数据
+          if (result.info === "OK") {
+            const pois = result.tips;
+            if (pois && pois.length) {
+              const poiList = pois.map(
+                ({ ...item }) => ({ ...item, city: ["安庆"] } as Poi)
+              );
+
+              for (let poi of poiList) {
+                if (!cache.has(poi.id)) {
+                  cache.set(poi.id, poi);
+                }
+              }
+            }
+            setOptions(Array.from(cache.values()));
+          }
+        });
+      }
+    }
+  }
+}
 
 export interface SearchData {
   info: string;
