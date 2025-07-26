@@ -18,15 +18,14 @@ interface CardMapProps {
 }
 
 export default function CardMap({ community }: CardMapProps) {
-  const [amap, setMap] = React.useState<any>();
-
   React.useEffect(() => {
+    let amap: any = null;
     AMapLoader.load({
       key: "beb2c304f924eedf108a4632603711b4", // 申请好的Web端开发者Key，首次调用 load 时必填
       version: "2.0", // 指定要加载的 JSAPI 的版本，缺省时默认为 1.4.15
     })
       .then((AMap) => {
-        const amap = new AMap.Map("CardMap", {
+        amap = new AMap.Map("CardMap", {
           // 设置地图容器id
           zoom: 16, // 初始化地图级别
           center: [community.lng, community.lat],

@@ -1,17 +1,19 @@
 "use client";
 
-import {
-  Divider,
-  FormControl,
-  FormLabel,
-  Input,
-  Select,
-  Option,
-} from "@mui/joy";
+import { FormControl, FormLabel, Input } from "@mui/joy";
 import { Community, HouseOwner } from "@/models/house";
-import { useEffect, useMemo } from "react";
-import { CommunitySelect, Poi } from "./CommunitySelect";
+import { useMemo } from "react";
+import type { Poi } from "./CommunitySelect";
 import { useState } from "react";
+import dynamic from "next/dynamic";
+
+const DynamicCommunitySelectComponent = dynamic(
+  () => import("@/components/House/CommunitySelect"),
+  {
+    loading: () => <p>加载中...</p>,
+    ssr: false,
+  }
+);
 
 export interface CommunityFormProps {
   value?: Community;
@@ -42,7 +44,7 @@ export function CommunityForm({
   }, [propValue]);
 
   return (
-    <CommunitySelect
+    <DynamicCommunitySelectComponent
       value={poi}
       key={poi?.id}
       onChange={(poi) => {

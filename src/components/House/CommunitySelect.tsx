@@ -22,7 +22,10 @@ interface CommunitySelectProps {
   onChange: (value: Poi | null) => void;
 }
 
-export function CommunitySelect({ value, onChange }: CommunitySelectProps) {
+export default function CommunitySelect({
+  value,
+  onChange,
+}: CommunitySelectProps) {
   const [options, setOptions] = useState<Poi[]>([]);
   const { communitys: data } = useCommunityDB();
   const autocomplete = useAMapAutoComplete();

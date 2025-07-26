@@ -60,7 +60,11 @@ export default function Page() {
         setHouseCount(importHouses.house.length);
         return saveHouse(data);
       },
-      onSuccess: () => {
+      onSuccess: (data) => {
+        if (data.data.code !== 200) {
+          console.log(data);
+          return;
+        }
         setHouseCount((houseCount) => houseCount - 1);
       },
     });
@@ -254,6 +258,7 @@ export default function Page() {
                     onClick={async () => {
                       try {
                         const houses = await getImportHouses();
+                        console.log(houses.length);
                         for (const house of houses) {
                           importsHousesMutate(house);
                         }
@@ -396,8 +401,8 @@ async function getImportHouses() {
         stairs:
           item.elevator && item.household
             ? {
-                stairs: item.elevator,
-                rooms: item.household,
+                stairs: item.elevator.toString(),
+                rooms: item.household.toString(),
               }
             : undefined,
         owner: {

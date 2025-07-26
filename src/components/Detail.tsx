@@ -24,14 +24,7 @@ import CottageTwoToneIcon from "@mui/icons-material/CottageTwoTone";
 import HistoryEduTwoToneIcon from "@mui/icons-material/HistoryEduTwoTone";
 import CloseTwoToneIcon from "@mui/icons-material/CloseTwoTone";
 import PermMediaSharpIcon from "@mui/icons-material/PermMediaSharp";
-import {
-  CardCover,
-  Divider,
-  List,
-  ListItem,
-  ListItemButton,
-  sheetClasses,
-} from "@mui/joy";
+import { List, ListItem, ListItemButton, sheetClasses } from "@mui/joy";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { EmblaCarouselType } from "embla-carousel";
 import MyLocationTwoToneIcon from "@mui/icons-material/MyLocationTwoTone";
@@ -49,7 +42,12 @@ import { PhotoProvider, PhotoView } from "react-photo-view";
 
 import "react-photo-view/dist/react-photo-view.css";
 import { UserInfomation } from "./UserAvatar";
-import CardMap from "./CardMap";
+import dynamic from "next/dynamic";
+
+const DynamicCardMapComponent = dynamic(() => import("@/components/CardMap"), {
+  loading: () => <p>加载中...</p>,
+  ssr: false,
+});
 
 // 插件注册
 dayjs.extend(utc);
@@ -62,7 +60,11 @@ export interface DetailProps {
 }
 
 // 房源信息
-export function Detail({ transactionType, house_id, onClose }: DetailProps) {
+export default function Detail({
+  transactionType,
+  house_id,
+  onClose,
+}: DetailProps) {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: false });
   const { data: detail } = useGetHouseDetail(house_id);
@@ -1353,7 +1355,7 @@ export function Detail({ transactionType, house_id, onClose }: DetailProps) {
       </CardContent>
 
       <CardContent>
-        <CardMap community={detail.community} />
+        <DynamicCardMapComponent community={detail.community} />
       </CardContent>
 
       <CardContent>

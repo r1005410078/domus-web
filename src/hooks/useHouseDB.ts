@@ -6,10 +6,11 @@ import { queryCollectionOptions } from "@tanstack/db-collections";
 import { use, useEffect, useMemo, useRef } from "react";
 import { deleteHouse, getHouseList } from "@/services/house";
 import "@/utils/crypto-polyfill";
-import { houseDataSchema } from "@/schema/house";
+import { HouseData, houseDataSchema } from "@/schema/house";
 import { queryClient } from "@/libs/QueryProvider";
 import { CollectionChache } from "@/utils/CollectionChache";
 import { useQueryClient } from "@tanstack/react-query";
+import { set } from "zod";
 
 // 同步房源数据
 const PAGE_SIZE = 100;
@@ -30,7 +31,12 @@ const houseCollection = createCollection(
     queryKey: ["houseCollection"],
     queryClient,
     queryFn: async () => {
-      return houseChache.syncData();
+      const data = await houseChache.syncData();
+      return new Promise<HouseData[]>((resolve) => {
+        setTimeout(() => {
+          resolve(data);
+        }, 300);
+      });
     },
     getKey: (item) => item.id,
     schema: houseDataSchema,

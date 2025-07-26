@@ -21,7 +21,7 @@ export function useLogin() {
       toast.showToast({ message: "登录成功", severity: "success" });
 
       console.log("token", res.data.data.token);
-      localStorage.setItem("token", res.data.data.token);
+      globalThis.localStorage.setItem("token", res.data.data.token);
 
       setUserProfile(res.data.data.user);
       location.replace("/");
@@ -34,7 +34,7 @@ export function useLogin() {
 }
 
 export function getUserInformation(): UserInfomation | null {
-  const userInfo = globalThis.localStorage.getItem("USER_INFORMATION");
+  const userInfo = globalThis.localStorage?.getItem("USER_INFORMATION");
   try {
     if (userInfo) {
       return JSON.parse(userInfo);

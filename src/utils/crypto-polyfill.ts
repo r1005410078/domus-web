@@ -1,6 +1,9 @@
 "use client";
 import { nanoid } from "nanoid";
 
-if (typeof window !== "undefined" && typeof crypto.randomUUID !== "function") {
-  window.crypto.randomUUID = nanoid;
+if (
+  typeof globalThis !== "undefined" &&
+  typeof crypto.randomUUID !== "function"
+) {
+  globalThis.crypto.randomUUID = nanoid;
 }

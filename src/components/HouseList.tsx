@@ -4,7 +4,6 @@ import {
   Card,
   CardContent,
   Chip,
-  CircularProgress,
   Drawer,
   List,
   ListItem,
@@ -16,21 +15,27 @@ import Layout from "./Layout";
 import { apartmentTypeToString, HouseForm } from "@/models/house";
 import Filters, { FiltersForm } from "./Filters";
 import Pagination, { PaginationProps } from "./Pagination";
-import type { AmapBounds, CommunityWithHouseCount } from "@/components/AMap";
-import { Detail } from "./Detail";
+// import type { AmapBounds, CommunityWithHouseCount } from "@/components/AMap";
 import React from "react";
 import { isMobile } from "@/utils";
 import dynamic from "next/dynamic";
 import { EmptyState } from "./EmptyState";
+
 const DynamicAMapComponent = dynamic(() => import("@/components/AMap"), {
   loading: () => <p>加载中...</p>,
+  ssr: false,
+});
+
+const DynamicDetailComponent = dynamic(() => import("@/components/Detail"), {
+  loading: () => <p>加载中...</p>,
+  ssr: false,
 });
 
 export interface HouseListProps {
   data: HouseForm[];
   transactionType: string;
-  aMapData: CommunityWithHouseCount[];
-  onMapBoundsChange?: (bounds: AmapBounds) => void;
+  aMapData: any[];
+  onMapBoundsChange?: (bounds: any) => void;
   loading?: boolean;
   isFetched?: boolean;
   onPullLoadMore?: () => void;
@@ -211,7 +216,7 @@ export function HouseList({
               overflow: "auto",
             }}
           >
-            <Detail
+            <DynamicDetailComponent
               house_id={detail.id}
               transactionType={transactionType}
               onClose={() => setDetail(undefined)}
@@ -245,7 +250,7 @@ export function HouseList({
         onClose={() => setDetail(undefined)}
       >
         {detail && (
-          <Detail
+          <DynamicDetailComponent
             house_id={detail.id}
             transactionType={transactionType}
             onClose={() => setDetail(undefined)}

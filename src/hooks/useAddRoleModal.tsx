@@ -35,7 +35,10 @@ export function useAddRoleModal({
         <ModalClose />
         <DialogTitle>添加角色</DialogTitle>
         <DialogContent>
-          <EditorRole role={editItem} onClose={() => setEditItem(null)} />
+          <EditorRole
+            role={editItem as Role}
+            onClose={() => setEditItem(null)}
+          />
         </DialogContent>
       </ModalDialog>
     </Modal>

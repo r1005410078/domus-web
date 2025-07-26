@@ -35,7 +35,10 @@ export function useAddUserModal({
         <ModalClose />
         <DialogTitle>添加用户</DialogTitle>
         <DialogContent>
-          <EditorUser user={editItem} onClose={() => setEditItem(null)} />
+          <EditorUser
+            user={editItem as User}
+            onClose={() => setEditItem(null)}
+          />
         </DialogContent>
       </ModalDialog>
     </Modal>

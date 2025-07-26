@@ -18,8 +18,8 @@ export const apartmentTypeSchema = z.object({
 });
 
 export const stairsSchema = z.object({
-  stairs: z.number().optional(),
-  rooms: z.number().optional(),
+  stairs: z.string().optional(),
+  rooms: z.string().optional(),
 });
 
 export const houseOwnerSchema = z.object({

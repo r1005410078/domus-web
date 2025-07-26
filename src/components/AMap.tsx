@@ -131,7 +131,7 @@ export default function AMapComponent({
     };
 
     const cluster = new AMap.MarkerCluster(amap, points, {
-      gridSize: 10, // 设置网格像素大小
+      gridSize: 100, // 设置网格像素大小
       // renderClusterMarker: _renderClusterMarker, // 自定义聚合点样式
       renderMarker: _renderMarker, // 自定义非聚合点样式
       renderClusterMarker: function (context: any) {
@@ -259,8 +259,8 @@ function debounce(fn: Function, delay: number) {
 
 // 兼容处理 requestIdleCallback
 const requestIdle = (cb: () => void) => {
-  if ("requestIdleCallback" in window) {
-    (window as any).requestIdleCallback(cb);
+  if ("requestIdleCallback" in globalThis) {
+    (globalThis as any).requestIdleCallback(cb);
   } else {
     // fallback: 如果不支持，延迟50ms执行
     setTimeout(cb, 50);

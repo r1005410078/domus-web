@@ -1,5 +1,5 @@
 export const isMobile =
-  typeof window !== "undefined" && window.innerWidth <= 768;
+  typeof globalThis !== "undefined" && globalThis.innerWidth <= 768;
 
 // 首字母大写
 export function capitalizeFirstLetter(string: string) {

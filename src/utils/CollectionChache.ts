@@ -52,6 +52,8 @@ export class CollectionChache<
   async syncData() {
     const { getData, pageSize } = this.options;
     const result = this.getChacheMap();
+
+    console.log("result", result);
     const loopGetData = async (page = 1) => {
       const data = await getData(page, this.getLastUpdatedAt());
 
@@ -67,11 +69,7 @@ export class CollectionChache<
         return;
       }
 
-      await new Promise((resolve) => {
-        requestAnimationFrame(() => {
-          loopGetData(page + 1).then(resolve);
-        });
-      });
+      await loopGetData(page + 1);
     };
 
     await loopGetData();

@@ -1,3 +1,5 @@
+"use client";
+
 import { useToast } from "@/libs/ToastProvider";
 import {
   saveHouse,

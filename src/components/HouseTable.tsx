@@ -414,7 +414,6 @@ export default function HouseTable({}: HouseTable) {
     ];
   };
 
-  // Container: Defines the grid's theme & dimensions.
   return (
     <>
       <EditDetailDrawer
@@ -429,7 +428,7 @@ export default function HouseTable({}: HouseTable) {
               };
             });
           } else {
-            houseCollection.insert(data);
+            houseCollection.insert(data as any);
           }
         }}
         onClose={() => {
@@ -491,6 +490,7 @@ export default function HouseTable({}: HouseTable) {
           sideBar={{ toolPanels: ["columns"] }}
           preventDefaultOnContextMenu={true}
           getContextMenuItems={getContextMenuItems}
+          paginationPageSizeSelector={[100, 200, 500, 1000, 2000]}
         />
       </Stack>
       <Drawer
