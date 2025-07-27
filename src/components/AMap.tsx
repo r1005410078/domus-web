@@ -1,30 +1,45 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { memo, use, useEffect, useRef, useState } from "react";
 import "@amap/amap-jsapi-types";
 import { Select, useColorScheme, Option, Box } from "@mui/joy";
 import { useAMap, useBindAMapToolBar } from "@/hooks/useAMap";
+import { create } from "zustand";
 
-export interface CommunityWithHouseCount {
-  // 小区
-  id: string;
-  // 小区名称
-  name: string;
-  // 小区地址
-  address: string;
-  // 所属区域
+const clusterIndexSet = {
+  city: {
+    minZoom: 2,
+    maxZoom: 10,
+  },
+  district: {
+    minZoom: 10,
+    maxZoom: 12,
+  },
+  area: {
+    minZoom: 12,
+    maxZoom: 15,
+  },
+  community: {
+    minZoom: 15,
+    maxZoom: 22,
+  },
+};
+
+export interface Points {
+  area: string;
+  building: string;
+  city: string;
+  community: string;
   district: string;
-  // 所属行政区划代码（如“110105”，代表朝阳区）
-  adcode: string;
-  // 小区坐标
-  lat: number;
-  lng: number;
-  // 个数
-  house_count: number;
+  lnglat: {
+    lng: number;
+    lat: number;
+  };
+  weight?: number;
 }
 
 interface MapPageProps {
-  data: CommunityWithHouseCount[];
+  points: Points[];
   onMapBoundsChange?: (bounds: AmapBounds) => void;
 }
 
@@ -33,10 +48,23 @@ export interface AmapBounds {
   south_west: { lng: number; lat: number };
 }
 
-export default function AMapComponent({
-  data,
-  onMapBoundsChange,
-}: MapPageProps) {
+interface IHomeMap {
+  amap: any;
+  setAMap: (amap: any) => void;
+  setCenter: (center: any) => void;
+}
+
+export const HomeMap = create<IHomeMap>((set, get) => ({
+  amap: null,
+  setAMap: (amap: any) => set({ amap }),
+  setCenter: (center: any) => {
+    get().amap.setZoom(17);
+    get().amap.setCenter(center);
+  },
+}));
+
+function AMapComponent({ points, onMapBoundsChange }: MapPageProps) {
+  console.log("AMapComponent 更新");
   const { amap, AMap } = useAMap("home-map-container");
   const polygons = useRef<any[]>([]);
   const clearPolygons = () => {
@@ -67,126 +95,64 @@ export default function AMapComponent({
 
     logMapBounds();
 
-    let callback = debounce(logMapBounds, 300);
+    let callback = logMapBounds;
     //绑定地图移动与缩放事件
     amap.on("moveend", callback);
-    amap.on("zoomend", callback);
 
+    HomeMap.getState().setAMap(amap);
     return () => {
       amap.off("moveend", callback);
-      amap.off("zoomend", callback);
+      HomeMap.getState().setAMap(null);
     };
   }, [amap]);
 
-  // 点聚合
   useEffect(() => {
-    if (!amap || data.length === 0) return;
-    const points = data.map((item) => {
-      return {
-        lnglat: [item.lng, item.lat],
-        item,
-      };
-    });
-
-    const _renderMarker = function (context: any) {
-      for (var i = 0; i < context.data.length; i++) {
-        const item = context.data[i].item;
-        const content = `
-   <div style="position: relative; display: inline-block;">
-  <div style="
-     display: inline-flex;
-    align-items: center;
-    background-color: #FFF8E1;
-    border: 1px solid #FFB74D;
-    border-radius: 999px;
-    padding: 6px 14px;
-    font-size: 13px;
-    color: #E65100;
-    white-space: nowrap;
-    font-weight: 500;
-    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
-  ">
-    🏡 ${item.name} · <span style="margin-left: 6px; color: #D84315;">${item.house_count} 套</span>
-  </div>
-  <div style="
-    position: absolute;
-    top: 100%;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 0;
-    height: 0;
-    border-left: 6px solid transparent;
-    border-right: 6px solid transparent;
-    border-top: 6px solid #FFB74D;
-    filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.2));
-  "></div>
-</div>
-          `;
-
-        var offset = new AMap.Pixel(-9, -9);
-
-        context.marker.setContent(content);
-        context.marker.setOffset(offset);
-      }
-    };
-
-    const cluster = new AMap.MarkerCluster(amap, points, {
-      gridSize: 100, // 设置网格像素大小
-      // renderClusterMarker: _renderClusterMarker, // 自定义聚合点样式
-      renderMarker: _renderMarker, // 自定义非聚合点样式
-      renderClusterMarker: function (context: any) {
-        const count = context.clusterData.reduce(
-          (a: number, b: any) => a + b.item.house_count,
-          0
-        );
-        const div = document.createElement("div");
-        div.innerHTML = `
-      <div style="
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(to bottom, #5C6BC0, #3F51B5);
-  color: #fff;
-  border-radius: 999px;
-  padding: 6px 16px;
-  font-size: 16px;
-  font-weight: 600;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
-  position: relative;
-  white-space: nowrap;
-">
-  🏡 共 ${count} 套
-  <div style="
-    position: absolute;
-    bottom: -8px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 0;
-    height: 0;
-    border-left: 8px solid transparent;
-    border-right: 8px solid transparent;
-    border-top: 8px solid #3F51B5;
-    filter: drop-shadow(0 -1px 2px rgba(0, 0, 0, 0.15));
-  "></div>
-</div>
-    `;
-
-        context.marker.setContent(div);
+    if (!amap || !AMap) return;
+    var cluster = new AMap.IndexCluster(amap, points, {
+      renderClusterMarker: (context: any) => {
+        _renderClusterMarker(amap, AMap, context, points);
       },
+      clusterIndexSet: clusterIndexSet,
     });
 
-    cluster.on("click", function (e: any) {
+    return () => {
       clearPolygons();
-      const clusterCenter = e.lnglat;
-      amap.setZoomAndCenter(amap.getZoom() + 1, clusterCenter);
-    });
-
-    amap.setFitView();
-  }, [amap, AMap, data]);
+      cluster.setMap(null);
+    };
+  }, [amap, AMap, points]);
 
   return (
     <div style={{ width: "100%", height: "100%", position: "relative" }}>
       <div id="home-map-container" style={{ height: "100%" }}></div>
+      <style jsx global>
+        {`
+          html,
+          body,
+          #container {
+            height: 100%;
+            width: 100%;
+          }
+          .amap-cluster {
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            align-items: center;
+            font-size: 12px;
+            box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 5px !important;
+          }
+          .showName {
+            font-size: 14px;
+          }
+          .showCount,
+          .showName {
+            display: block;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+            width: 80%;
+          }
+        `}
+      </style>
       <Box sx={{ position: "absolute", top: 0, left: 0, p: 2 }}>
         <Select
           sx={{ width: 160 }}
@@ -244,6 +210,52 @@ export default function AMapComponent({
   );
 }
 
+export default memo(AMapComponent);
+
+function clusterMarkers(map: any) {
+  var markerList = [];
+  var marker = new AMap.Marker({
+    map: map,
+  });
+  markerList.push(marker);
+  return markerList;
+}
+
+function getStyle(context: any, points: Points[]) {
+  let clusterData = context.clusterData; // Data included in the aggregation
+  let index = context.index; // Conditions for aggregation
+
+  let color = ["8,60,156", "66,130,198", "107,174,214", "78,200,211"];
+  let indexs = ["city", "district", "area", "community"]; //
+  let i = indexs.indexOf(index["mainKey"]);
+  let text = clusterData[0][index["mainKey"]];
+  // let size = Math.round(30 + Math.pow(count / points.length, 1 / 5) * 70);
+  let size = 80;
+
+  if (i <= 3) {
+    let extra = '<span class="showCount">' + context.count + "套</span>";
+    text = '<span class="showName">' + text + "</span>";
+    text += extra;
+  } else {
+    size = 12 * text.length + 20;
+  }
+
+  let style = {
+    bgColor: "rgba(" + color[i] + ",.8)",
+    borderColor: "rgba(" + color[i] + ",1)",
+    text: text,
+    size: size,
+    index: i,
+    color: "#ffffff",
+    textAlign: "center",
+    boxShadow: "0px 0px 5px rgba(0,0,0,0.8)",
+    count: context.count,
+    name: clusterData[0][index["mainKey"]],
+  };
+
+  return style;
+}
+
 function debounce(fn: Function, delay: number) {
   let timer: any = null;
   return function (...args: any[]) {
@@ -255,6 +267,120 @@ function debounce(fn: Function, delay: number) {
       });
     }, delay);
   };
+}
+
+function getPosition(AMap: any, context: any, points: Points[]) {
+  var key = context.index.mainKey;
+  var dataItem = context.clusterData && context.clusterData[0];
+  var districtName = dataItem[key];
+  // @ts-ignore
+  if (!district[districtName]) {
+    return null;
+  }
+  // @ts-ignore
+  var center = district[districtName].center.split(",");
+  var centerLnglat = new AMap.LngLat(center[0], center[1]);
+  return centerLnglat;
+}
+
+function _customRender(data: any) {
+  const keys = Object.keys(data.clusterData);
+  let markers = [];
+  for (var i = 0; i < keys.length; i++) {
+    var key = keys[i];
+    var cluster = data.clusterData[key];
+    var position = cluster.data[0].lnglat;
+    var marker = new AMap.LabelMarker({
+      position: position,
+      text: {
+        content: cluster.data.length.toString(),
+        style: {
+          fillColor: "#ffffff",
+        },
+      },
+    });
+    markers.push(marker);
+  }
+  return {
+    type: "type",
+    layer: null,
+    markers: markers,
+  };
+}
+// Custom cluster point style
+function _renderClusterMarker(
+  map: any,
+  AMap: any,
+  context: any,
+  points: Points[]
+) {
+  var styleObj = getStyle(context, points);
+  // Custom Point Marker Style
+  var div = document.createElement("div");
+  div.className = "amap-cluster";
+  div.style.backgroundColor = styleObj.bgColor;
+  div.style.width = styleObj.size + "px";
+  if (styleObj.index <= 2) {
+    div.style.height = styleObj.size + "px";
+    // Custom Click Event
+    context.marker.on("click", function (e: any) {
+      console.log(e);
+      var curZoom = map.getZoom();
+      if (curZoom < 20) {
+        curZoom += 1;
+      }
+      map.setZoomAndCenter(curZoom, e.lnglat);
+    });
+  }
+  div.style.border = "solid 1px " + styleObj.borderColor;
+  div.style.borderRadius = styleObj.size + "px";
+  div.innerHTML = styleObj.text;
+  div.style.color = styleObj.color;
+  div.style.textAlign = styleObj.textAlign;
+  div.style.boxShadow = styleObj.boxShadow;
+
+  if (styleObj.index >= 2) {
+    div.style = "";
+    div.innerHTML = `
+     <div style="position: relative; display: inline-block;">
+    <div style="
+       display: inline-flex;
+      align-items: center;
+      background-color: #FFF8E1;
+      border: 1px solid #FFB74D;
+      border-radius: 999px;
+      padding: 6px 14px;
+      font-size: 13px;
+      color: #E65100;
+      white-space: nowrap;
+      font-weight: 500;
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+    ">
+      🏡 ${styleObj.name} <span style="margin-left: 6px; color: #D84315;">${styleObj.count} 套</span>
+    </div>
+    <div style="
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 0;
+      border-left: 6px solid transparent;
+      border-right: 6px solid transparent;
+      border-top: 6px solid #FFB74D;
+      filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.2));
+    "></div>
+  </div>
+            `;
+  }
+
+  context.marker.setContent(div);
+  // Custom Cluster Marker Display Position
+  var position = getPosition(AMap, context, points);
+  if (position) {
+    context.marker.setPosition(position);
+  }
+  context.marker.setAnchor("center");
 }
 
 // 兼容处理 requestIdleCallback
@@ -350,3 +476,12 @@ const districtList = [
     boundaries: [],
   },
 ];
+
+const district = districtList.reduce((pre, cur) => {
+  // @ts-ignore
+  pre[cur.name] = {
+    adcode: cur.adcode,
+    center: cur.center.join(","),
+  };
+  return pre;
+}, {} as { adcode: string; center: string });

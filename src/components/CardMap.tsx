@@ -8,6 +8,8 @@ import { AspectRatio, Button, IconButton, useColorScheme } from "@mui/joy";
 import { Community } from "@/models/house";
 import PinDropOutlinedIcon from "@mui/icons-material/PinDropOutlined";
 import AMapLoader from "@amap/amap-jsapi-loader";
+import { isMobile } from "@/utils";
+import { HomeMap } from "./AMap";
 
 (global as any)._AMapSecurityConfig = {
   securityJsCode: "643afd6680cc38718fd6892c62f9045c",
@@ -58,6 +60,11 @@ export default function CardMap({ community }: CardMapProps) {
           color="neutral"
           size="lg"
           sx={{ position: "absolute", top: "0.875rem", right: "0.5rem" }}
+          onClick={() => {
+            if (!isMobile) {
+              HomeMap.getState().setCenter([community?.lng, community?.lat]);
+            }
+          }}
         >
           <PinDropOutlinedIcon />
         </IconButton>

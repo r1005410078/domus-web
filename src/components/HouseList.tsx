@@ -15,11 +15,11 @@ import Layout from "./Layout";
 import { apartmentTypeToString, HouseForm } from "@/models/house";
 import Filters, { FiltersForm } from "./Filters";
 import Pagination, { PaginationProps } from "./Pagination";
-// import type { AmapBounds, CommunityWithHouseCount } from "@/components/AMap";
-import React from "react";
+import React, { memo } from "react";
 import { isMobile } from "@/utils";
 import dynamic from "next/dynamic";
 import { EmptyState } from "./EmptyState";
+import { HomeMap, Points } from "@/components/AMap";
 
 const DynamicAMapComponent = dynamic(() => import("@/components/AMap"), {
   loading: () => <p>加载中...</p>,
@@ -34,16 +34,16 @@ const DynamicDetailComponent = dynamic(() => import("@/components/Detail"), {
 export interface HouseListProps {
   data: HouseForm[];
   transactionType: string;
-  aMapData: any[];
+  aMapData: Points[];
   onMapBoundsChange?: (bounds: any) => void;
   loading?: boolean;
   isFetched?: boolean;
   onPullLoadMore?: () => void;
-  pagination: PaginationProps;
+  pagination?: PaginationProps;
   onFilterSubmit: (values: FiltersForm) => void;
 }
 
-export function HouseList({
+function HouseList({
   data,
   transactionType,
   aMapData,
@@ -55,14 +55,12 @@ export function HouseList({
   onFilterSubmit,
 }: HouseListProps) {
   const [detail, setDetail] = React.useState<HouseForm>();
+
   return (
     <>
       <Layout.SidePane>
         <Stack
           spacing={0}
-          sx={{
-            overflow: "auto",
-          }}
           onScroll={(event) => {
             const target = event.currentTarget;
             const { scrollTop, scrollHeight, clientHeight } = target;
@@ -73,26 +71,34 @@ export function HouseList({
             }
           }}
         >
-          <List
-            sx={{
-              "--ListDivider-gap": "11px",
-              "--ListItem-paddingY": "8px",
-
-              height: {
-                xs: "calc(100vh - 200px)",
-                md: "calc(100vh - 110px)",
-              },
-            }}
-          >
+          <Box sx={{ pt: 1, pb: 1 }}>
             <Filters
               key={transactionType}
               transactionType={transactionType}
               onFilterSubmit={onFilterSubmit}
               loading={loading}
             />
+          </Box>
+          <List
+            sx={{
+              "--ListDivider-gap": "11px",
+              "--ListItem-paddingY": "8px",
+              overflow: "auto",
+              p: 0,
+              height: {
+                xs: pagination ? "calc(100vh - 200px)" : "calc(100vh - 202px)",
+                md: pagination ? "calc(100vh - 110px)" : "calc(100vh - 116px)",
+              },
+            }}
+          >
             <EmptyState isEmpty={data.length === 0 && !!isFetched}>
               {data.map((item) => (
-                <ListItem key={item.id} onClick={() => setDetail(item)}>
+                <ListItem
+                  key={item.id}
+                  onClick={() => {
+                    setDetail(item);
+                  }}
+                >
                   <Card
                     variant="outlined"
                     orientation="horizontal"
@@ -187,7 +193,7 @@ export function HouseList({
             </EmptyState>
           </List>
         </Stack>
-        <Pagination {...pagination} />
+        {pagination && <Pagination {...pagination} />}
       </Layout.SidePane>
       <Layout.Main sx={{ p: 0, position: "relative" }}>
         <Box
@@ -199,7 +205,7 @@ export function HouseList({
         >
           {!isMobile && (
             <DynamicAMapComponent
-              data={aMapData}
+              points={aMapData}
               onMapBoundsChange={onMapBoundsChange}
             />
           )}
@@ -260,3 +266,5 @@ export function HouseList({
     </>
   );
 }
+
+export default memo(HouseList);

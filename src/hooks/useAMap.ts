@@ -30,6 +30,7 @@ export function useAMap(mapElementId?: string, defaultOptions?: AMapOptions) {
         "AMap.ControlBar",
         "AMap.DistrictSearch",
         "AMap.AutoComplete",
+        "AMap.IndexCluster",
       ], //需要使用的的插件列表，如比例尺'AMap.Scale'，支持添加多个如：['...','...']
     })
       .then((AMap) => {
@@ -37,7 +38,8 @@ export function useAMap(mapElementId?: string, defaultOptions?: AMapOptions) {
           const amap = new AMap.Map(mapElementId, {
             // 设置地图容器id
             zoom: defaultOptions?.zoom || 10, // 初始化地图级别
-            center: defaultOptions?.center || [117.060496, 30.507077],
+            animateEnable: true,
+            center: defaultOptions?.center || [116.987469, 30.613189],
           });
           setMap(amap);
         }

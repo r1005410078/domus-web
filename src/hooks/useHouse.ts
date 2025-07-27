@@ -66,12 +66,12 @@ export function useHouseList(params: HouseListRequest, enabled?: boolean) {
 }
 
 // 根据小区获取房源
-export function useGetCommunityByCommunity() {
+export function useGetCommunityByCommunity(data: HouseListRequest) {
   return useQuery({
-    queryKey: ["useGetCommunityByCommunity"],
+    queryKey: ["useGetCommunityByCommunity", data],
     placeholderData: (data) => data,
     queryFn: async () => {
-      const res = await getCommunityByCommunity();
+      const res = await getCommunityByCommunity(data);
       return res.data.data;
     },
   });

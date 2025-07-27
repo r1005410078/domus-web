@@ -7,12 +7,14 @@ import OutboxRoundedIcon from "@mui/icons-material/OutboxRounded";
 import DeckTwoToneIcon from "@mui/icons-material/DeckTwoTone";
 import TableViewTwoToneIcon from "@mui/icons-material/TableViewTwoTone";
 import Layout from "@/components/Layout";
-import { HouseList } from "@/components/HouseList";
+import HouseList from "@/components/HouseList";
 
-import { useGetCommunityByCommunity, useHouseList } from "@/hooks/useHouse";
+import { useHouseList } from "@/hooks/useHouse";
 import { HouseListRequest } from "@/services/house";
 import { PaginationProps } from "@/components/Pagination";
 import dynamic from "next/dynamic";
+import { AmapBounds, Points } from "@/components/AMap";
+import { FiltersForm } from "@/components/Filters";
 
 const DynamicHouseTable = dynamic(() => import("@/components/HouseTable"), {
   loading: () => <p>加载中...</p>,
@@ -84,10 +86,12 @@ const gridTemplateColumns = {
 export default function Home() {
   const [transaction_type, onChangeTransactionType] =
     React.useState<keyof typeof gridTemplateColumns>("出售");
+
+  const [amapBounds, setAmapBounds] = React.useState<AmapBounds | null>(null);
   const [houseListRequest, setHouseListRequest] =
     React.useState<HouseListRequest>({
       page: 1,
-      page_size: 10,
+      page_size: 5000,
       transaction_type,
     });
 
@@ -96,20 +100,64 @@ export default function Home() {
     ["出售", "出租"].includes(transaction_type)
   );
 
-  const houseList = data?.list || [];
-  const pagination: PaginationProps = {
-    count: data?.total || 0,
-    page: houseListRequest.page,
-    pageSize: houseListRequest.page_size,
-    onChange: (page) => {
-      setHouseListRequest({
-        ...houseListRequest,
-        page,
-      });
-    },
-  };
+  const aMapData = React.useMemo(() => {
+    return (
+      data?.list?.map((item) => {
+        // area 使用公共前缀方法找到共同前缀
+        const points: Points = {
+          area: item.community.name,
+          building: item.house_address,
+          city: item.community.city,
+          community: `
+          <details style="margin-left: 6px">
+              <summary>${item.community.name.replace(".", "")}</summary>
+              <p>${item.community.address}</p>
+            </details>
+          `,
+          district: item.community
+            .district!.replace("安徽省", "")
+            .replace("安庆市", ""),
 
-  const { data: aMapData = [] } = useGetCommunityByCommunity();
+          lnglat: {
+            lng: item.community.lng,
+            lat: item.community.lat,
+          },
+        };
+
+        return points;
+      }) || []
+    );
+  }, [data]);
+
+  const houseList = data?.list || [];
+
+  const houseListByAmapBounds = React.useMemo(() => {
+    if (amapBounds) {
+      return houseList.filter((item) => {
+        return (
+          item.community.lng >= amapBounds.south_west.lng &&
+          item.community.lng <= amapBounds.north_east.lng &&
+          item.community.lat >= amapBounds.south_west.lat &&
+          item.community.lat <= amapBounds.north_east.lat
+        );
+      });
+    }
+    return houseList;
+  }, [amapBounds, houseList]);
+
+  const onMapBoundsChange = React.useCallback((bounds: AmapBounds) => {
+    setAmapBounds(bounds);
+  }, []);
+
+  const onFilterSubmit = React.useCallback((values: FiltersForm) => {
+    setHouseListRequest((pre) => ({
+      ...pre,
+      ...values,
+      amap_bounds: pre.amap_bounds,
+      page: pre.page,
+      page_size: pre.page_size,
+    }));
+  }, []);
 
   return (
     <>
@@ -145,25 +193,11 @@ export default function Home() {
                 <HouseList
                   loading={isFetching}
                   isFetched={isFetched}
-                  data={houseList}
-                  pagination={pagination}
+                  data={houseListByAmapBounds}
                   transactionType={transaction_type}
                   aMapData={aMapData}
-                  onFilterSubmit={(values) => {
-                    setHouseListRequest((pre) => ({
-                      ...pre,
-                      ...values,
-                      amap_bounds: pre.amap_bounds,
-                      page: pre.page,
-                      page_size: pre.page_size,
-                    }));
-                  }}
-                  onMapBoundsChange={(amap_bounds) => {
-                    setHouseListRequest((pre) => ({
-                      ...pre,
-                      amap_bounds,
-                    }));
-                  }}
+                  onFilterSubmit={onFilterSubmit}
+                  onMapBoundsChange={onMapBoundsChange}
                 />
               );
             case "house":

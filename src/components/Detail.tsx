@@ -43,6 +43,8 @@ import { PhotoProvider, PhotoView } from "react-photo-view";
 import "react-photo-view/dist/react-photo-view.css";
 import { UserInfomation } from "./UserAvatar";
 import dynamic from "next/dynamic";
+import { isMobile } from "@/utils";
+import { HomeMap } from "./AMap";
 
 const DynamicCardMapComponent = dynamic(() => import("@/components/CardMap"), {
   loading: () => <p>加载中...</p>,
@@ -88,12 +90,26 @@ export default function Detail({
     emblaApi.on("reInit", onSelect).on("select", onSelect);
   }, [emblaApi, onSelect]);
 
+  useEffect(() => {
+    window.addEventListener("click", (e) => {
+      if (e.target instanceof HTMLCanvasElement) {
+        onClose();
+      }
+    });
+  }, []);
+
   if (!detail) {
     return <></>;
   }
 
   return (
-    <Card variant="plain" sx={{ border: 0, p: 2 }}>
+    <Card
+      variant="plain"
+      sx={{ border: 0, p: 2 }}
+      onClick={() => {
+        console.log(2222);
+      }}
+    >
       <CardContent
         orientation="horizontal"
         sx={{ alignItems: "center", justifyContent: "space-between" }}
@@ -164,7 +180,19 @@ export default function Detail({
           ))}
         </Box>
         <Box sx={{ width: 0, display: "flex", flexDirection: "row-reverse" }}>
-          <IconButton variant="plain" color="neutral" size="sm">
+          <IconButton
+            variant="plain"
+            color="neutral"
+            size="sm"
+            onClick={() => {
+              if (!isMobile) {
+                HomeMap.getState().setCenter([
+                  detail.community?.lng,
+                  detail.community?.lat,
+                ]);
+              }
+            }}
+          >
             <MyLocationTwoToneIcon />
           </IconButton>
         </Box>
