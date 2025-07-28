@@ -5,10 +5,8 @@ import Box from "@mui/joy/Box";
 import Typography from "@mui/joy/Typography";
 import IconButton from "@mui/joy/IconButton";
 import Stack from "@mui/joy/Stack";
-import Avatar from "@mui/joy/Avatar";
 import Input from "@mui/joy/Input";
 import Button from "@mui/joy/Button";
-import Tooltip from "@mui/joy/Tooltip";
 import Dropdown from "@mui/joy/Dropdown";
 import Menu from "@mui/joy/Menu";
 import MenuButton from "@mui/joy/MenuButton";
@@ -28,7 +26,7 @@ import OpenInNewRoundedIcon from "@mui/icons-material/OpenInNewRounded";
 import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
 import MenuRoundedIcon from "@mui/icons-material/MenuRounded";
 import Navigation, { NavigationProps } from "./Navigation";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import Add from "@mui/icons-material/Add";
 import {
   Calculator,
@@ -52,6 +50,9 @@ import { UserAvatar, UserInfomation } from "./UserAvatar";
 import Link from "next/link";
 import { useEditUserProfileModal } from "./EditUserProfile";
 import { isMobile } from "@/utils";
+import { useLiveQuery } from "@tanstack/react-db";
+import { commandCollection, useCommandDB } from "@/hooks/useCommandDB";
+import { EmptyState } from "./EmptyState";
 
 interface HeaderProps {
   tabBar: NavigationProps;
@@ -59,6 +60,7 @@ interface HeaderProps {
 }
 
 export default function Header({ tabBar, onAdd }: HeaderProps) {
+  const router = useRouter();
   const [mounted, setMounted] = React.useState(false);
   React.useEffect(() => {
     setMounted(true);
@@ -68,6 +70,7 @@ export default function Header({ tabBar, onAdd }: HeaderProps) {
   const [open, setOpen] = React.useState(false);
   const [openCmdk, setOpenCmdk] = React.useState(false);
   const pathname = usePathname();
+  const commandData = useCommandDB();
 
   const { editUserProfileModal, openEditUserProfileModal } =
     useEditUserProfileModal({
@@ -170,68 +173,91 @@ export default function Header({ tabBar, onAdd }: HeaderProps) {
           alignItems: "center",
         }}
       >
-        <Input
-          size="sm"
-          variant="outlined"
-          placeholder="搜索功能..."
-          startDecorator={<SearchRoundedIcon color="primary" />}
-          onClick={() => setOpenCmdk(true)}
-          endDecorator={
-            <IconButton
-              variant="outlined"
-              color="neutral"
-              sx={{ bgcolor: "background.level1" }}
-            >
-              <Typography level="title-sm" textColor="text.icon">
-                ⌘ K
-              </Typography>
-            </IconButton>
-          }
-          sx={{
-            alignSelf: "center",
-            display: {
-              xs: "none",
-              sm: "flex",
-            },
-          }}
-        />
+        <Box onClick={() => setOpenCmdk(true)}>
+          <Input
+            size="sm"
+            variant="outlined"
+            placeholder="搜索功能..."
+            disabled
+            startDecorator={<SearchRoundedIcon color="primary" />}
+            endDecorator={
+              <IconButton
+                variant="outlined"
+                color="neutral"
+                sx={{ bgcolor: "background.level1" }}
+              >
+                <Typography level="title-sm" textColor="text.icon">
+                  ⌘ K
+                </Typography>
+              </IconButton>
+            }
+            sx={{
+              alignSelf: "center",
+              display: {
+                xs: "none",
+                sm: "flex",
+              },
+            }}
+          />
+        </Box>
 
-        <CommandDialog open={openCmdk} onOpenChange={setOpenCmdk}>
-          <CommandInput placeholder="Type a command or search..." />
+        <CommandDialog
+          open={openCmdk}
+          onOpenChange={setOpenCmdk}
+          filter={(value, search) => {
+            if (value.includes(search)) return 1;
+            return 0;
+          }}
+        >
+          <CommandInput placeholder="请输入..." />
           <CommandList>
-            <CommandEmpty>No results found.</CommandEmpty>
-            <CommandGroup heading="Suggestions">
-              <CommandItem>
-                <Calendar />
-                <span>Calendar</span>
-              </CommandItem>
-              <CommandItem>
-                <Smile />
-                <span>Search Emoji</span>
-              </CommandItem>
-              <CommandItem>
-                <Calculator />
-                <span>Calculator</span>
-              </CommandItem>
-            </CommandGroup>
-            <CommandSeparator />
-            <CommandGroup heading="Settings">
-              <CommandItem>
-                <User />
-                <span>Profile</span>
-                <CommandShortcut>⌘P</CommandShortcut>
-              </CommandItem>
-              <CommandItem>
-                <CreditCard />
-                <span>Billing</span>
-                <CommandShortcut>⌘B</CommandShortcut>
-              </CommandItem>
-              <CommandItem>
-                <Settings />
-                <span>Settings</span>
-                <CommandShortcut>⌘S</CommandShortcut>
-              </CommandItem>
-            </CommandGroup>
+            <CommandEmpty>
+              <EmptyState isEmpty />
+            </CommandEmpty>
+            {commandData.map((item) => {
+              return (
+                <CommandGroup heading={item.group}>
+                  {item.commands.map((command) => {
+                    return (
+                      <CommandItem
+                        key={command.command}
+                        value={command.command}
+                        onSelect={(value) => {
+                          setOpenCmdk(false);
+                          switch (command.command) {
+                            case "AddHouse":
+                              onAdd?.();
+                              break;
+                            case "出租":
+                              router.push("/house?type=出租");
+                              break;
+                            case "出售":
+                              router.push("/house?type=出售");
+                              break;
+                            case "全部房源":
+                              router.push("/house?type=house");
+                              break;
+                            case "小区管理":
+                              router.push("/house?type=community");
+                              break;
+                            case "user":
+                              router.push("/user?type=user");
+                              break;
+                            case "role":
+                              router.push("/user?type=role");
+                              break;
+                          }
+                        }}
+                      >
+                        {command.icon}
+                        <span>{command.commandLabel || command.command}</span>
+                        {/* <CommandShortcut>⌘P</CommandShortcut> */}
+                      </CommandItem>
+                    );
+                  })}
+                </CommandGroup>
+              );
+            })}
           </CommandList>
         </CommandDialog>
         {/* <IconButton

@@ -3,7 +3,7 @@ import InboxIcon from "@mui/icons-material/Inbox"; // 或你喜欢的图标
 
 interface EmptyStateProps {
   isEmpty: boolean;
-  children: React.ReactNode;
+  children?: React.ReactNode;
 }
 
 export function EmptyState({ isEmpty, children }: EmptyStateProps) {

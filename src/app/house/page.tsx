@@ -15,6 +15,7 @@ import { PaginationProps } from "@/components/Pagination";
 import dynamic from "next/dynamic";
 import { AmapBounds, Points } from "@/components/AMap";
 import { FiltersForm } from "@/components/Filters";
+import { useParams, useSearchParams } from "next/navigation";
 
 const DynamicHouseTable = dynamic(() => import("@/components/HouseTable"), {
   loading: () => <p>加载中...</p>,
@@ -84,8 +85,12 @@ const gridTemplateColumns = {
 };
 
 export default function Home() {
-  const [transaction_type, onChangeTransactionType] =
-    React.useState<keyof typeof gridTemplateColumns>("出售");
+  const params = useSearchParams();
+  const [transaction_type, onChangeTransactionType] = React.useState<string>(
+    params.get("type") || "出售"
+  );
+
+  console.log("params", params);
 
   const [amapBounds, setAmapBounds] = React.useState<AmapBounds | null>(null);
   const [houseListRequest, setHouseListRequest] =
@@ -164,6 +169,7 @@ export default function Home() {
       <LayoutFrame
         rootProps={{
           sx: {
+            // @ts-ignore
             gridTemplateColumns: gridTemplateColumns[transaction_type],
           },
         }}
