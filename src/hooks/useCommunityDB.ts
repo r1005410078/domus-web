@@ -2,13 +2,12 @@
 
 import { createCollection, useLiveQuery } from "@tanstack/react-db";
 import { queryCollectionOptions } from "@tanstack/db-collections";
-import { useEffect, useRef, useState } from "react";
 import { getCommunityList } from "@/services/house";
-import "@/utils/crypto-polyfill";
 import { communitySchema } from "@/schema/house";
 import { queryClient } from "@/libs/QueryProvider";
 import { CollectionChache } from "@/utils/CollectionChache";
 import { Community } from "@/models/house";
+import "@/utils/crypto-polyfill";
 
 const PAGE_SIZE = 100;
 const communityChache = new CollectionChache({

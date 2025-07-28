@@ -1,10 +1,23 @@
 "use client";
 
-import { memo, use, useEffect, useRef, useState } from "react";
+import { memo, useEffect, useRef, useState } from "react";
 import "@amap/amap-jsapi-types";
-import { Select, useColorScheme, Option, Box } from "@mui/joy";
+import {
+  Select,
+  Option,
+  Box,
+  Stack,
+  Typography,
+  IconButton,
+  SelectStaticProps,
+} from "@mui/joy";
 import { useAMap, useBindAMapToolBar } from "@/hooks/useAMap";
 import { create } from "zustand";
+import MyLocationTwoToneIcon from "@mui/icons-material/MyLocationTwoTone";
+import LocationOnTwoToneIcon from "@mui/icons-material/LocationOnTwoTone";
+import CloseRounded from "@mui/icons-material/CloseRounded";
+
+// https://codesandbox.io/p/sandbox/aggregate-by-index-forked-4l76vr?file=%2Findex.html%3A22%2C93-22%2C110
 
 const clusterIndexSet = {
   city: {
@@ -64,8 +77,10 @@ export const HomeMap = create<IHomeMap>((set, get) => ({
 }));
 
 function AMapComponent({ points, onMapBoundsChange }: MapPageProps) {
-  console.log("AMapComponent 更新");
+  const [area, setArea] = useState<any>();
+  const action: SelectStaticProps["action"] = useRef(null);
   const { amap, AMap } = useAMap("home-map-container");
+  const [streetList, setStreetList] = useState<IDistrict[]>([]);
   const polygons = useRef<any[]>([]);
   const clearPolygons = () => {
     polygons.current.forEach((polygon) => polygon.setMap(null));
@@ -116,7 +131,6 @@ function AMapComponent({ points, onMapBoundsChange }: MapPageProps) {
     });
 
     return () => {
-      clearPolygons();
       cluster.setMap(null);
     };
   }, [amap, AMap, points]);
@@ -153,13 +167,45 @@ function AMapComponent({ points, onMapBoundsChange }: MapPageProps) {
           }
         `}
       </style>
-      <Box sx={{ position: "absolute", top: 0, left: 0, p: 2 }}>
+      <Stack
+        direction="row"
+        gap={1}
+        sx={{ position: "absolute", top: 0, left: 0, p: 2, height: 50 }}
+      >
         <Select
+          action={action}
           sx={{ width: 160 }}
           placeholder="选择区县"
+          startDecorator={<MyLocationTwoToneIcon />}
+          value={area}
+          {...(area && {
+            // display the button and remove select indicator
+            // when user has selected a value
+            endDecorator: (
+              <IconButton
+                size="sm"
+                variant="plain"
+                color="neutral"
+                onMouseDown={(event) => {
+                  // don't open the popup when clicking on this button
+                  event.stopPropagation();
+                }}
+                onClick={() => {
+                  setArea(null);
+                  setStreetList([]);
+                  clearPolygons();
+                  action.current?.focusVisible();
+                }}
+              >
+                <CloseRounded />
+              </IconButton>
+            ),
+            indicator: null,
+          })}
           onChange={(_, e: any) => {
+            setArea(e);
             if (!amap || !e) return;
-
+            setStreetList([]);
             // 清除上一次绘制
             clearPolygons();
 
@@ -173,6 +219,7 @@ function AMapComponent({ points, onMapBoundsChange }: MapPageProps) {
             district.setExtensions("all");
             //行政区查询 340000 安庆
             //按照adcode进行查询可以保证数据返回的唯一性
+
             district.search(e.adcode, function (status: any, data: any) {
               if (status === "complete") {
                 var bounds = data.districtList[0].boundaries;
@@ -190,8 +237,11 @@ function AMapComponent({ points, onMapBoundsChange }: MapPageProps) {
                     polygons.current.push(polygon);
                   }
 
-                  amap.setFitView(); //地图自适应
+                  //地图自适应
+                  amap.setFitView(polygons.current);
                 }
+
+                setStreetList(data.districtList[0].districtList);
               }
             });
 
@@ -201,11 +251,38 @@ function AMapComponent({ points, onMapBoundsChange }: MapPageProps) {
         >
           {districtList.map((item) => (
             <Option key={item.adcode} value={item}>
-              {item.name}
+              <Typography
+                startDecorator={<LocationOnTwoToneIcon />}
+                sx={{ mb: 2 }}
+              >
+                {item.name}
+              </Typography>
             </Option>
           ))}
         </Select>
-      </Box>
+
+        <Select
+          sx={{ width: 160 }}
+          placeholder="选择街道"
+          startDecorator={<MyLocationTwoToneIcon />}
+          onChange={(_, e: any) => {
+            if (!amap || !e) return;
+            amap.setZoom(13);
+            amap.setCenter(e?.center);
+          }}
+        >
+          {streetList.map((item) => (
+            <Option key={item.adcode} value={item}>
+              <Typography
+                startDecorator={<LocationOnTwoToneIcon />}
+                sx={{ mb: 2 }}
+              >
+                {item.name}
+              </Typography>
+            </Option>
+          ))}
+        </Select>
+      </Stack>
     </div>
   );
 }
@@ -312,7 +389,8 @@ function _renderClusterMarker(
   map: any,
   AMap: any,
   context: any,
-  points: Points[]
+  points: Points[],
+  onClick?: () => {}
 ) {
   var styleObj = getStyle(context, points);
   // Custom Point Marker Style
@@ -324,11 +402,12 @@ function _renderClusterMarker(
     div.style.height = styleObj.size + "px";
     // Custom Click Event
     context.marker.on("click", function (e: any) {
-      console.log(e);
       var curZoom = map.getZoom();
       if (curZoom < 20) {
         curZoom += 1;
       }
+
+      onClick?.();
       map.setZoomAndCenter(curZoom, e.lnglat);
     });
   }
@@ -393,8 +472,41 @@ const requestIdle = (cb: () => void) => {
   }
 };
 
+interface IDistrict {
+  citycode: string;
+  adcode: string;
+  name: string;
+  center: [number, number];
+  level: string;
+  boundaries: [];
+}
+
 // 安庆行政区
 const districtList = [
+  {
+    citycode: "0556",
+    adcode: "340803",
+    name: "大观区",
+    center: [117.013469, 30.553697],
+    level: "district",
+    boundaries: [],
+  },
+  {
+    citycode: "0556",
+    adcode: "340802",
+    name: "迎江区",
+    center: [117.090878, 30.512768],
+    level: "district",
+    boundaries: [],
+  },
+  {
+    citycode: "0556",
+    adcode: "340811",
+    name: "宜秀区",
+    center: [116.987469, 30.613189],
+    level: "district",
+    boundaries: [],
+  },
   {
     citycode: "0556",
     adcode: "340828",
@@ -411,14 +523,7 @@ const districtList = [
     level: "district",
     boundaries: [],
   },
-  {
-    citycode: "0556",
-    adcode: "340803",
-    name: "大观区",
-    center: [117.013469, 30.553697],
-    level: "district",
-    boundaries: [],
-  },
+
   {
     citycode: "0556",
     adcode: "340825",
@@ -443,22 +548,7 @@ const districtList = [
     level: "district",
     boundaries: [],
   },
-  {
-    citycode: "0556",
-    adcode: "340802",
-    name: "迎江区",
-    center: [117.090878, 30.512768],
-    level: "district",
-    boundaries: [],
-  },
-  {
-    citycode: "0556",
-    adcode: "340811",
-    name: "宜秀区",
-    center: [116.987469, 30.613189],
-    level: "district",
-    boundaries: [],
-  },
+
   {
     citycode: "0556",
     adcode: "340822",

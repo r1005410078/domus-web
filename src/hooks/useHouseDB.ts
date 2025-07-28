@@ -1,16 +1,13 @@
 "use client";
 
 import { createCollection, useLiveQuery } from "@tanstack/react-db";
-import { QueryClient } from "@tanstack/query-core";
 import { queryCollectionOptions } from "@tanstack/db-collections";
-import { use, useEffect, useMemo, useRef } from "react";
 import { deleteHouse, getHouseList } from "@/services/house";
-import "@/utils/crypto-polyfill";
 import { HouseData, houseDataSchema } from "@/schema/house";
 import { queryClient } from "@/libs/QueryProvider";
 import { CollectionChache } from "@/utils/CollectionChache";
 import { useQueryClient } from "@tanstack/react-query";
-import { set } from "zod";
+import "@/utils/crypto-polyfill";
 
 // 同步房源数据
 const PAGE_SIZE = 100;

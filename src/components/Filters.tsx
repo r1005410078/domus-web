@@ -16,7 +16,7 @@ import {
   EditHouseDecoration,
   EditHouseOrientation,
 } from "./EditDetail";
-import { Autocomplete, CircularProgress, IconButton } from "@mui/joy";
+import { Autocomplete, Box, CircularProgress, IconButton } from "@mui/joy";
 
 export interface FiltersProps {
   // 交易类型
@@ -24,6 +24,7 @@ export interface FiltersProps {
   // 提交函数
   onFilterSubmit: (values: FiltersForm) => void;
   loading?: boolean;
+  children?: React.ReactNode;
 }
 
 export interface FiltersForm {
@@ -42,6 +43,7 @@ export default function Filters({
   transactionType,
   onFilterSubmit,
   loading,
+  children,
 }: FiltersProps) {
   const [resetKey, setResetKey] = React.useState(Date.now());
   const [open, setOpen] = React.useState(false);
@@ -75,40 +77,37 @@ export default function Filters({
       key={resetKey}
       useFlexGap
       direction="row"
-      spacing={{ xs: 0, sm: 2 }}
-      sx={{
-        justifyContent: { xs: "space-between" },
-        flexWrap: "wrap",
-        minWidth: 0,
-        px: 2,
-      }}
+      spacing={0}
+      sx={{ pt: 1, pb: 1 }}
     >
+      <Box sx={{ flex: 1, pl: 1.2 }}>{children}</Box>
       <IconButton
-        variant="soft"
-        color="neutral"
         loading={loading}
+        sx={{
+          "--IconButton-size": "40px",
+        }}
         onClick={() => setOpen(true)}
       >
         <FilterAltOutlined />
       </IconButton>
 
-      <form.Field
-        name="purpose"
-        children={(field) => {
-          return (
-            <PurposeSelector
-              value={field.state.value}
-              onChange={(value) => {
-                field.handleChange(value);
-              }}
-            />
-          );
-        }}
-      />
       <Drawer open={open} onClose={() => setOpen(false)}>
         <Stack useFlexGap spacing={3} sx={{ p: 2 }}>
           <DialogTitle>高级检索</DialogTitle>
           <ModalClose />
+          <form.Field
+            name="purpose"
+            children={(field) => {
+              return (
+                <PurposeSelector
+                  value={field.state.value}
+                  onChange={(value) => {
+                    field.handleChange(value);
+                  }}
+                />
+              );
+            }}
+          />
           <form.Field
             name="apartment_type"
             children={(field) => {

@@ -148,17 +148,14 @@ function HouseList({
             }
           }}
         >
-          <Box p={1} pb={0}>
+          <Filters
+            key={transactionType}
+            transactionType={transactionType}
+            onFilterSubmit={onFilterSubmit}
+            loading={isFetching}
+          >
             {fuseSearchNode}
-          </Box>
-          <Box sx={{ pt: 1, pb: 1 }}>
-            <Filters
-              key={transactionType}
-              transactionType={transactionType}
-              onFilterSubmit={onFilterSubmit}
-              loading={isFetching}
-            />
-          </Box>
+          </Filters>
           <List
             sx={{
               "--ListDivider-gap": "11px",
@@ -166,12 +163,8 @@ function HouseList({
               overflow: "auto",
               p: 0,
               height: {
-                xs: pagination
-                  ? "calc(100vh - 200px - 44px)"
-                  : "calc(100vh - 202px - 44px)",
-                md: pagination
-                  ? "calc(100vh - 110px - 44px)"
-                  : "calc(100vh - 116px - 44px)",
+                xs: pagination ? "calc(100vh - 200px)" : "calc(100vh - 202px)",
+                md: pagination ? "calc(100vh - 110px)" : "calc(100vh - 116px)",
               },
             }}
           >

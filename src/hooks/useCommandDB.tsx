@@ -1,19 +1,20 @@
 import { queryClient } from "@/libs/QueryProvider";
 import { queryCollectionOptions } from "@tanstack/db-collections";
 import { createCollection, useLiveQuery } from "@tanstack/react-db";
-import z from "zod";
-import MapsHomeWorkTwoToneIcon from "@mui/icons-material/MapsHomeWorkTwoTone";
 import OutboxRoundedIcon from "@mui/icons-material/OutboxRounded";
 import DeckTwoToneIcon from "@mui/icons-material/DeckTwoTone";
 import TableViewTwoToneIcon from "@mui/icons-material/TableViewTwoTone";
 import RoomPreferencesTwoToneIcon from "@mui/icons-material/RoomPreferencesTwoTone";
 import ManageAccountsTwoToneIcon from "@mui/icons-material/ManageAccountsTwoTone";
+import z from "zod";
+import "@/utils/crypto-polyfill";
 
 const commandSchema = z.object({
   command: z.string(),
   group: z.string(),
   commandLabel: z.string().optional(),
   description: z.string().optional(),
+  action: z.string().optional(),
   icon: z.any().optional(),
   data: z.any().optional(),
 });
@@ -29,18 +30,6 @@ export const commandCollection = createCollection(
       return Promise.resolve([
         {
           group: "房源",
-          command: "出售",
-          description: "查看出售房源",
-          icon: <OutboxRoundedIcon />,
-        },
-        {
-          group: "房源",
-          command: "出租",
-          description: "查看租房房源",
-          icon: <DeckTwoToneIcon />,
-        },
-        {
-          group: "房源",
           command: "AddHouse",
           commandLabel: "添加房源",
           description: "添加房源",
@@ -48,20 +37,41 @@ export const commandCollection = createCollection(
         },
         {
           group: "房源",
-          command: "全部房源",
+          command: "/house/sold",
+          commandLabel: "出售房源",
+          description: "查看出售房源",
+          action: "link",
+          icon: <OutboxRoundedIcon />,
+        },
+        {
+          group: "房源",
+          command: "/house/rent",
+          action: "link",
+          commandLabel: "出租房源",
+          description: "查看租房房源",
+          icon: <DeckTwoToneIcon />,
+        },
+
+        {
+          group: "房源",
+          command: "/house/house",
+          action: "link",
+          commandLabel: "全部房源",
           description: "查看全部房源",
           icon: <TableViewTwoToneIcon />,
         },
         {
           group: "用户",
-          command: "user",
+          command: "/user/profiles",
+          action: "link",
           commandLabel: "用户管理",
           description: "查看用户信息",
           icon: <RoomPreferencesTwoToneIcon />,
         },
         {
           group: "用户",
-          command: "role",
+          command: "/user/role",
+          action: "link",
           commandLabel: "角色管理",
           description: "查看角色信息",
           icon: <ManageAccountsTwoToneIcon />,
@@ -77,9 +87,6 @@ export const commandCollection = createCollection(
 
 export const useCommandDB = () => {
   const { data } = useLiveQuery((q) => q.from({ commands: commandCollection }));
-
-  console.log(data);
-
   const dataMap = data.reduce((pre, cur) => {
     if (!pre.has(cur.group)) {
       pre.set(cur.group, {

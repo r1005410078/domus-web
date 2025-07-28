@@ -1,10 +1,12 @@
 import * as React from "react";
 
 import { Option, Select } from "@mui/joy";
+import { SxProps } from "@mui/joy/styles/types";
 
 export interface PurposeSelectorProps {
   value?: string;
   onChange: (value: string) => void;
+  sx?: SxProps;
 }
 
 export default function PurposeSelector({
@@ -13,8 +15,7 @@ export default function PurposeSelector({
 }: PurposeSelectorProps) {
   return (
     <Select
-      variant="plain"
-      sx={{ minWidth: 80 }}
+      variant="outlined"
       onChange={(_, value) => onChange(value!)}
       value={value}
     >

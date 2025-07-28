@@ -120,7 +120,7 @@ export default function Header({ tabBar, onAdd }: HeaderProps) {
           color="neutral"
           component="a"
           aria-pressed={pathname.indexOf("/house") === 0}
-          href="/"
+          href="/profiles"
           size="sm"
           sx={{ alignSelf: "center" }}
         >
@@ -223,34 +223,14 @@ export default function Header({ tabBar, onAdd }: HeaderProps) {
                         key={command.command}
                         value={command.command}
                         onSelect={(value) => {
-                          setOpenCmdk(false);
+                          if (command.action === "link") {
+                            router.push(command.command);
+                            return;
+                          }
+
                           switch (command.command) {
                             case "AddHouse":
                               onAdd?.();
-                              break;
-                            case "出租":
-                              router.push("/house?nav=出租");
-                              router.refresh();
-                              break;
-                            case "出售":
-                              router.push("/house?nav=出售");
-                              router.refresh();
-                              break;
-                            case "全部房源":
-                              router.push("/house?nav=house");
-                              router.refresh();
-                              break;
-                            case "小区管理":
-                              router.push("/house?nav=community");
-                              router.refresh();
-                              break;
-                            case "user":
-                              router.push("/user?nav=user");
-                              router.refresh();
-                              break;
-                            case "role":
-                              router.push("/user?nav=role");
-                              router.refresh();
                               break;
                           }
                         }}

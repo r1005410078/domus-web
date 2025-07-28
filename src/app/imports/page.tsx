@@ -62,7 +62,6 @@ export default function Page() {
       },
       onSuccess: (data) => {
         if (data.data.code !== 200) {
-          console.log(data);
           return;
         }
         setHouseCount((houseCount) => houseCount - 1);
@@ -316,9 +315,6 @@ export default function Page() {
 
       data.push(res);
     }
-
-    console.log(not);
-    console.log(data);
   }
 }
 

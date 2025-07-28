@@ -15,7 +15,7 @@ import { usePathname, useRouter } from "next/navigation";
 
 export interface NavigationProps {
   value: string;
-  onChange: (value: any) => void;
+  onChange?: (value: any) => void;
   items: NavigationItem[];
   tags?: TagItem[];
 }
@@ -41,7 +41,6 @@ export default function Navigation({
 }: NavigationProps) {
   const router = useRouter();
   const pathname = usePathname();
-  console.log("pathname", pathname);
 
   return (
     <List size="sm" sx={{ "--ListItem-radius": "8px", "--List-gap": "4px" }}>
@@ -55,8 +54,7 @@ export default function Navigation({
               <ListItemButton
                 selected={value === item.key}
                 onClick={() => {
-                  onChange(item.key);
-                  router.push(`${pathname}?nav=${item.key}`);
+                  onChange?.(item.key);
                 }}
               >
                 <ListItemDecorator>{item.icon}</ListItemDecorator>
@@ -91,7 +89,7 @@ export default function Navigation({
               <ListItem key={tag.label}>
                 <ListItemButton
                   selected={value === tag.key}
-                  onClick={() => onChange(tag.key)}
+                  onClick={() => onChange?.(tag.key)}
                 >
                   <ListItemDecorator>
                     <Box
