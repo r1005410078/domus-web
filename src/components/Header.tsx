@@ -230,21 +230,27 @@ export default function Header({ tabBar, onAdd }: HeaderProps) {
                               break;
                             case "出租":
                               router.push("/house?nav=出租");
+                              router.refresh();
                               break;
                             case "出售":
                               router.push("/house?nav=出售");
+                              router.refresh();
                               break;
                             case "全部房源":
                               router.push("/house?nav=house");
+                              router.refresh();
                               break;
                             case "小区管理":
                               router.push("/house?nav=community");
+                              router.refresh();
                               break;
                             case "user":
                               router.push("/user?nav=user");
+                              router.refresh();
                               break;
                             case "role":
                               router.push("/user?nav=role");
+                              router.refresh();
                               break;
                           }
                         }}
