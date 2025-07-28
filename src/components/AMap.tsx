@@ -267,7 +267,7 @@ function AMapComponent({ points, onMapBoundsChange }: MapPageProps) {
           startDecorator={<MyLocationTwoToneIcon />}
           onChange={(_, e: any) => {
             if (!amap || !e) return;
-            amap.setZoom(13);
+            amap.setZoom(12);
             amap.setCenter(e?.center);
           }}
         >
