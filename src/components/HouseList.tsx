@@ -15,11 +15,16 @@ import Layout from "./Layout";
 import { apartmentTypeToString, HouseForm } from "@/models/house";
 import Filters, { FiltersForm } from "./Filters";
 import Pagination, { PaginationProps } from "./Pagination";
-import React, { memo } from "react";
+import React, { memo, useMemo } from "react";
 import { isMobile } from "@/utils";
 import dynamic from "next/dynamic";
 import { EmptyState } from "./EmptyState";
-import { HomeMap, Points } from "@/components/AMap";
+import { AmapBounds, Points } from "@/components/AMap";
+import { HouseListRequest } from "@/services/house";
+import { useHouseList } from "@/hooks/useHouse";
+import { useFuseSearch } from "@/hooks/useFuseSearch";
+import { getHouseDataByColDef } from "./HouseTableConfig";
+import { HouseData, houseDataFuseKeys } from "@/schema/house";
 
 const DynamicAMapComponent = dynamic(() => import("@/components/AMap"), {
   loading: () => <p>加载中...</p>,
@@ -32,29 +37,101 @@ const DynamicDetailComponent = dynamic(() => import("@/components/Detail"), {
 });
 
 export interface HouseListProps {
-  data: HouseForm[];
   transactionType: string;
-  aMapData: Points[];
-  onMapBoundsChange?: (bounds: any) => void;
-  loading?: boolean;
-  isFetched?: boolean;
   onPullLoadMore?: () => void;
   pagination?: PaginationProps;
-  onFilterSubmit: (values: FiltersForm) => void;
 }
 
 function HouseList({
-  data,
   transactionType,
-  aMapData,
-  loading,
-  isFetched,
   pagination,
-  onMapBoundsChange,
   onPullLoadMore,
-  onFilterSubmit,
 }: HouseListProps) {
   const [detail, setDetail] = React.useState<HouseForm>();
+
+  const [amapBounds, setAmapBounds] = React.useState<AmapBounds | null>(null);
+  const [houseListRequest, setHouseListRequest] =
+    React.useState<HouseListRequest>({
+      page: 1,
+      page_size: 5000,
+      transaction_type: transactionType,
+    });
+
+  const { data, isFetched, isFetching } = useHouseList(
+    houseListRequest,
+    ["出售", "出租"].includes(transactionType)
+  );
+
+  const houseList = useMemo(() => {
+    return data?.list || [];
+  }, [data]);
+
+  // 全局检索
+  const { fuseRowData, fuseSearchNode } = useFuseSearch(
+    getHouseDataByColDef(houseList),
+    {
+      keys: houseDataFuseKeys, // 要模糊搜索的字段
+      threshold: 0.6,
+    }
+  );
+
+  const aMapData = React.useMemo(() => {
+    return (
+      fuseRowData.map((item) => {
+        // area 使用公共前缀方法找到共同前缀
+        const points: Points = {
+          area: item.community.name,
+          building: item.house_address,
+          city: item.community.city,
+          community: `
+            <details style="margin-left: 6px">
+                <summary>${item.community.name.replace(".", "")}</summary>
+                <p>${item.community.address}</p>
+              </details>
+            `,
+          district: item.community
+            .district!.replace("安徽省", "")
+            .replace("安庆市", ""),
+
+          lnglat: {
+            lng: item.community.lng,
+            lat: item.community.lat,
+          },
+        };
+
+        return points;
+      }) || []
+    );
+  }, [fuseRowData]);
+
+  const houseListByAmapBounds = React.useMemo(() => {
+    if (amapBounds) {
+      return fuseRowData.filter((item) => {
+        return (
+          item.community.lng >= amapBounds.south_west.lng &&
+          item.community.lng <= amapBounds.north_east.lng &&
+          item.community.lat >= amapBounds.south_west.lat &&
+          item.community.lat <= amapBounds.north_east.lat
+        );
+      });
+    }
+
+    return fuseRowData;
+  }, [amapBounds, fuseRowData]);
+
+  const onMapBoundsChange = React.useCallback((bounds: AmapBounds) => {
+    setAmapBounds(bounds);
+  }, []);
+
+  const onFilterSubmit = React.useCallback((values: FiltersForm) => {
+    setHouseListRequest((pre) => ({
+      ...pre,
+      ...values,
+      amap_bounds: pre.amap_bounds,
+      page: pre.page,
+      page_size: pre.page_size,
+    }));
+  }, []);
 
   return (
     <>
@@ -71,12 +148,15 @@ function HouseList({
             }
           }}
         >
+          <Box p={1} pb={0}>
+            {fuseSearchNode}
+          </Box>
           <Box sx={{ pt: 1, pb: 1 }}>
             <Filters
               key={transactionType}
               transactionType={transactionType}
               onFilterSubmit={onFilterSubmit}
-              loading={loading}
+              loading={isFetching}
             />
           </Box>
           <List
@@ -86,13 +166,19 @@ function HouseList({
               overflow: "auto",
               p: 0,
               height: {
-                xs: pagination ? "calc(100vh - 200px)" : "calc(100vh - 202px)",
-                md: pagination ? "calc(100vh - 110px)" : "calc(100vh - 116px)",
+                xs: pagination
+                  ? "calc(100vh - 200px - 44px)"
+                  : "calc(100vh - 202px - 44px)",
+                md: pagination
+                  ? "calc(100vh - 110px - 44px)"
+                  : "calc(100vh - 116px - 44px)",
               },
             }}
           >
-            <EmptyState isEmpty={data.length === 0 && !!isFetched}>
-              {data.map((item) => (
+            <EmptyState
+              isEmpty={houseListByAmapBounds?.length === 0 && !!isFetched}
+            >
+              {houseListByAmapBounds?.map((item) => (
                 <ListItem
                   key={item.id}
                   onClick={() => {

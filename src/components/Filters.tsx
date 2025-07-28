@@ -16,7 +16,7 @@ import {
   EditHouseDecoration,
   EditHouseOrientation,
 } from "./EditDetail";
-import { Autocomplete, CircularProgress } from "@mui/joy";
+import { Autocomplete, CircularProgress, IconButton } from "@mui/joy";
 
 export interface FiltersProps {
   // 交易类型
@@ -83,15 +83,14 @@ export default function Filters({
         px: 2,
       }}
     >
-      <Button
+      <IconButton
         variant="soft"
         color="neutral"
         loading={loading}
-        startDecorator={<FilterAltOutlined />}
         onClick={() => setOpen(true)}
       >
-        条件过滤
-      </Button>
+        <FilterAltOutlined />
+      </IconButton>
 
       <form.Field
         name="purpose"

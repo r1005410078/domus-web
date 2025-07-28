@@ -161,4 +161,117 @@ export const houseDataSchema = houseFormSchema.extend({
   deleted_at: z.string().optional(),
 });
 
+export const houseDataFuseKeys = [
+  "title",
+  "purpose",
+  "transaction_type",
+  "house_status",
+  "floor_range#format",
+  "house_address",
+  // 户型
+  "apartment_type#format",
+  "apartment_type.room",
+  "apartment_type.hall",
+  "apartment_type.bathroom",
+  "apartment_type.kitchen",
+  "apartment_type.terrace",
+  "apartment_type.balcony",
+
+  // 建筑面积
+  "building_area#format",
+  // 使用面积
+  "use_area#format",
+  // 楼层
+  "floor_height",
+  // 装修
+  "house_decoration",
+  // 售价
+  "sale_price#format",
+  "sale_low_price#format",
+  "rent_price#format",
+  "rent_low_price#format",
+  // 首付
+  "down_payment#format",
+  // 房屋类型
+  "house_type",
+  // 朝向
+  "house_orientation",
+  // 建筑结构
+  "building_structure",
+  // 建筑年代
+  "building_year",
+  // 产权
+  "property_rights",
+  //  产权年限
+  "property_year_limit",
+  // 产证日期
+  "certificate_date",
+  // 交房日期
+  "handover_date",
+  // 标签
+  "tags",
+  "location",
+  "car_height",
+  // 实率
+  "actual_rate",
+  // 级别
+  "level",
+  // 进深
+  "progress_depth",
+  // 宽度
+  "door_width",
+  // 满减年限
+  "discount_year_limit",
+  // 楼户型
+  "stairs#format",
+  // 房主
+  "owner",
+  "owner#format",
+  "owner.name",
+  "owner.phone",
+  "owner.id_card",
+  "owner.description",
+  // 小区
+  "community",
+  "community#format",
+  "community.name",
+  "community.address",
+  "community.year_built",
+  "community.district",
+  "community.description",
+  "community.remark",
+  // 小区物业
+  "property_management_company",
+  // 看房方式
+  "view_method",
+  // 付款方式
+  "payment_method",
+  // 房源税费
+  "property_tax",
+  // 学位
+  "degree",
+  // 户口
+  "household",
+  // 产权
+  "source",
+  // 委托
+  "delegate_number",
+  // 房屋状态
+  "unique_housing",
+  // 房屋状态
+  "full_payment",
+  // 抵押
+  "mortgage",
+  // 急切
+  "urgent",
+  // 配套
+  "support",
+  // 现状
+  "present_state",
+  // 外网同步
+  "external_sync",
+  // 备注
+  "remark",
+];
+
 export type HouseData = z.infer<typeof houseDataSchema>;

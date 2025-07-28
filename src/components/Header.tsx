@@ -177,7 +177,7 @@ export default function Header({ tabBar, onAdd }: HeaderProps) {
           <Input
             size="sm"
             variant="outlined"
-            placeholder="搜索功能..."
+            placeholder="请输入..."
             disabled
             startDecorator={<SearchRoundedIcon color="primary" />}
             endDecorator={
@@ -229,22 +229,22 @@ export default function Header({ tabBar, onAdd }: HeaderProps) {
                               onAdd?.();
                               break;
                             case "出租":
-                              router.push("/house?type=出租");
+                              router.push("/house?nav=出租");
                               break;
                             case "出售":
-                              router.push("/house?type=出售");
+                              router.push("/house?nav=出售");
                               break;
                             case "全部房源":
-                              router.push("/house?type=house");
+                              router.push("/house?nav=house");
                               break;
                             case "小区管理":
-                              router.push("/house?type=community");
+                              router.push("/house?nav=community");
                               break;
                             case "user":
-                              router.push("/user?type=user");
+                              router.push("/user?nav=user");
                               break;
                             case "role":
-                              router.push("/user?type=role");
+                              router.push("/user?nav=role");
                               break;
                           }
                         }}

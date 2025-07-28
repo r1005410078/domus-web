@@ -11,6 +11,8 @@ import ListItemContent from "@mui/joy/ListItemContent";
 import { IconButton } from "@mui/joy";
 import AddTwoToneIcon from "@mui/icons-material/AddTwoTone";
 import { SxProps } from "@mui/joy/styles/types";
+import { usePathname, useRouter } from "next/navigation";
+
 export interface NavigationProps {
   value: string;
   onChange: (value: any) => void;
@@ -37,6 +39,10 @@ export default function Navigation({
   items,
   tags,
 }: NavigationProps) {
+  const router = useRouter();
+  const pathname = usePathname();
+  console.log("pathname", pathname);
+
   return (
     <List size="sm" sx={{ "--ListItem-radius": "8px", "--List-gap": "4px" }}>
       <ListItem nested>
@@ -48,7 +54,10 @@ export default function Navigation({
             <ListItem key={item.key} sx={item.sx}>
               <ListItemButton
                 selected={value === item.key}
-                onClick={() => onChange(item.key)}
+                onClick={() => {
+                  onChange(item.key);
+                  router.push(`${pathname}?nav=${item.key}`);
+                }}
               >
                 <ListItemDecorator>{item.icon}</ListItemDecorator>
                 <ListItemContent>{item.label}</ListItemContent>

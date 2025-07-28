@@ -22,7 +22,7 @@ const DynamicUserTable = dynamic(() => import("@/components/UserTable"), {
 
 export default function Page() {
   const params = useSearchParams();
-  const [tabBar, setTabBar] = React.useState(params.get("type") || "user");
+  const [tabBar, setTabBar] = React.useState(params.get("nav") || "user");
 
   return (
     <LayoutFrame

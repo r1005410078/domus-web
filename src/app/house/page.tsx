@@ -8,14 +8,8 @@ import DeckTwoToneIcon from "@mui/icons-material/DeckTwoTone";
 import TableViewTwoToneIcon from "@mui/icons-material/TableViewTwoTone";
 import Layout from "@/components/Layout";
 import HouseList from "@/components/HouseList";
-
-import { useHouseList } from "@/hooks/useHouse";
-import { HouseListRequest } from "@/services/house";
-import { PaginationProps } from "@/components/Pagination";
 import dynamic from "next/dynamic";
-import { AmapBounds, Points } from "@/components/AMap";
-import { FiltersForm } from "@/components/Filters";
-import { useParams, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 
 const DynamicHouseTable = dynamic(() => import("@/components/HouseTable"), {
   loading: () => <p>加载中...</p>,
@@ -87,82 +81,8 @@ const gridTemplateColumns = {
 export default function Home() {
   const params = useSearchParams();
   const [transaction_type, onChangeTransactionType] = React.useState<string>(
-    params.get("type") || "出售"
+    params.get("nav") || "出售"
   );
-
-  console.log("params", params);
-
-  const [amapBounds, setAmapBounds] = React.useState<AmapBounds | null>(null);
-  const [houseListRequest, setHouseListRequest] =
-    React.useState<HouseListRequest>({
-      page: 1,
-      page_size: 5000,
-      transaction_type,
-    });
-
-  const { data, isFetched, isFetching } = useHouseList(
-    houseListRequest,
-    ["出售", "出租"].includes(transaction_type)
-  );
-
-  const aMapData = React.useMemo(() => {
-    return (
-      data?.list?.map((item) => {
-        // area 使用公共前缀方法找到共同前缀
-        const points: Points = {
-          area: item.community.name,
-          building: item.house_address,
-          city: item.community.city,
-          community: `
-          <details style="margin-left: 6px">
-              <summary>${item.community.name.replace(".", "")}</summary>
-              <p>${item.community.address}</p>
-            </details>
-          `,
-          district: item.community
-            .district!.replace("安徽省", "")
-            .replace("安庆市", ""),
-
-          lnglat: {
-            lng: item.community.lng,
-            lat: item.community.lat,
-          },
-        };
-
-        return points;
-      }) || []
-    );
-  }, [data]);
-
-  const houseList = data?.list || [];
-
-  const houseListByAmapBounds = React.useMemo(() => {
-    if (amapBounds) {
-      return houseList.filter((item) => {
-        return (
-          item.community.lng >= amapBounds.south_west.lng &&
-          item.community.lng <= amapBounds.north_east.lng &&
-          item.community.lat >= amapBounds.south_west.lat &&
-          item.community.lat <= amapBounds.north_east.lat
-        );
-      });
-    }
-    return houseList;
-  }, [amapBounds, houseList]);
-
-  const onMapBoundsChange = React.useCallback((bounds: AmapBounds) => {
-    setAmapBounds(bounds);
-  }, []);
-
-  const onFilterSubmit = React.useCallback((values: FiltersForm) => {
-    setHouseListRequest((pre) => ({
-      ...pre,
-      ...values,
-      amap_bounds: pre.amap_bounds,
-      page: pre.page,
-      page_size: pre.page_size,
-    }));
-  }, []);
 
   return (
     <>
@@ -195,17 +115,7 @@ export default function Home() {
           switch (transaction_type) {
             case "出售":
             case "出租":
-              return (
-                <HouseList
-                  loading={isFetching}
-                  isFetched={isFetched}
-                  data={houseListByAmapBounds}
-                  transactionType={transaction_type}
-                  aMapData={aMapData}
-                  onFilterSubmit={onFilterSubmit}
-                  onMapBoundsChange={onMapBoundsChange}
-                />
-              );
+              return <HouseList transactionType={transaction_type} />;
             case "house":
               return (
                 <Layout.Main sx={{ p: 2, position: "relative" }}>
