@@ -164,7 +164,7 @@ function HouseList({
               p: 0,
               height: {
                 xs: pagination ? "calc(100vh - 200px)" : "calc(100vh - 202px)",
-                md: pagination ? "calc(100vh - 110px)" : "calc(100vh - 116px)",
+                md: pagination ? "calc(100vh - 110px)" : "calc(100vh - 120px)",
               },
             }}
           >

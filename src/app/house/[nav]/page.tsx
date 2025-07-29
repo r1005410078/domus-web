@@ -77,11 +77,11 @@ const gridTemplateColumns = {
   },
   house: {
     xs: "1fr",
-    md: "160px 1fr",
+    md: "minmax(160px, 260px) 1fr",
   },
   community: {
     xs: "1fr",
-    md: "160px 1fr",
+    md: "minmax(160px, 260px) 1fr",
   },
 };
 
