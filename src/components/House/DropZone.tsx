@@ -10,7 +10,7 @@ import FileUploadRoundedIcon from "@mui/icons-material/FileUploadRounded";
 import { useApplyUploadHouseUrl } from "@/hooks/useApplyUploadHouseUrl";
 import imageCompression from "browser-image-compression";
 import axios from "axios";
-import { useToast } from "@/libs/ToastProvider";
+import { useToast } from "@/lib/ToastProvider";
 import {
   Box,
   Button,

@@ -329,6 +329,26 @@ export default function Detail({
                 <ListItem>
                   <ListItemButton
                     onClick={() => {
+                      openDetailEditor("transaction_type");
+                    }}
+                  >
+                    <ListItemContent>交易类型</ListItemContent>
+                    <Typography
+                      textColor="text.tertiary"
+                      sx={{
+                        mr: "calc(-1 * var(--ListItem-gap))",
+                        display: "flex",
+                        alignItems: "center",
+                      }}
+                    >
+                      <span>{detail.transaction_type}</span>
+                      <KeyboardArrowRight />
+                    </Typography>
+                  </ListItemButton>
+                </ListItem>
+                <ListItem>
+                  <ListItemButton
+                    onClick={() => {
                       openDetailEditor("purpose");
                     }}
                   >
@@ -1391,6 +1411,7 @@ export default function Detail({
       </CardContent>
 
       <EditDetailDrawer
+        key={detail.id!}
         detailEditField={detailEditField}
         houseDetail={detail}
         onClose={() => openDetailEditor(undefined)}

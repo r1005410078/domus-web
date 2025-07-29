@@ -1,6 +1,6 @@
 "use client";
 
-import { useToast } from "@/libs/ToastProvider";
+import { useToast } from "@/lib/ToastProvider";
 import { UserInfomation } from "@/models/user";
 import { login } from "@/services/auth";
 import { useMutation } from "@tanstack/react-query";

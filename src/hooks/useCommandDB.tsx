@@ -1,4 +1,4 @@
-import { queryClient } from "@/libs/QueryProvider";
+import { queryClient } from "@/lib/QueryProvider";
 import { queryCollectionOptions } from "@tanstack/db-collections";
 import { createCollection, useLiveQuery } from "@tanstack/react-db";
 import OutboxRoundedIcon from "@mui/icons-material/OutboxRounded";

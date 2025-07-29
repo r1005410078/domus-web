@@ -1,6 +1,6 @@
 "use client";
 
-import { useToast } from "@/libs/ToastProvider";
+import { useToast } from "@/lib/ToastProvider";
 import { Role, User } from "@/models/user";
 import {
   createRole,

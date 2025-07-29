@@ -1,4 +1,4 @@
-import { useToast } from "@/libs/ToastProvider";
+import { useToast } from "@/lib/ToastProvider";
 import { applyUploadHouseUrl } from "@/services/house";
 import { useMutation } from "@tanstack/react-query";
 

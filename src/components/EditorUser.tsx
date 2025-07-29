@@ -6,7 +6,7 @@ import {
   useRoleMap,
   useSaveUser,
 } from "@/hooks/useUser";
-import { useToast } from "@/libs/ToastProvider";
+import { useToast } from "@/lib/ToastProvider";
 import { User } from "@/models/user";
 import { userRequestSchema } from "@/services/user";
 import { getFirstError } from "@/utils";

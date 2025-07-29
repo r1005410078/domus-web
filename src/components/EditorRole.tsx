@@ -1,7 +1,7 @@
 "use client";
 
 import { usePermissionsDetailsList, useSaveRole } from "@/hooks/useUser";
-import { useToast } from "@/libs/ToastProvider";
+import { useToast } from "@/lib/ToastProvider";
 import { Role } from "@/models/user";
 import { roleRequestSchema } from "@/services/user";
 import { getFirstError } from "@/utils";

@@ -8,10 +8,20 @@ import ListItem from "@mui/joy/ListItem";
 import ListItemButton from "@mui/joy/ListItemButton";
 import ListItemDecorator from "@mui/joy/ListItemDecorator";
 import ListItemContent from "@mui/joy/ListItemContent";
-import { IconButton } from "@mui/joy";
+import {
+  Dropdown,
+  IconButton,
+  ListDivider,
+  Menu,
+  MenuButton,
+  MenuItem,
+} from "@mui/joy";
 import AddTwoToneIcon from "@mui/icons-material/AddTwoTone";
 import { SxProps } from "@mui/joy/styles/types";
 import { usePathname, useRouter } from "next/navigation";
+import MoreVert from "@mui/icons-material/MoreVert";
+import Edit from "@mui/icons-material/Edit";
+import DeleteForever from "@mui/icons-material/DeleteForever";
 
 export interface NavigationProps {
   value: string;
@@ -99,9 +109,39 @@ export default function Navigation({
                         borderRadius: "99px",
                         bgcolor: tag.color,
                       }}
-                    />
+                    ></Box>
                   </ListItemDecorator>
                   <ListItemContent>{tag.label}</ListItemContent>
+
+                  <Dropdown>
+                    <MenuButton
+                      slots={{ root: IconButton }}
+                      slotProps={{
+                        root: {
+                          variant: "plain",
+                          size: "sm",
+                          color: "neutral",
+                        },
+                      }}
+                    >
+                      <MoreVert />
+                    </MenuButton>
+                    <Menu placement="bottom-end">
+                      <MenuItem>
+                        <ListItemDecorator>
+                          <Edit />
+                        </ListItemDecorator>
+                        编辑
+                      </MenuItem>
+                      <ListDivider />
+                      <MenuItem variant="soft" color="danger">
+                        <ListItemDecorator sx={{ color: "inherit" }}>
+                          <DeleteForever />
+                        </ListItemDecorator>{" "}
+                        删除
+                      </MenuItem>
+                    </Menu>
+                  </Dropdown>
                 </ListItemButton>
               </ListItem>
             ))}

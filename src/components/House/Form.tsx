@@ -72,7 +72,7 @@ import {
   EditPropertyManagementCompany,
 } from "../EditDetail";
 import { houseFormSchema } from "@/schema/house";
-import { useToast } from "@/libs/ToastProvider";
+import { useToast } from "@/lib/ToastProvider";
 import { getFirstError } from "@/utils";
 import { Edit } from "lucide-react";
 

@@ -1,7 +1,7 @@
 import * as React from "react";
 import ThemeRegistry from "@/components/theme-registry/ThemeRegistry";
-import QueryProvider from "@/libs/QueryProvider";
-import { ToastProvider } from "@/libs/ToastProvider";
+import QueryProvider from "@/lib/QueryProvider";
+import { ToastProvider } from "@/lib/ToastProvider";
 import Confirm from "@/components/Confirm";
 import "./globals.css";
 

@@ -302,6 +302,7 @@ function HouseList({
             }}
           >
             <DynamicDetailComponent
+              key={detail.id}
               house_id={detail.id}
               transactionType={transactionType}
               onClose={() => setDetail(undefined)}

@@ -4,7 +4,7 @@ import { createCollection, useLiveQuery } from "@tanstack/react-db";
 import { queryCollectionOptions } from "@tanstack/db-collections";
 import { deleteHouse, getHouseList } from "@/services/house";
 import { HouseData, houseDataSchema } from "@/schema/house";
-import { queryClient } from "@/libs/QueryProvider";
+import { queryClient } from "@/lib/QueryProvider";
 import { CollectionChache } from "@/utils/CollectionChache";
 import { useQueryClient } from "@tanstack/react-query";
 import "@/utils/crypto-polyfill";

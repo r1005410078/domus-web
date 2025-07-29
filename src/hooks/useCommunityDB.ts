@@ -4,7 +4,7 @@ import { createCollection, useLiveQuery } from "@tanstack/react-db";
 import { queryCollectionOptions } from "@tanstack/db-collections";
 import { getCommunityList } from "@/services/house";
 import { communitySchema } from "@/schema/house";
-import { queryClient } from "@/libs/QueryProvider";
+import { queryClient } from "@/lib/QueryProvider";
 import { CollectionChache } from "@/utils/CollectionChache";
 import { Community } from "@/models/house";
 import "@/utils/crypto-polyfill";
