@@ -32,9 +32,9 @@ export default function EditorRole({ onClose, role }: EditorRoleProps) {
 
   const form = useForm({
     defaultValues: role,
-    validators: {
-      onChange: roleRequestSchema as any,
-    },
+    // validators: {
+    //   onChange: roleRequestSchema as any,
+    // },
     onSubmit: async ({ value }) => {
       mutate({
         id: role?.id,

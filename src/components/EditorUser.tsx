@@ -38,9 +38,9 @@ export default function EditorUser({ onClose, user }: EditorUserProps) {
 
   const form = useForm({
     defaultValues: user,
-    validators: {
-      onChange: userRequestSchema as any,
-    },
+    // validators: {
+    //   onChange: userRequestSchema as any,
+    // },
     onSubmit: async ({ value }) => {
       mutate({
         id: user?.user_id,
