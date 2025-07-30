@@ -10,6 +10,8 @@ import Layout from "@/components/Layout";
 import HouseList from "@/components/HouseList";
 import dynamic from "next/dynamic";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
+import RentalAndSaleHouseList from "@/components/RentalAndSaleHouseList";
+import FavoritesHouseList from "@/components/FavoritesHouseList";
 
 const DynamicHouseTable = dynamic(() => import("@/components/HouseTable"), {
   loading: () => <p>加载中...</p>,
@@ -122,8 +124,11 @@ export default function Home() {
           switch (nav) {
             case "sold":
             case "rent":
-              // @ts-ignore
-              return <HouseList transactionType={transactionType[nav]} />;
+              return (
+                <RentalAndSaleHouseList
+                  transactionType={transactionType[nav]}
+                />
+              );
             case "house":
               return (
                 <Layout.Main sx={{ p: 2, position: "relative" }}>
@@ -137,6 +142,11 @@ export default function Home() {
                 </Layout.Main>
               );
             default:
+              const category_id = Number(nav);
+              if (!Number.isNaN(category_id)) {
+                return <FavoritesHouseList category_id={category_id} />;
+              }
+
               return null;
           }
         })()}

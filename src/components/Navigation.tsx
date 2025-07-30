@@ -35,6 +35,7 @@ import { mdComfirm } from "./Confirm";
 import InfoTwoToneIcon from "@mui/icons-material/InfoTwoTone";
 import ModeTwoToneIcon from "@mui/icons-material/ModeTwoTone";
 import DeleteForeverTwoToneIcon from "@mui/icons-material/DeleteForeverTwoTone";
+import { useListFavoriteCategories } from "@/hooks/useListFavoriteCategories";
 export interface NavigationProps {
   value: any;
   onChange?: (value: any) => void;
@@ -78,12 +79,7 @@ export default function Navigation({
     },
   });
 
-  const { data } = useQuery({
-    queryKey: ["list_favorite_categories"],
-    queryFn: () => {
-      return list_favorite_categories();
-    },
-  });
+  const { data } = useListFavoriteCategories();
 
   return (
     <List size="sm" sx={{ "--ListItem-radius": "8px", "--List-gap": "4px" }}>

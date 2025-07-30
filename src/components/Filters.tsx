@@ -20,7 +20,7 @@ import { Autocomplete, Box, CircularProgress, IconButton } from "@mui/joy";
 
 export interface FiltersProps {
   // 交易类型
-  transactionType: string;
+  transactionType?: string;
   // 提交函数
   onFilterSubmit: (values: FiltersForm) => void;
   loading?: boolean;

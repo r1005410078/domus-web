@@ -120,7 +120,7 @@ export default function Header({ tabBar, onAdd }: HeaderProps) {
           color="neutral"
           component="a"
           aria-pressed={pathname.indexOf("/house") === 0}
-          href="/profiles"
+          href="/house"
           size="sm"
           sx={{ alignSelf: "center" }}
         >

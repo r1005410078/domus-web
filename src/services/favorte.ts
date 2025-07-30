@@ -1,3 +1,4 @@
+import { HouseData } from "@/schema/house";
 import apiClient, { ResponseBody } from "./http";
 
 export interface FavoriteCategoriesRequest {
@@ -38,4 +39,60 @@ interface FavoriteCategories {
   id: number;
   name: string;
   user_id: string;
+}
+
+export interface UserFavorites {
+  id?: number;
+  house_id: string;
+  category_id?: number;
+}
+
+// 添加收藏
+export async function add_user_favorites(data: UserFavorites) {
+  const res = await apiClient.post<ResponseBody<UserFavorites>>(
+    `/api/domus/management/house/user_favorites/add`,
+    data
+  );
+
+  return res;
+}
+
+// 取消收藏
+export async function cancel_user_favorites(data: UserFavorites) {
+  return apiClient.post<ResponseBody<any>>(
+    `/api/domus/management/house/user_favorites/cancel`,
+    data
+  );
+}
+
+// 是否收藏
+export async function check_user_favorites(house_id: string) {
+  const res = await apiClient.get<ResponseBody<boolean>>(
+    `/api/domus/query/house/user_favorites/check/${house_id}`
+  );
+
+  return res.data.data;
+}
+
+// 如果收藏了就取消，如果没有收藏就添加
+export async function toggle_user_favorites(data: UserFavorites) {
+  const res = await check_user_favorites(data.house_id);
+  if (res) {
+    return await cancel_user_favorites(data);
+  }
+
+  return await add_user_favorites(data);
+}
+
+// 获取房源列表
+export async function getFavoriteList(category_id: number) {
+  const res = await apiClient.get<ResponseBody<HouseData[]>>(
+    "/api/domus/query/house/user_favorites/list",
+    {
+      params: {
+        category_id,
+      },
+    }
+  );
+  return res.data.data;
 }

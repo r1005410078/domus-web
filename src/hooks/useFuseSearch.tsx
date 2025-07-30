@@ -1,22 +1,24 @@
 import { Button, Input } from "@mui/joy";
 import Fuse from "fuse.js";
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
 
 interface FuseOptions {
   keys: string[];
   threshold: number;
+  loading?: boolean;
 }
 
-export function useFuseSearch<T>(rowData: T[], defaultOptions: FuseOptions) {
+export function useFuseSearch<T>(rowData: T[], options: FuseOptions) {
   const valueRef = useRef<string>(null);
   const [keyword, setKeyword] = useState<string | null>();
+  const [readOnly, setReadOnly] = useState<boolean>(true);
 
   // 全局检索
   const fuse = useMemo(() => {
     return new Fuse(rowData, {
-      keys: defaultOptions.keys, // 要模糊搜索的字段
-      threshold: defaultOptions.threshold ?? 0.6,
+      keys: options.keys, // 要模糊搜索的字段
+      threshold: options.threshold ?? 0.6,
     });
   }, [rowData]);
 
@@ -29,13 +31,25 @@ export function useFuseSearch<T>(rowData: T[], defaultOptions: FuseOptions) {
     return fuse.search(keyword).map((item) => item.item);
   }, [keyword, rowData, fuse]);
 
+  useEffect(() => {
+    setTimeout(() => setReadOnly(false), 1000);
+  }, [keyword]);
+
   const fuseSearchNode = (
     <Input
       variant="outlined"
       placeholder="搜索"
+      autoComplete="off"
+      readOnly={readOnly}
+      type="text"
       startDecorator={<SearchRoundedIcon color="primary" />}
       endDecorator={
-        <Button onClick={() => setKeyword(valueRef.current)}>搜索</Button>
+        <Button
+          loading={options.loading}
+          onClick={() => setKeyword(valueRef.current)}
+        >
+          搜索
+        </Button>
       }
       onKeyDown={(e) => {
         if (e.key === "Enter") {

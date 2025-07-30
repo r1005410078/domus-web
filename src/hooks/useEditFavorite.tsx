@@ -8,14 +8,14 @@ import ModalDialog from "@mui/joy/ModalDialog";
 import DialogTitle from "@mui/joy/DialogTitle";
 import Stack from "@mui/joy/Stack";
 import { Hue, useColor } from "react-color-palette";
-import "react-color-palette/css";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   save_favorite_categories,
   FavoriteCategoriesRequest,
-  list_favorite_categories,
 } from "@/services/favorte";
 import { useToast } from "@/lib/ToastProvider";
+import { ModalClose } from "@mui/joy";
+import "react-color-palette/css";
 
 export function useEditFavorite() {
   const [favorite, openFavorite] = useState<
@@ -47,6 +47,7 @@ export function useEditFavorite() {
       onClose={() => openFavorite(null)}
     >
       <ModalDialog>
+        <ModalClose />
         <DialogTitle>✍️ {favorite?.id ? "编辑" : "新建"}收藏夹</DialogTitle>
         <form
           onSubmit={(event: React.FormEvent<HTMLFormElement>) => {

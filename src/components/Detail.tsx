@@ -6,7 +6,6 @@ import CardContent from "@mui/joy/CardContent";
 import CardOverflow from "@mui/joy/CardOverflow";
 import Link from "@mui/joy/Link";
 import IconButton from "@mui/joy/IconButton";
-import FavoriteBorder from "@mui/icons-material/FavoriteBorder";
 import ShareTwoToneIcon from "@mui/icons-material/ShareTwoTone";
 import AccordionGroup from "@mui/joy/AccordionGroup";
 import Accordion from "@mui/joy/Accordion";
@@ -45,6 +44,12 @@ import { UserInfomation } from "./UserAvatar";
 import dynamic from "next/dynamic";
 import { isMobile } from "@/utils";
 import { HomeMap } from "./AMap";
+import {
+  useCheckUserFavorites,
+  useToggleUserFavorites,
+} from "@/hooks/useToggleUserFavorites";
+import FavoriteBorderTwoToneIcon from "@mui/icons-material/FavoriteBorderTwoTone";
+import FavoriteTwoToneIcon from "@mui/icons-material/FavoriteTwoTone";
 
 const DynamicCardMapComponent = dynamic(() => import("@/components/CardMap"), {
   loading: () => <p>加载中...</p>,
@@ -70,6 +75,10 @@ export default function Detail({
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: false });
   const { data: detail } = useGetHouseDetail(house_id);
+  const { data: isFavorite } = useCheckUserFavorites(house_id);
+  const { toggleUserFavoritesModal, toggleUserFavorites } =
+    useToggleUserFavorites(house_id!);
+
   const images = useMemo(
     () =>
       detail?.images?.length
@@ -103,13 +112,8 @@ export default function Detail({
   }
 
   return (
-    <Card
-      variant="plain"
-      sx={{ border: 0, p: 2 }}
-      onClick={() => {
-        console.log(2222);
-      }}
-    >
+    <Card variant="plain" sx={{ border: 0, p: 2 }}>
+      {toggleUserFavoritesModal}
       <CardContent
         orientation="horizontal"
         sx={{ alignItems: "center", justifyContent: "space-between" }}
@@ -153,8 +157,17 @@ export default function Detail({
         sx={{ alignItems: "center", mx: -1 }}
       >
         <Box sx={{ width: 0, display: "flex", gap: 0.5 }}>
-          <IconButton variant="plain" color="neutral" size="sm">
-            <FavoriteBorder />
+          <IconButton
+            variant="plain"
+            color="neutral"
+            size="sm"
+            onClick={() => toggleUserFavorites()}
+          >
+            {isFavorite ? (
+              <FavoriteTwoToneIcon />
+            ) : (
+              <FavoriteBorderTwoToneIcon />
+            )}
           </IconButton>
           <IconButton variant="plain" color="neutral" size="sm">
             <ShareTwoToneIcon />

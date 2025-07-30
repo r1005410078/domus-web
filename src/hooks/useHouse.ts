@@ -1,6 +1,7 @@
 "use client";
 
 import { useToast } from "@/lib/ToastProvider";
+import { getFavoriteList } from "@/services/favorte";
 import {
   saveHouse,
   getHouseDetail,
@@ -59,6 +60,20 @@ export function useHouseList(params: HouseListRequest, enabled?: boolean) {
       return res;
     },
     enabled,
+    placeholderData: (data) => data,
+  });
+
+  return query;
+}
+
+// 获取关注的房源
+export function useQueryListHouseFavorite(category_id: number) {
+  const query = useQuery({
+    queryKey: ["useQueryListHouseFavorite", category_id],
+    queryFn: async () => {
+      const res = await getFavoriteList(category_id);
+      return res;
+    },
     placeholderData: (data) => data,
   });
 

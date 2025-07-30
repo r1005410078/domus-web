@@ -20,8 +20,6 @@ import { isMobile } from "@/utils";
 import dynamic from "next/dynamic";
 import { EmptyState } from "./EmptyState";
 import { AmapBounds, Points } from "@/components/AMap";
-import { HouseListRequest } from "@/services/house";
-import { useHouseList } from "@/hooks/useHouse";
 import { useFuseSearch } from "@/hooks/useFuseSearch";
 import { getHouseDataByColDef } from "./HouseTableConfig";
 import { HouseData, houseDataFuseKeys } from "@/schema/house";
@@ -37,34 +35,27 @@ const DynamicDetailComponent = dynamic(() => import("@/components/Detail"), {
 });
 
 export interface HouseListProps {
-  transactionType: string;
+  houseList: HouseData[];
   onPullLoadMore?: () => void;
   pagination?: PaginationProps;
+  onFilterSubmit?: (values: FiltersForm) => void;
+  transactionType?: string;
+  loading?: boolean;
+  isFetched?: boolean;
 }
 
 function HouseList({
-  transactionType,
   pagination,
+  houseList,
+  loading,
+  isFetched,
+  onFilterSubmit,
   onPullLoadMore,
+  transactionType,
 }: HouseListProps) {
   const [detail, setDetail] = React.useState<HouseForm>();
 
   const [amapBounds, setAmapBounds] = React.useState<AmapBounds | null>(null);
-  const [houseListRequest, setHouseListRequest] =
-    React.useState<HouseListRequest>({
-      page: 1,
-      page_size: 5000,
-      transaction_type: transactionType,
-    });
-
-  const { data, isFetched, isFetching } = useHouseList(
-    houseListRequest,
-    ["出售", "出租"].includes(transactionType)
-  );
-
-  const houseList = useMemo(() => {
-    return data?.list || [];
-  }, [data]);
 
   // 全局检索
   const { fuseRowData, fuseSearchNode } = useFuseSearch(
@@ -72,6 +63,7 @@ function HouseList({
     {
       keys: houseDataFuseKeys, // 要模糊搜索的字段
       threshold: 0.6,
+      loading,
     }
   );
 
@@ -104,6 +96,7 @@ function HouseList({
     );
   }, [fuseRowData]);
 
+  // 根据地图bounds进行过滤
   const houseListByAmapBounds = React.useMemo(() => {
     if (amapBounds) {
       return fuseRowData.filter((item) => {
@@ -123,16 +116,6 @@ function HouseList({
     setAmapBounds(bounds);
   }, []);
 
-  const onFilterSubmit = React.useCallback((values: FiltersForm) => {
-    setHouseListRequest((pre) => ({
-      ...pre,
-      ...values,
-      amap_bounds: pre.amap_bounds,
-      page: pre.page,
-      page_size: pre.page_size,
-    }));
-  }, []);
-
   return (
     <>
       <Layout.SidePane>
@@ -148,14 +131,17 @@ function HouseList({
             }
           }}
         >
-          <Filters
-            key={transactionType}
-            transactionType={transactionType}
-            onFilterSubmit={onFilterSubmit}
-            loading={isFetching}
-          >
-            {fuseSearchNode}
-          </Filters>
+          {onFilterSubmit ? (
+            <Filters
+              key={transactionType}
+              transactionType={transactionType}
+              onFilterSubmit={onFilterSubmit}
+            >
+              {fuseSearchNode}
+            </Filters>
+          ) : (
+            <Box sx={{ p: 1, pb: 0 }}>{fuseSearchNode}</Box>
+          )}
           <List
             sx={{
               "--ListDivider-gap": "11px",
@@ -244,16 +230,17 @@ function HouseList({
                             </Chip>
                           ))}
                       </Stack>
-                      {((transactionType === "出售" && item.sale_price) ||
-                        (transactionType === "出租" && item.rent_price)) && (
+                      {((item.transaction_type === "出售" && item.sale_price) ||
+                        (item.transaction_type === "出租" &&
+                          item.rent_price)) && (
                         <Typography
                           sx={{ fontSize: "lg", fontWeight: "lg" }}
                           color="danger"
                         >
-                          {transactionType === "出售"
+                          {item.transaction_type === "出售"
                             ? (item.sale_price || "- ") + "万元"
                             : (item.rent_price || "- ") + "元/月"}
-                          {transactionType === "出售" && (
+                          {item.transaction_type === "出售" && (
                             <Typography level="body-xs" ml={1}>
                               ¥
                               {(
@@ -304,7 +291,7 @@ function HouseList({
             <DynamicDetailComponent
               key={detail.id}
               house_id={detail.id}
-              transactionType={transactionType}
+              transactionType={detail.transaction_type}
               onClose={() => setDetail(undefined)}
             />
           </Sheet>
@@ -338,7 +325,7 @@ function HouseList({
         {detail && (
           <DynamicDetailComponent
             house_id={detail.id}
-            transactionType={transactionType}
+            transactionType={detail.transaction_type}
             onClose={() => setDetail(undefined)}
           />
         )}
