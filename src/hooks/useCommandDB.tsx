@@ -1,3 +1,5 @@
+"use client";
+
 import { queryClient } from "@/lib/QueryProvider";
 import { queryCollectionOptions } from "@tanstack/db-collections";
 import { createCollection, useLiveQuery } from "@tanstack/react-db";

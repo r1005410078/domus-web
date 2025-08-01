@@ -169,7 +169,14 @@ export default function Detail({
               <FavoriteBorderTwoToneIcon />
             )}
           </IconButton>
-          <IconButton variant="plain" color="neutral" size="sm">
+          <IconButton
+            variant="plain"
+            color="neutral"
+            size="sm"
+            onClick={() => {
+              // @ts-ignore
+            }}
+          >
             <ShareTwoToneIcon />
           </IconButton>
         </Box>
