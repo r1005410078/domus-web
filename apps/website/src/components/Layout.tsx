@@ -13,7 +13,7 @@ function Root(props: BoxProps) {
           display: "grid",
           gridTemplateColumns: {
             xs: "1fr",
-            md: "minmax(160px, 260px) minmax(260px, 430px) minmax(430px, 1fr)",
+            md: "minmax(260px, 430px) minmax(430px, 1fr)",
           },
           gridTemplateRows: "64px 1fr",
           minHeight: "100vh",

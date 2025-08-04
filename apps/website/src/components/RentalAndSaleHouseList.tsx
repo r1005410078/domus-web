@@ -3,9 +3,6 @@ import { PaginationProps } from "./Pagination";
 import React, { memo, useMemo } from "react";
 import { HouseListRequest } from "@/services/house";
 import { useHouseList } from "@/hooks/useHouse";
-import { useFuseSearch } from "@/hooks/useFuseSearch";
-import { getHouseDataByColDef } from "./HouseTableConfig";
-import { houseDataFuseKeys } from "@/schema/house";
 import HouseList from "./HouseList";
 
 export interface HouseListProps {

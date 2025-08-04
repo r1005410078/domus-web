@@ -42,6 +42,7 @@
     "tailwindcss": "^4",
     "eslint": "^9",
     "eslint-config-next": "15.4.5",
-    "@eslint/eslintrc": "^3"
+    "@eslint/eslintrc": "^3",
+    "@amap/amap-jsapi-types": "^0.0.15"
   }
 }

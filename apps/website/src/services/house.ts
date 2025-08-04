@@ -5,20 +5,6 @@ import { HouseCommentItem } from "@/models/comment";
 import { HouseData } from "@/schema/house";
 
 type CreateHouseRequest = HouseForm;
-// 创建房源
-export function saveHouse(data: CreateHouseRequest) {
-  return apiClient.post<ResponseBody<any>>(
-    "/api/domus/management/house/save",
-    data
-  );
-}
-
-// 删除房源
-export function deleteHouse(id: string) {
-  return apiClient.post<ResponseBody<any>>(
-    `/api/domus/management/house/delete/${id}`
-  );
-}
 
 export interface HouseListRequest {
   page: number;
@@ -37,7 +23,7 @@ export async function getHouseList({
 }: HouseListRequest) {
   const res = await apiClient.post<
     ResponseBody<{ list: HouseData[]; total: number }>
-  >("/api/domus/query/house/list", {
+  >("/api/domus/public/house/list", {
     page,
     page_size,
     ...params,
@@ -56,18 +42,10 @@ export interface CommunityWithHouseCount {
   house_count: number;
 }
 
-// 根据小区分组
-export function getCommunityByCommunity(data: HouseListRequest) {
-  return apiClient.post<ResponseBody<CommunityWithHouseCount[]>>(
-    "/api/domus/query/house/group_by_community",
-    data
-  );
-}
-
 // 根据id 获取房源信息
 export function getHouseDetail(id: string) {
   return apiClient.get<ResponseBody<HouseData>>(
-    `/api/domus/query/house/detail/${id}`
+    `/api/domus/public/house/detail/${id}`
   ); // 返回 token 等信息
 }
 
@@ -75,70 +53,4 @@ export interface CommunityListRequest {
   page: number;
   page_size: number;
   updated_at?: string | null;
-}
-
-// 获取小区列表
-export async function getCommunityList(
-  data: CommunityListRequest = { page: 1, page_size: 10 }
-) {
-  const res = await apiClient.post<ResponseBody<{ list: Community[] }>>(
-    "/api/domus/query/community/list",
-    data
-  );
-  return res.data.data.list;
-}
-
-// 申请上传房源URL
-export function applyUploadHouseUrl(data: {
-  directory: string;
-  filename: string;
-}) {
-  return apiClient.post<ResponseBody<string>>(
-    `/api/domus/management/house/apply_upload_url`,
-    data
-  );
-}
-
-// 添加评论
-
-export interface AddCommentRequest {
-  house_id: string;
-  comment: string;
-}
-
-export function addComment(data: AddCommentRequest) {
-  return apiClient.post<ResponseBody<string>>(
-    `/api/domus/management/house/add_comment`,
-    data
-  );
-}
-
-// 更新评论
-
-export interface UpdateCommentRequest {
-  comment_id: string;
-  content: string;
-}
-
-export function updateComment(data: UpdateCommentRequest) {
-  return apiClient.post<ResponseBody<string>>(
-    `/api/domus/management/house/update_comment`,
-    data
-  );
-}
-
-// 删除评论
-export function deleteComment(comment_id: string) {
-  return apiClient.post<ResponseBody<string>>(
-    `/api/domus/management/house/delete_comment/${comment_id}`
-  );
-}
-
-// 获取评论列表
-export async function getCommentList(house_id: string) {
-  const res = await apiClient.get<ResponseBody<HouseCommentItem[]>>(
-    `/api/domus/query/house/get_comments/${house_id}`
-  );
-
-  return res.data.data;
 }

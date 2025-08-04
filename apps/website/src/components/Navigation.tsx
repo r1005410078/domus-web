@@ -12,8 +12,6 @@ import { SxProps } from "@mui/joy/styles/types";
 export interface NavigationProps {
   value: any;
   onChange?: (value: any) => void;
-  items: NavigationItem[];
-  tags?: TagItem[];
 }
 
 export interface TagItem {
@@ -29,32 +27,13 @@ export interface NavigationItem {
   sx?: SxProps;
 }
 
-export default function Navigation({
-  value,
-  onChange,
-  items,
-}: NavigationProps) {
+export default function Navigation({ value, onChange }: NavigationProps) {
   return (
     <List size="sm" sx={{ "--ListItem-radius": "8px", "--List-gap": "4px" }}>
       <ListItem nested>
         <ListSubheader sx={{ letterSpacing: "2px", fontWeight: "800" }}>
           菜单
         </ListSubheader>
-        <List aria-labelledby="nav-list-browse">
-          {items.map((item) => (
-            <ListItem key={item.key} sx={item.sx}>
-              <ListItemButton
-                selected={value === item.key}
-                onClick={() => {
-                  onChange?.(item.key);
-                }}
-              >
-                <ListItemDecorator>{item.icon}</ListItemDecorator>
-                <ListItemContent>{item.label}</ListItemContent>
-              </ListItemButton>
-            </ListItem>
-          ))}
-        </List>
       </ListItem>
     </List>
   );

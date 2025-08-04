@@ -1,34 +1,16 @@
+import { ApartmentType, FloorRange, HouseForm, Stairs } from "@/models/house";
 import {
-  ApartmentType,
-  Community,
-  FileInfo,
-  FloorRange,
-  HouseForm,
-  Stairs,
-} from "@/models/house";
-import {
-  Button,
-  DialogContent,
-  DialogTitle,
   FormControl,
   FormLabel,
   Input,
-  Modal,
-  ModalDialog,
   Select,
   Stack,
-  Typography,
   Option,
   Divider,
   Textarea,
-  ModalClose,
 } from "@mui/joy";
 import { SxProps } from "@mui/joy/styles/types";
-import { useForm } from "@tanstack/react-form";
 import React, { useMemo } from "react";
-import { Transition } from "react-transition-group";
-// import { CommunityForm, HouseOwnerForm } from "./House/common";
-// import DropZone, { useUploadFiles } from "./House/DropZone";
 
 const houseFormComponent: Partial<
   Record<keyof HouseForm, React.ComponentType<FormChange<any>>>
@@ -48,115 +30,6 @@ export interface EditDetailDrawerProps {
   onSave?: (data: HouseForm) => void;
   onClose: () => void;
 }
-
-// export function EditDetailDrawer({
-//   detailEditField,
-//   houseDetail,
-//   onClose,
-//   onSave,
-// }: EditDetailDrawerProps) {
-//   const { uploads } = useUploadFiles();
-//   const { mutate } = useSaveHouse();
-//   const nodeRef = React.useRef(null);
-//   const form = useForm({
-//     defaultValues: houseDetail,
-//     onSubmit: async ({ value }) => {
-//       onSave?.(value);
-//       mutate(value);
-//     },
-//   });
-
-//   React.useEffect(() => {
-//     form.reset(houseDetail);
-//   }, [houseDetail]);
-
-//   return (
-//     <Transition nodeRef={nodeRef} in={!!detailEditField} timeout={100}>
-//       {(state: string) => {
-//         return (
-//           <Modal
-//             open={!["exited", "exiting"].includes(state)}
-//             onClose={(_, reason) => {
-//               if (reason === "backdropClick") return;
-//               onClose();
-//             }}
-//             keepMounted
-//             slotProps={{
-//               backdrop: {
-//                 sx: {
-//                   opacity: 0,
-//                   backdropFilter: "none",
-//                   transition: `opacity 100ms, backdrop-filter 100ms`,
-//                   ...{
-//                     entering: { opacity: 1, backdropFilter: "blur(8px)" },
-//                     entered: { opacity: 1, backdropFilter: "blur(8px)" },
-//                   }[state],
-//                 },
-//               },
-//             }}
-//             sx={[
-//               state === "exited"
-//                 ? { visibility: "hidden" }
-//                 : { visibility: "visible" },
-//             ]}
-//           >
-//             <ModalDialog
-//               layout={detailEditField === "images" ? "fullscreen" : "center"}
-//               sx={[
-//                 {
-//                   opacity: 0,
-//                   transition: `opacity 300ms`,
-//                   ...{
-//                     entering: { opacity: 1 },
-//                     entered: { opacity: 1 },
-//                   }[state],
-//                 },
-//                 { maxWidth: detailEditField === "images" ? "100%" : 560 },
-//               ]}
-//             >
-//               <ModalClose />
-//               <DialogTitle>修改房源</DialogTitle>
-//               <DialogContent>
-//                 {detailEditField && (
-//                   <Stack spacing={2}>
-//                     <form.Field
-//                       name={detailEditField!}
-//                       children={(field) => {
-//                         const Component = houseFormComponent[detailEditField!];
-//                         if (Component) {
-//                           return (
-//                             <Component
-//                               value={field.state.value}
-//                               onChange={field.handleChange}
-//                               purpose={houseDetail.purpose}
-//                               transaction_type={houseDetail.transaction_type}
-//                               community_name={houseDetail.community?.name}
-//                             />
-//                           );
-//                         }
-
-//                         return <>找不到编辑组件 {detailEditField}</>;
-//                       }}
-//                     />
-//                     <Button
-//                       onClick={async () => {
-//                         await uploads();
-//                         await form.handleSubmit();
-//                         onClose();
-//                       }}
-//                     >
-//                       保存
-//                     </Button>
-//                   </Stack>
-//                 )}
-//               </DialogContent>
-//             </ModalDialog>
-//           </Modal>
-//         );
-//       }}
-//     </Transition>
-//   );
-// }
 
 export interface Relation {
   purpose?: string;

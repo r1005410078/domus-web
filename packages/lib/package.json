@@ -1,9 +1,11 @@
 {
   "name": "@repo/lib",
   "version": "0.0.0",
-  "private": true,
   "exports": {
-    "./*": "./src/*.tsx"
+    "./QueryProvider": "./src/QueryProvider.tsx",
+    "./ToastProvider": "./src/ToastProvider.tsx",
+    "./token": "./src/token.ts",
+    "./utils": "./src/utils.ts"
   },
   "scripts": {
     "lint": "eslint . --max-warnings 0",

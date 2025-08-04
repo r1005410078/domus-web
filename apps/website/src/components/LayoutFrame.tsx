@@ -32,8 +32,6 @@ export default function LayoutFrame({
   rootProps,
 }: LayoutFrameProps) {
   const [drawerOpen, setDrawerOpen] = React.useState(false);
-  const pathname = usePathname();
-
   const [hasMounted, setHasMounted] = React.useState(false);
 
   React.useEffect(() => {
@@ -77,48 +75,6 @@ export default function LayoutFrame({
         </Layout.SideDrawer>
       )}
 
-      <Stack
-        id="tab-bar"
-        direction="row"
-        spacing={1}
-        sx={{
-          justifyContent: "space-around",
-          display: { xs: "flex", sm: "none" },
-          zIndex: "999",
-          bottom: 0,
-          position: "fixed",
-          width: "100dvw",
-          py: 2,
-          backgroundColor: "background.body",
-          borderTop: "1px solid",
-          borderColor: "divider",
-        }}
-      >
-        <Button
-          variant="plain"
-          color="neutral"
-          aria-pressed={pathname.indexOf("/house") === 0}
-          component="a"
-          href="/house"
-          size="sm"
-          startDecorator={<RoomPreferencesTwoToneIcon />}
-          sx={{ flexDirection: "column", "--Button-gap": 0 }}
-        >
-          房源管理
-        </Button>
-        <Button
-          variant="plain"
-          color="neutral"
-          aria-pressed={pathname.indexOf("/user") === 0}
-          component="a"
-          href="/user"
-          size="md"
-          startDecorator={<PersonAddTwoToneIcon />}
-          sx={{ flexDirection: "column", "--Button-gap": 0 }}
-        >
-          用户管理
-        </Button>
-      </Stack>
       <Layout.Root
         {...rootProps}
         sx={[
@@ -130,11 +86,8 @@ export default function LayoutFrame({
         ]}
       >
         <Layout.Header>
-          <Header tabBar={{ ...tabBar }} />
+          <Header />
         </Layout.Header>
-        <Layout.SideNav>
-          <Navigation {...tabBar} />
-        </Layout.SideNav>
         {children}
       </Layout.Root>
     </CssVarsProvider>

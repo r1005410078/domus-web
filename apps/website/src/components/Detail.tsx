@@ -37,13 +37,9 @@ import { useGetHouseDetail } from "@/hooks/useHouse";
 import { PhotoProvider, PhotoView } from "react-photo-view";
 
 import "react-photo-view/dist/react-photo-view.css";
-import { UserInfomation } from "./UserAvatar";
 import dynamic from "next/dynamic";
 
 import { HomeMap } from "./AMap";
-
-import FavoriteBorderTwoToneIcon from "@mui/icons-material/FavoriteBorderTwoTone";
-import FavoriteTwoToneIcon from "@mui/icons-material/FavoriteTwoTone";
 
 const DynamicCardMapComponent = dynamic(() => import("@/components/CardMap"), {
   loading: () => <p>加载中...</p>,
@@ -107,7 +103,9 @@ export default function Detail({
         sx={{ alignItems: "center", justifyContent: "space-between" }}
       >
         <Box>
-          <UserInfomation userId={detail.created_by} />
+          <Typography level="h4" sx={{ fontSize: "1.5rem" }}>
+            {detail.title}
+          </Typography>
         </Box>
         <IconButton size="lg" variant="plain">
           <CloseTwoToneIcon onClick={() => onClose()} />
@@ -145,13 +143,6 @@ export default function Detail({
         sx={{ alignItems: "center", mx: -1 }}
       >
         <Box sx={{ width: 0, display: "flex", gap: 0.5 }}>
-          {/* <IconButton variant="plain" color="neutral" size="sm">
-            {isFavorite ? (
-              <FavoriteTwoToneIcon />
-            ) : (
-              <FavoriteBorderTwoToneIcon />
-            )}
-          </IconButton> */}
           <IconButton
             variant="plain"
             color="neutral"
@@ -265,7 +256,6 @@ export default function Detail({
         </div>
 
         <CardContent>
-          <Typography level="title-lg">{detail.title}</Typography>
           <Typography level="body-md">
             {detail.community?.name} {detail.community?.address}
           </Typography>
@@ -306,7 +296,7 @@ export default function Detail({
             },
           }}
         >
-          <Accordion>
+          <Accordion defaultExpanded sx={{ p: 0 }}>
             <AccordionSummary>
               <Avatar color="primary">
                 <CottageTwoToneIcon />
@@ -314,7 +304,7 @@ export default function Detail({
               <ListItemContent>
                 <Typography level="title-md">基本信息</Typography>
                 <Typography textColor="text.tertiary">
-                  业主/售价/小区
+                  🏠 房子的基本信息
                 </Typography>
               </ListItemContent>
             </AccordionSummary>
@@ -340,7 +330,6 @@ export default function Detail({
                       }}
                     >
                       <span>{detail.transaction_type}</span>
-                      <KeyboardArrowRight />
                     </Typography>
                   </ListItemButton>
                 </ListItem>
@@ -356,7 +345,6 @@ export default function Detail({
                       }}
                     >
                       <span>{detail.purpose}</span>
-                      <KeyboardArrowRight />
                     </Typography>
                   </ListItemButton>
                 </ListItem>
@@ -373,7 +361,6 @@ export default function Detail({
                       }}
                     >
                       {detail.community?.name}
-                      <KeyboardArrowRight />
                     </Typography>
                   </ListItemButton>
                 </ListItem>
@@ -389,7 +376,6 @@ export default function Detail({
                       }}
                     >
                       {detail.community?.address}
-                      <KeyboardArrowRight />
                     </Typography>
                   </ListItemButton>
                 </ListItem>
@@ -406,17 +392,12 @@ export default function Detail({
                       }}
                     >
                       {apartmentTypeToStringFull(detail.apartment_type)}
-                      <KeyboardArrowRight />
                     </Typography>
                   </ListItemButton>
                 </ListItem>
 
                 <ListItem>
-                  <ListItemButton
-                    onClick={() => {
-                      openDetailEditor("floor_range");
-                    }}
-                  >
+                  <ListItemButton>
                     <ListItemContent>楼层</ListItemContent>
                     <Typography
                       textColor="text.tertiary"
@@ -435,7 +416,6 @@ export default function Detail({
                         {detail.floor_range?.door_number_from ?? 0}到
                         {detail.floor_range?.door_number_to ?? 0}层
                       </Empty>
-                      <KeyboardArrowRight />
                     </Typography>
                   </ListItemButton>
                 </ListItem>
@@ -451,7 +431,6 @@ export default function Detail({
                       }}
                     >
                       <span>{detail.tags?.filter((t) => !!t).join(" ")}</span>
-                      <KeyboardArrowRight />
                     </Typography>
                   </ListItemButton>
                 </ListItem>
@@ -469,7 +448,6 @@ export default function Detail({
                       <Empty is={!!detail.car_height}>
                         {detail.car_height}米
                       </Empty>
-                      <KeyboardArrowRight />
                     </Typography>
                   </ListItemButton>
                 </ListItem>
@@ -489,7 +467,6 @@ export default function Detail({
                       >
                         {detail.stairs?.stairs}梯{detail.stairs?.rooms}户
                       </Empty>
-                      <KeyboardArrowRight />
                     </Typography>
                   </ListItemButton>
                 </ListItem>
@@ -507,7 +484,6 @@ export default function Detail({
                       <Empty is={!!detail.actual_rate}>
                         {detail.actual_rate}
                       </Empty>
-                      <KeyboardArrowRight />
                     </Typography>
                   </ListItemButton>
                 </ListItem>
@@ -523,7 +499,6 @@ export default function Detail({
                       }}
                     >
                       <Empty is={!!detail.level}>{detail.level}</Empty>
-                      <KeyboardArrowRight />
                     </Typography>
                   </ListItemButton>
                 </ListItem>
@@ -541,7 +516,6 @@ export default function Detail({
                       <Empty is={!!detail.floor_height}>
                         {detail.floor_height}
                       </Empty>
-                      <KeyboardArrowRight />
                     </Typography>
                   </ListItemButton>
                 </ListItem>
@@ -559,7 +533,6 @@ export default function Detail({
                       <Empty is={!!detail.progress_depth}>
                         {detail.progress_depth}
                       </Empty>
-                      <KeyboardArrowRight />
                     </Typography>
                   </ListItemButton>
                 </ListItem>
@@ -577,7 +550,6 @@ export default function Detail({
                       <Empty is={!!detail.door_width}>
                         {detail.door_width}米
                       </Empty>
-                      <KeyboardArrowRight />
                     </Typography>
                   </ListItemButton>
                 </ListItem>
@@ -595,7 +567,6 @@ export default function Detail({
                       <Empty is={!!detail.building_area}>
                         {detail.building_area}平米
                       </Empty>
-                      <KeyboardArrowRight />
                     </Typography>
                   </ListItemButton>
                 </ListItem>
@@ -613,7 +584,6 @@ export default function Detail({
                       <Empty is={!!detail.use_area}>
                         {detail.use_area}平米
                       </Empty>
-                      <KeyboardArrowRight />
                     </Typography>
                   </ListItemButton>
                 </ListItem>
@@ -631,7 +601,6 @@ export default function Detail({
                       <Empty is={!!detail.house_type}>
                         {detail.house_type}
                       </Empty>
-                      <KeyboardArrowRight />
                     </Typography>
                   </ListItemButton>
                 </ListItem>
@@ -649,7 +618,6 @@ export default function Detail({
                       <Empty is={!!detail.house_orientation}>
                         {detail.house_orientation}
                       </Empty>
-                      <KeyboardArrowRight />
                     </Typography>
                   </ListItemButton>
                 </ListItem>
@@ -667,7 +635,6 @@ export default function Detail({
                       <Empty is={!!detail.house_decoration}>
                         {detail.house_decoration}
                       </Empty>
-                      <KeyboardArrowRight />
                     </Typography>
                   </ListItemButton>
                 </ListItem>
@@ -685,7 +652,6 @@ export default function Detail({
                       <Empty is={!!detail.discount_year_limit}>
                         {detail.discount_year_limit}
                       </Empty>
-                      <KeyboardArrowRight />
                     </Typography>
                   </ListItemButton>
                 </ListItem>
@@ -703,7 +669,6 @@ export default function Detail({
                       <Empty is={!!detail.property_tax}>
                         {detail.property_tax}
                       </Empty>
-                      <KeyboardArrowRight />
                     </Typography>
                   </ListItemButton>
                 </ListItem>
@@ -721,7 +686,6 @@ export default function Detail({
                       <Empty is={!!detail.building_structure}>
                         {detail.building_structure}
                       </Empty>
-                      <KeyboardArrowRight />
                     </Typography>
                   </ListItemButton>
                 </ListItem>
@@ -739,7 +703,6 @@ export default function Detail({
                       <Empty is={!!detail.property_rights}>
                         {detail.property_rights}
                       </Empty>
-                      <KeyboardArrowRight />
                     </Typography>
                   </ListItemButton>
                 </ListItem>
@@ -757,7 +720,6 @@ export default function Detail({
                       <Empty is={!!detail.property_year_limit}>
                         {detail.property_year_limit}
                       </Empty>
-                      <KeyboardArrowRight />
                     </Typography>
                   </ListItemButton>
                 </ListItem>
@@ -776,7 +738,6 @@ export default function Detail({
                       <Empty is={!!detail.handover_date}>
                         {detail.handover_date}
                       </Empty>
-                      <KeyboardArrowRight />
                     </Typography>
                   </ListItemButton>
                 </ListItem>
@@ -793,7 +754,6 @@ export default function Detail({
                       }}
                     >
                       <Empty is={!!detail.degree}>{detail.degree}</Empty>
-                      <KeyboardArrowRight />
                     </Typography>
                   </ListItemButton>
                 </ListItem>
@@ -810,7 +770,6 @@ export default function Detail({
                       }}
                     >
                       <Empty is={!!detail.household}>{detail.household}</Empty>
-                      <KeyboardArrowRight />
                     </Typography>
                   </ListItemButton>
                 </ListItem>
@@ -827,7 +786,6 @@ export default function Detail({
                       }}
                     >
                       <Empty is={!!detail.support}>{detail.support}</Empty>
-                      <KeyboardArrowRight />
                     </Typography>
                   </ListItemButton>
                 </ListItem>

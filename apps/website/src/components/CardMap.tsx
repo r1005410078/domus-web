@@ -8,7 +8,7 @@ import { AspectRatio, Button, IconButton, useColorScheme } from "@mui/joy";
 import { Community } from "@/models/house";
 import PinDropOutlinedIcon from "@mui/icons-material/PinDropOutlined";
 import AMapLoader from "@amap/amap-jsapi-loader";
-import { isMobile } from "@/repo/lib/utils";
+import { isMobile } from "@repo/lib/utils";
 import { HomeMap } from "./AMap";
 
 (global as any)._AMapSecurityConfig = {
@@ -50,7 +50,7 @@ export default function CardMap({ community }: CardMapProps) {
   }, [community]);
 
   return (
-    <Card>
+    <Card variant="plain" sx={{ p: 0 }}>
       <div>
         <Typography level="title-lg">{community.name}</Typography>
         <Typography level="body-sm">{community.address}</Typography>
@@ -69,15 +69,17 @@ export default function CardMap({ community }: CardMapProps) {
           <PinDropOutlinedIcon />
         </IconButton>
       </div>
-      <AspectRatio>
-        <div
-          id="CardMap"
-          style={{
-            width: "100%",
-            height: 280,
-          }}
-        ></div>
-      </AspectRatio>
+      <Card sx={{ p: 0 }}>
+        <AspectRatio>
+          <div
+            id="CardMap"
+            style={{
+              width: "100%",
+              height: 280,
+            }}
+          ></div>
+        </AspectRatio>
+      </Card>
       <CardContent orientation="horizontal" sx={{ display: "flex" }}>
         <Button
           variant="soft"

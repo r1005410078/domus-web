@@ -1,13 +1,11 @@
 "use client";
 
 import {
-  saveHouse,
   getHouseDetail,
   getHouseList,
   HouseListRequest,
-  getCommunityByCommunity,
 } from "@/services/house";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 
 // 根据id 获取房源信息
 export function useGetHouseDetail(id?: string) {
@@ -37,16 +35,4 @@ export function useHouseList(params: HouseListRequest, enabled?: boolean) {
   });
 
   return query;
-}
-
-// 根据小区获取房源
-export function useGetCommunityByCommunity(data: HouseListRequest) {
-  return useQuery({
-    queryKey: ["useGetCommunityByCommunity", data],
-    placeholderData: (data) => data,
-    queryFn: async () => {
-      const res = await getCommunityByCommunity(data);
-      return res.data.data;
-    },
-  });
 }

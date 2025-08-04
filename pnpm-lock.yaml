@@ -251,6 +251,9 @@ importers:
         specifier: ^5.0.6
         version: 5.0.7(@types/react@19.1.0)(react@19.1.0)
     devDependencies:
+      '@amap/amap-jsapi-types':
+        specifier: ^0.0.15
+        version: 0.0.15
       '@eslint/eslintrc':
         specifier: ^3
         version: 3.3.1
@@ -293,6 +296,12 @@ importers:
 
   packages/components:
     dependencies:
+      '@emotion/cache':
+        specifier: ^11.14.0
+        version: 11.14.0
+      '@emotion/react':
+        specifier: ^11.14.0
+        version: 11.14.0(@types/react@19.1.0)(react@19.1.0)
       '@mui/icons-material':
         specifier: ^7.1.2
         version: 7.2.0(@mui/material@7.2.0)(@types/react@19.1.0)(react@19.1.0)
@@ -376,9 +385,6 @@ importers:
       '@repo/eslint-config':
         specifier: workspace:*
         version: link:../eslint-config
-      '@repo/lib':
-        specifier: workspace:*
-        version: 'link:'
       '@repo/typescript-config':
         specifier: workspace:*
         version: link:../typescript-config
@@ -423,7 +429,6 @@ packages:
 
   /@amap/amap-jsapi-types@0.0.15:
     resolution: {integrity: sha512-oqyRqHpVDZh5bUe2mAJh41ZsziSj0eUzwcfIbiaBNB0eiTJnZNhKsTdk77VOklOjwuwNfsblpKW9LjmWNpeQ7A==}
-    dev: false
 
   /@ampproject/remapping@2.3.0:
     resolution: {integrity: sha512-30iZtAPgz+LTIYoeivqYo853f02jBYSd5uGnGpkFV0M3xOt9aN73erkgYAmZU43x4VfqcnLxW9Kpg3R5LC4YYw==}
