@@ -3,6 +3,7 @@ import apiClient, { ResponseBody } from "./http";
 import { AmapBounds } from "@/components/AMap";
 import { HouseCommentItem } from "@/models/comment";
 import { HouseData } from "@/schema/house";
+import { HouseOperationLog } from "@/schema/HouseOperationLog";
 
 type CreateHouseRequest = HouseForm;
 // 创建房源
@@ -138,6 +139,15 @@ export function deleteComment(comment_id: string) {
 export async function getCommentList(house_id: string) {
   const res = await apiClient.get<ResponseBody<HouseCommentItem[]>>(
     `/api/domus/query/house/get_comments/${house_id}`
+  );
+
+  return res.data.data;
+}
+
+// 获取房源操作历史
+export async function getHouseOperationLog(house_id: string) {
+  const res = await apiClient.get<ResponseBody<HouseOperationLog[]>>(
+    `/api/domus/query/house/house_operation_log/list/${house_id}`
   );
 
   return res.data.data;

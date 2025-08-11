@@ -30,7 +30,7 @@ import MyLocationTwoToneIcon from "@mui/icons-material/MyLocationTwoTone";
 import { ApartmentType, floor_rangeToString, HouseForm } from "@/models/house";
 import ImportContactsTwoToneIcon from "@mui/icons-material/ImportContactsTwoTone";
 import KeyboardArrowRight from "@mui/icons-material/KeyboardArrowRightRounded";
-import UpdateHouse from "@/components/House/UpdateHouse";
+import HouseOperationLog from "@/components/House/HouseOperationLog";
 import HouseComment from "@/components/House/HouseComment";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
@@ -1416,7 +1416,7 @@ export default function Detail({
               </ListItemContent>
             </AccordionSummary>
             <AccordionDetails>
-              <UpdateHouse />
+              <HouseOperationLog house_id={detail.id!} />
             </AccordionDetails>
           </Accordion>
         </AccordionGroup>

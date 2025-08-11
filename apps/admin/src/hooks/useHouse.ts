@@ -10,6 +10,7 @@ import {
   getCommunityByCommunity,
   addComment,
   getCommentList,
+  getHouseOperationLog,
 } from "@/services/house";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
@@ -28,6 +29,7 @@ export function useSaveHouse() {
       client.invalidateQueries({ queryKey: ["useHouseList"] });
       client.invalidateQueries({ queryKey: ["useGetHouseDetail"] });
       client.invalidateQueries({ queryKey: ["houseCollection"] });
+      client.invalidateQueries({ queryKey: ["useHouseOperationLog"] });
       toast.showToast({ message: "保存成功", severity: "success" });
     },
     onError: (err) => {
@@ -120,6 +122,19 @@ export function useCommentList(house_id?: string) {
     placeholderData: (data) => data,
     queryFn: async () => {
       const res = await getCommentList(house_id!);
+      return res;
+    },
+    enabled: !!house_id,
+  });
+}
+
+// 获取房源操作历史
+export function useHouseOperationLog(house_id?: string) {
+  return useQuery({
+    queryKey: ["useHouseOperationLog", house_id],
+    placeholderData: (data) => data,
+    queryFn: async () => {
+      const res = await getHouseOperationLog(house_id!);
       return res;
     },
     enabled: !!house_id,

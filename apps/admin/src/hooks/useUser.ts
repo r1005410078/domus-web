@@ -52,6 +52,16 @@ export function useUserList() {
   });
 }
 
+export function useUserMap() {
+  const { data: users } = useUserList();
+  const usersMap = users?.reduce((pre, cur) => {
+    pre.set(cur.user_id, cur);
+    return pre;
+  }, new Map<string, User>());
+
+  return usersMap;
+}
+
 export function usePermissionsDetailsList() {
   return useQuery({
     queryKey: ["usePermissionsDetailsList"],

@@ -8,6 +8,7 @@ import {
   stairsToString,
 } from "@/models/house";
 import { HouseData, HouseForm } from "@/schema/house";
+import { HouseOperationLog } from "@/schema/HouseOperationLog";
 import type { ColDef } from "ag-grid-community";
 
 export type IHouseRow = Partial<HouseForm>;
@@ -177,3 +178,58 @@ export function getHouseDataByColDef<T>(dataList: T[]) {
     return newItem;
   }) as T[];
 }
+
+export const getHouseOperator = (data: HouseOperationLog[]) => {
+  const result = data
+    .map((item) => {
+      const action = {
+        content: "",
+        title: "",
+        operator_id: item.operator_id,
+        time: dateToString(item.created_at),
+        ip: item.ip_address,
+        user_agent: item.user_agent,
+        operation_type: item.operation_type,
+      };
+
+      // '操作类型：1=新增，2=修改，3=删除，4=上架，5=下架'
+      if (item.operation_type === 1) {
+        action.title = "新增";
+      } else if (item.operation_type === 2) {
+        action.title = "更新";
+        for (const field in item.operation_content) {
+          let { before, after } = item.operation_content[field]!;
+          // @ts-ignore
+          const col = colDefsMap.get(field);
+          const label = col?.headerName;
+
+          if (!label) {
+            continue;
+          }
+
+          if (typeof col?.valueGetter === "function") {
+            // @ts-ignore
+            before = col.valueGetter({ data: { [field]: before } });
+            // @ts-ignore
+            after = col.valueGetter({ data: { [field]: after } });
+          }
+
+          if (before !== after) {
+            if (before === null || typeof before === "object") {
+              action.content += `, ${label}:  ${after}`;
+            } else {
+              action.content += `, ${label}: ${before} -> ${after}`;
+            }
+          }
+        }
+      } else if (item.operation_type === 3) {
+        action.title = "删除";
+      }
+
+      return action;
+    })
+    .filter((item) => !!item.title);
+
+  console.log("result", result, data);
+  return result;
+};
