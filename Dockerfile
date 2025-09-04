@@ -7,7 +7,7 @@ RUN npm install -g pnpm@10.15.1 turbo
 
 # ---------- Prune 阶段 ----------
 FROM base AS pruner
-ARG APP=@meida/admin
+ARG APP=admin
 
 WORKDIR /app
 COPY . .
@@ -27,7 +27,7 @@ COPY --from=pruner /app/pnpm-lock.yaml ./
 RUN pnpm install --frozen-lockfile
 
 # 构建指定应用
-RUN pnpm turbo run build --filter=@meida/${APP}...
+RUN pnpm turbo run build --filter=${APP}...
 
 # ---------- Runner 阶段 ----------
 FROM node:22-alpine AS runner
@@ -38,6 +38,7 @@ WORKDIR /app
 COPY --from=builder /app/apps/${APP}/.next ./.next
 COPY --from=builder /app/apps/${APP}/public ./public
 COPY --from=builder /app/apps/${APP}/package.json ./package.json
+COPY --from=builder /app/apps/${APP}/next.config.ts ./next.config.ts
 COPY --from=builder /app/node_modules ./node_modules
 
 EXPOSE 3000
