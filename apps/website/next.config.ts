@@ -1,10 +1,6 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  devIndicators: {
-    buildActivity: false, // 关闭构建活动指示器
-    appIsrStatus: false,
-  },
   async rewrites() {
     return [
       {
