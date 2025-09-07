@@ -1,10 +1,6 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  devIndicators: {
-    buildActivity: false, // 关闭构建活动指示器
-    appIsrStatus: false,
-  },
   async rewrites() {
     return [
       {
@@ -13,7 +9,7 @@ const nextConfig: NextConfig = {
       },
       {
         source: "/api/user_system/:path*", // 代理前缀
-        destination: `${process.env.USER_SYSTEM_API_URL}/api/user_system/:path*`, // 目标地址
+        destination: `http://192.168.2.10:9001/api/user_system/:path*`, // 目标地址
       },
     ];
   },

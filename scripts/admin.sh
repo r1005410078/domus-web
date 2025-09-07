@@ -1,7 +1,7 @@
 docker run --rm -d \
   --platform linux/amd64 \
   -e DOMUS_API_URL=http://192.168.2.10:8091 \
-  -e USER_SYSTEM_API_URL=http://192.168.2.10:8090 \
+  -e USER_SYSTEM_API_URL=http://192.168.2.10:9999 \
   -p 3000:3000 \
   --name meida-admin-web \
   registry.cn-hangzhou.aliyuncs.com/tongts/meida-admin-web:v1
