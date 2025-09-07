@@ -7,7 +7,10 @@ docker run --rm -d \
   registry.cn-hangzhou.aliyuncs.com/tongts/meida-admin-web:v1
 
 
-docker buildx build \      
+docker buildx build \
   --platform linux/amd64 \
   -t registry.cn-hangzhou.aliyuncs.com/tongts/meida-admin-web:v1 \
   --load . -f Dockerfile
+
+
+docker stack deploy -c docker-stack.yml meida-admin-web

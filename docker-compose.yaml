@@ -1,0 +1,25 @@
+services:
+  meida_admin_web:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      DOMUS_API_URL: http://domus-api:8091
+      USER_SYSTEM_API_URL: http://user-system-api:9001
+
+  domus-api:
+    image: registry.cn-hangzhou.aliyuncs.com/tongts/domus-service:v1
+    container_name: domus-api
+    environment:
+      DOMUS_DATABASE_URL: "mysql://root:123456@192.168.2.10/domus"
+      CASBIN_DATABASE_URL: "mysql://root:123456@192.168.2.10/meida"
+      DOMUS_PORT: 9002
+
+  user-system-api:
+    image: registry.cn-hangzhou.aliyuncs.com/tongts/user_system-service:v1
+    container_name: user-system-api
+    platform: linux/x86_64
+    environment:
+      USER_SYSTEM_DATABASE_URL: "mysql://root:123456@192.168.2.10/meida"
+      CASBIN_DATABASE_URL: "mysql://root:123456@192.168.2.10/meida"
+      USER_SYSTEM_PORT: 9001

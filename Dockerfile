@@ -21,10 +21,10 @@ WORKDIR /app
 # 复制裁剪后的依赖定义
 COPY --from=pruner /app/out/full/ ./
 
-COPY --from=pruner /app/pnpm-lock.yaml ./
+COPY --from=pruner /app/out/pnpm-lock.yaml ./
 
 # 安装依赖
-RUN pnpm install --frozen-lockfile
+RUN pnpm install
 
 # 构建指定应用
 RUN pnpm turbo run build --filter=${APP}...
