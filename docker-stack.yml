@@ -3,6 +3,8 @@ version: "3.9"
 services:
   meida_admin_web:
     image: registry.cn-hangzhou.aliyuncs.com/tongts/meida-admin-web:v1 # 生产环境建议用镜像
+    networks:
+      - shared
     ports:
       - "3000:3000"
     environment:
@@ -15,3 +17,8 @@ services:
       update_config:
         parallelism: 1
         delay: 5s
+
+networks:
+  shared:
+    external: true
+    name: meida_network
