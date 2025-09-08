@@ -35,6 +35,5 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            cd /${{ secrets.SSH_USER }}/www
-            git pull origin main
+            cd /${{ secrets.SSH_USER }}/www/domus-web
             docker stack deploy -c docker-stack.yml meida-web
