@@ -8,8 +8,8 @@ services:
     ports:
       - "3000:3000"
     environment:
-      DOMUS_API_URL: http://domus-api:9002
-      USER_SYSTEM_API_URL: http://user-system-api:9001
+      DOMUS_API_URL: http://meida-server_domus-api:9002
+      USER_SYSTEM_API_URL: http://meida-server_user_system-api:9001
     deploy:
       replicas: 1
       restart_policy:
