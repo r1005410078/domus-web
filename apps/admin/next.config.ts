@@ -9,7 +9,7 @@ const nextConfig: NextConfig = {
       },
       {
         source: "/api/user_system/:path*", // 代理前缀
-        destination: `http://192.168.2.10:9001/api/user_system/:path*`, // 目标地址
+        destination: `${process.env.USER_SYSTEM_API_URL}/api/user_system/:path*`, // 目标地址
       },
     ];
   },
