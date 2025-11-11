@@ -230,6 +230,5 @@ export const getHouseOperator = (data: HouseOperationLog[]) => {
     })
     .filter((item) => !!item.title);
 
-  console.log("result", result, data);
   return result;
 };

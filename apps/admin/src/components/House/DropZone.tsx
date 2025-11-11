@@ -7,16 +7,12 @@ import Typography from "@mui/joy/Typography";
 import AspectRatio from "@mui/joy/AspectRatio";
 
 import FileUploadRoundedIcon from "@mui/icons-material/FileUploadRounded";
-import { useApplyUploadHouseUrl } from "@/hooks/useApplyUploadHouseUrl";
 import imageCompression from "browser-image-compression";
 import axios from "axios";
 import { useToast } from "@/lib/ToastProvider";
 import {
-  Box,
-  Button,
   CardContent,
   CardCover,
-  CircularProgress,
   Divider,
   Grid,
   IconButton,
@@ -26,11 +22,11 @@ import {
 import { FileInfo } from "@/models/house";
 import { create } from "zustand";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { useQuery } from "@tanstack/react-query";
 
 export type UploadFile = {
   file: File;
-  url: string;
-  filename: string;
+  imgPath: string;
   percent: number;
   // state
   state?: "uploading" | "zipping";
@@ -40,7 +36,7 @@ export type UploadFile = {
 export type Store = {
   files: UploadFile[];
   uploads: () => Promise<any>;
-  addFile: (file: File, url: string, filename: string) => void;
+  addFile: (file: File, imgPath: string) => void;
   removeFile: (file: File) => void;
 };
 
@@ -61,15 +57,15 @@ export const useUploadFiles = create<Store>()((set, get) => ({
     const files = get().files;
     const promises = files
       .filter((f) => !f.deleted)
-      .map(async ({ file, url }) => {
+      .map(async ({ file, imgPath }) => {
         const options = {
-          maxSizeMB: 0.2, // 0.2 MB
+          maxSizeMB: 0.5, // 0.2 MB
           maxWidthOrHeight: 1920,
           useWebWorker: true,
           onProgress: (percentage: number) => {
             set((state) => ({
               files: state.files.map((f) => {
-                if (f.url === url) {
+                if (f.imgPath === imgPath) {
                   return { ...f, percent: percentage * 0.5, state: "zipping" };
                 }
                 return f;
@@ -86,9 +82,21 @@ export const useUploadFiles = create<Store>()((set, get) => ({
           console.log(error);
         }
 
-        return axios.put(url, file, {
+        const formData = new FormData();
+
+        // 添加 JSON 字段
+        // ✅ 用 Blob 封装 JSON 数据，指定类型为 application/json
+        const jsonBlob = new Blob([JSON.stringify({ name: imgPath })], {
+          type: "application/json",
+        });
+        formData.append("json", jsonBlob);
+
+        // 添加文件
+        formData.append("file", file);
+
+        return axios.post("/api/filestore/upload_house_media", formData, {
           headers: {
-            "Content-Type": file.type,
+            "Content-Type": "multipart/form-data",
           },
           onUploadProgress: (progressEvent) => {
             const percent = Math.round(
@@ -97,7 +105,7 @@ export const useUploadFiles = create<Store>()((set, get) => ({
 
             set((state) => ({
               files: state.files.map((f) => {
-                if (f.url === url) {
+                if (f.imgPath === imgPath) {
                   return { ...f, percent, state: "uploading" };
                 }
                 return f;
@@ -107,7 +115,7 @@ export const useUploadFiles = create<Store>()((set, get) => ({
             if (percent === 100) {
               setTimeout(() => {
                 set((state) => ({
-                  files: state.files.filter((f) => f.url !== url),
+                  files: state.files.filter((f) => f.imgPath !== imgPath),
                 }));
               }, 300);
             }
@@ -118,9 +126,9 @@ export const useUploadFiles = create<Store>()((set, get) => ({
     return Promise.all(promises);
   },
 
-  addFile: (file, url, filename) => {
+  addFile: (file, imgPath) => {
     set((state) => ({
-      files: [...state.files, { file, url, percent: 0, filename }],
+      files: [...state.files, { file, percent: 0, imgPath }],
     }));
   },
 }));
@@ -134,8 +142,14 @@ export interface DropZoneProps {
 
 export default function DropZone(props: DropZoneProps) {
   const inputRef = React.useRef<HTMLInputElement>(null);
-  const { mutateAsync } = useApplyUploadHouseUrl();
   const toast = useToast();
+  const { data: imageBaseUrl } = useQuery({
+    queryKey: ["files"],
+    queryFn: () =>
+      axios
+        .get<{ data: String }>("/api/filestore/get_house_media_resource_path")
+        .then((res) => res.data?.data),
+  });
 
   const { value: onlineFiles, onChange } = props;
   const { addFile, files } = useUploadFiles();
@@ -157,25 +171,21 @@ export default function DropZone(props: DropZoneProps) {
     const directory = props.directory!;
     if (files && files.length > 0) {
       for (const file of files) {
-        const filename = `timestamp_${Date.now()}_${file.name}`;
-        const result = await mutateAsync({ filename, directory });
-        const url = result.data.data;
-
-        addFile(file, url, filename);
+        const filename = `${directory}/timestamp_${Date.now()}_${file.name}`;
+        addFile(file, filename);
       }
     }
   };
 
   React.useEffect(() => {
-    let unsub = useUploadFiles.subscribe((state) => {
+    let unsub = useUploadFiles.subscribe(async (state) => {
       const { files } = state;
       const fileInfos: FileInfo[] = files
         .filter((f) => !f.deleted)
         .map((f) => {
-          const url = new URL(f.url);
           return {
-            name: f.filename,
-            url: url.origin + url.pathname,
+            name: f.imgPath,
+            url: `${imageBaseUrl}${f.imgPath}`,
             size: f.file.size.toString(),
             type: f.file.type,
           };
@@ -184,7 +194,7 @@ export default function DropZone(props: DropZoneProps) {
       onChange(
         fileInfos.concat(
           (onlineFiles || []).filter(
-            (f) => !files.some((ff) => ff.filename === f.name)
+            (f) => !files.some((ff) => ff.imgPath === f.name)
           )
         )
       );
@@ -244,7 +254,7 @@ export default function DropZone(props: DropZoneProps) {
         {files
           .filter((f) => !f.deleted)
           .map((file, index) => (
-            <Grid width={"50%"} key={file.filename}>
+            <Grid width={"50%"} key={file.imgPath}>
               <FileReview key={index} {...file} />
             </Grid>
           ))}
@@ -257,7 +267,7 @@ export default function DropZone(props: DropZoneProps) {
       >
         {onlineFiles
           ?.filter(
-            (f) => files.findIndex((file) => file.filename === f.name) === -1
+            (f) => files.findIndex((file) => file.imgPath === f.name) === -1
           )
           .map((file, index) => (
             <Grid width={"50%"} key={file.name}>
@@ -336,7 +346,6 @@ function FileReview(props: UploadFile) {
 
 function ImageReview(props: FileInfo & { onRemove: (name: string) => void }) {
   const { url, name, onRemove } = props;
-  const { removeFile } = useUploadFiles();
   return (
     <Card component="li" sx={{ width: "100%", height: "200px" }}>
       <CardCover>

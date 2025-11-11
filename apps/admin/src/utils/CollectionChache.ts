@@ -5,7 +5,7 @@ export interface CollectionChacheOptions<T> {
 }
 
 export class CollectionChache<
-  T extends { updated_at?: string; id: string; deleted_at?: string }
+  T extends { updated_at?: string; id: string; deleted_at?: string },
 > {
   constructor(private options: CollectionChacheOptions<T>) {}
 
@@ -53,7 +53,6 @@ export class CollectionChache<
     const { getData, pageSize } = this.options;
     const result = this.getChacheMap();
 
-    console.log("result", result);
     const loopGetData = async (page = 1) => {
       const data = await getData(page, this.getLastUpdatedAt());
 

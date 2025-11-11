@@ -89,19 +89,6 @@ export async function getCommunityList(
   return res.data.data.list;
 }
 
-// 申请上传房源URL
-export function applyUploadHouseUrl(data: {
-  directory: string;
-  filename: string;
-}) {
-  return apiClient.post<ResponseBody<string>>(
-    `/api/domus/management/house/apply_upload_url`,
-    data
-  );
-}
-
-// 添加评论
-
 export interface AddCommentRequest {
   house_id: string;
   comment: string;

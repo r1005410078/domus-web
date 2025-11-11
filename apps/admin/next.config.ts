@@ -11,6 +11,10 @@ const nextConfig: NextConfig = {
         source: "/api/user_system/:path*", // 代理前缀
         destination: `${process.env.USER_SYSTEM_API_URL}/api/user_system/:path*`, // 目标地址
       },
+      {
+        source: "/api/filestore/:path*", // 代理前缀
+        destination: `${process.env.FILE_STORE}/api/filestore/:path*`, // 目标地址
+      },
     ];
   },
 };

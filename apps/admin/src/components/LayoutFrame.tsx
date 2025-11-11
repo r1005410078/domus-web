@@ -13,12 +13,9 @@ import {
   Drawer,
   GlobalStyles,
   ModalClose,
-  Stack,
 } from "@mui/joy";
-import { usePathname } from "next/navigation";
 import React from "react";
-import RoomPreferencesTwoToneIcon from "@mui/icons-material/RoomPreferencesTwoTone";
-import PersonAddTwoToneIcon from "@mui/icons-material/PersonAddTwoTone";
+
 import House from "./House";
 
 export interface LayoutFrameProps {
@@ -34,8 +31,7 @@ export default function LayoutFrame({
 }: LayoutFrameProps) {
   const [drawerAddOpen, setDrawerAddOpen] = React.useState(false);
   const [drawerOpen, setDrawerOpen] = React.useState(false);
-  const pathname = usePathname();
-
+  // const pathname = usePathname();
   const [hasMounted, setHasMounted] = React.useState(false);
 
   React.useEffect(() => {
@@ -79,7 +75,7 @@ export default function LayoutFrame({
         </Layout.SideDrawer>
       )}
 
-      <Stack
+      {/* <Stack
         id="tab-bar"
         direction="row"
         spacing={1}
@@ -120,7 +116,7 @@ export default function LayoutFrame({
         >
           用户管理
         </Button>
-      </Stack>
+      </Stack> */}
       <Layout.Root
         {...rootProps}
         sx={[

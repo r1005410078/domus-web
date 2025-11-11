@@ -15,13 +15,7 @@ import {
   FormControl,
   FormLabel,
   Input,
-  Select,
   Sheet,
-  Option,
-  Typography,
-  Autocomplete,
-  AutocompleteOption,
-  ListItemContent,
   Modal,
   ModalDialog,
   ModalClose,
@@ -186,7 +180,7 @@ export function useEditUserProfileModal({ layout }: EditUserProfileModal) {
               <ModalClose />
               <DialogTitle>编辑个人信息</DialogTitle>
               <DialogContent>
-                <EditUserProfile onClose={() => setOpen(false)} />
+                {open && <EditUserProfile onClose={() => setOpen(false)} />}
               </DialogContent>
             </ModalDialog>
           </Modal>
