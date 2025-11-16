@@ -8,6 +8,7 @@ import "./globals.css";
 export const metadata = {
   title: "美大",
   description: "美大管理系统",
+  manifest: "/manifest.json",
   icons: {
     icon: "/logo.png",
   },
