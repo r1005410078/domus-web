@@ -1,7 +1,9 @@
 import type { NextConfig } from "next";
+import withPWA from "next-pwa";
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
+
   swcMinify: true, // 可以保留
   compiler: {
     styledComponents: true, // 如果用 styled-components
@@ -53,4 +55,6 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default nextConfig;
+export default withPWA({
+  dest: "public",
+})(nextConfig as any) as any;
