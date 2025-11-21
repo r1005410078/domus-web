@@ -525,7 +525,7 @@ export default function Detail({
                       }}
                     >
                       <Empty is={!!detail.down_payment}>
-                        {detail.down_payment} 万元
+                        {detail.down_payment} %
                       </Empty>
                       <KeyboardArrowRight />
                     </Typography>
