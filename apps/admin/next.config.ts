@@ -51,6 +51,10 @@ const nextConfig: NextConfig = {
         source: "/api/filestore/:path*", // 代理前缀
         destination: `${process.env.FILE_STORE}/api/filestore/:path*`, // 目标地址
       },
+      {
+        source: "/domus-houses-images/:path*", // 代理前缀
+        destination: `${process.env.IMAGE_PROXY_URL}/domus-houses-images/:path*`, // 目标地址
+      },
     ];
   },
 };

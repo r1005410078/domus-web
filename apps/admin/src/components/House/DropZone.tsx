@@ -143,13 +143,13 @@ export interface DropZoneProps {
 export default function DropZone(props: DropZoneProps) {
   const inputRef = React.useRef<HTMLInputElement>(null);
   const toast = useToast();
-  const { data: imageBaseUrl } = useQuery({
-    queryKey: ["files"],
-    queryFn: () =>
-      axios
-        .get<{ data: String }>("/api/filestore/get_house_media_resource_path")
-        .then((res) => res.data?.data),
-  });
+  // const { data: imageBaseUrl } = useQuery({
+  //   queryKey: ["files"],
+  //   queryFn: () =>
+  //     axios
+  //       .get<{ data: String }>("/api/filestore/get_house_media_resource_path")
+  //       .then((res) => res.data?.data),
+  // });
 
   const { value: onlineFiles, onChange } = props;
   const { addFile, files } = useUploadFiles();
@@ -185,7 +185,7 @@ export default function DropZone(props: DropZoneProps) {
         .map((f) => {
           return {
             name: f.imgPath,
-            url: `${imageBaseUrl}${f.imgPath}`,
+            url: `/domus-houses-images/${f.imgPath}`,
             size: f.file.size.toString(),
             type: f.file.type,
           };
