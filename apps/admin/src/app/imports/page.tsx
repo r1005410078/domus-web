@@ -150,7 +150,7 @@ export default function Page() {
               >
                 <div>
                   <Typography level="title-sm">
-                    在地图上导出小区 一共{communityData.length}
+                    在地图上导出小区 一共{communityData.residential.length}
                   </Typography>
                   <Button
                     color="neutral"
@@ -289,7 +289,7 @@ export default function Page() {
     const not: any = [];
     const data = [];
 
-    for (const item of communityData) {
+    for (const item of communityData.residential) {
       const res: any = await new Promise((resolve) => {
         placeSearch.search(
           item.community_name,
