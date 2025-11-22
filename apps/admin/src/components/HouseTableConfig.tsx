@@ -55,26 +55,18 @@ export const colDefs = [
     width: 500,
     valueGetter: (params: any) => communityToString(params.data.community),
   },
-  { field: "property_management_company", headerName: "物业公司" },
   {
     field: "building_area",
     headerName: "建筑面积",
     valueGetter: (params: any) =>
       emptyToString(params.data?.building_area, "平方米"),
   },
-  {
-    field: "use_area",
-    headerName: "使用面积",
-    valueGetter: (params: any) => {
-      return emptyToString(params.data.use_area, "平方米");
-    },
-  },
+
   {
     field: "floor_range",
     headerName: "楼层",
     valueGetter: (params: any) => floor_rangeToString(params.data.floor_range),
   },
-
   { field: "house_decoration", headerName: "装修" },
   {
     field: "sale_price",
@@ -82,17 +74,30 @@ export const colDefs = [
     valueGetter: (params: any) =>
       emptyToString(params.data?.sale_price, "万元"),
   },
-  {
-    field: "sale_low_price",
-    headerName: "出售低价",
-    valueGetter: (params: any) =>
-      emptyToString(params.data?.sale_low_price, "万元"),
-  },
+
   {
     field: "rent_price",
     headerName: "租价",
     valueGetter: (params: any) =>
       emptyToString(params.data?.rent_price, "元/月"),
+  },
+  { field: "remark", headerName: "备注" },
+  { field: "house_type", headerName: "房屋类型" },
+  { field: "house_orientation", headerName: "朝向" },
+  { field: "support", headerName: "配套" },
+  {
+    field: "stairs",
+    headerName: "梯户",
+    valueGetter: (params: any) => stairsToString(params.data.stairs),
+  },
+  { field: "view_method", headerName: "看房方式" },
+  { field: "source", headerName: "来源" },
+  { field: "unique_housing", headerName: "唯一住房" },
+  { field: "present_state", headerName: "现状" },
+  {
+    field: "down_payment",
+    headerName: "首付",
+    valueGetter: (params: any) => emptyToString(params.data?.down_payment, "%"),
   },
   {
     field: "rent_low_price",
@@ -101,12 +106,18 @@ export const colDefs = [
       emptyToString(params.data?.rent_low_price, "元/月"),
   },
   {
-    field: "down_payment",
-    headerName: "首付",
-    valueGetter: (params: any) => emptyToString(params.data?.down_payment, "%"),
+    field: "sale_low_price",
+    headerName: "出售低价",
+    valueGetter: (params: any) =>
+      emptyToString(params.data?.sale_low_price, "万元"),
   },
-  { field: "house_type", headerName: "房屋类型" },
-  { field: "house_orientation", headerName: "朝向" },
+  {
+    field: "use_area",
+    headerName: "使用面积",
+    valueGetter: (params: any) => {
+      return emptyToString(params.data.use_area, "平方米");
+    },
+  },
   { field: "building_structure", headerName: "建筑结构" },
   { field: "building_year", headerName: "建筑年代" },
   { field: "property_rights", headerName: "产权性质" },
@@ -120,25 +131,15 @@ export const colDefs = [
   { field: "progress_depth", headerName: "进深" },
   { field: "door_width", headerName: "门宽" },
   { field: "discount_year_limit", headerName: "满减年限" },
-  {
-    field: "stairs",
-    headerName: "梯户",
-    valueGetter: (params: any) => stairsToString(params.data.stairs),
-  },
-  { field: "view_method", headerName: "看房方式" },
   { field: "payment_method", headerName: "付款方式" },
   { field: "property_tax", headerName: "房源税费" },
   { field: "degree", headerName: "学位" },
   { field: "household", headerName: "户口" },
-  { field: "source", headerName: "来源" },
-  { field: "unique_housing", headerName: "唯一住房" },
   { field: "full_payment", headerName: "全款" },
   { field: "mortgage", headerName: "抵押" },
   { field: "urgent", headerName: "急切" },
-  { field: "support", headerName: "配套" },
-  { field: "present_state", headerName: "现状" },
+  { field: "property_management_company", headerName: "物业公司" },
   { field: "external_sync", headerName: "外网同步" },
-  { field: "remark", headerName: "备注" },
   {
     field: "updated_at",
     headerName: "更新时间",

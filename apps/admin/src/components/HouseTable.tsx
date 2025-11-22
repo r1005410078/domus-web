@@ -367,6 +367,7 @@ export default function HouseTable({}: HouseTable) {
         }}
         open={!!visibleOpenEditorHouse}
         onClose={(_, reason) => {
+          if (reason === "backdropClick") return;
           setEditItem(null);
           openEditorHouse(false);
         }}

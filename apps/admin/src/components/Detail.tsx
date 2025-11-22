@@ -389,6 +389,28 @@ export default function Detail({
                 <ListItem>
                   <ListItemButton
                     onClick={() => {
+                      openDetailEditor("building_area");
+                    }}
+                  >
+                    <ListItemContent>建筑面积</ListItemContent>
+                    <Typography
+                      textColor="text.tertiary"
+                      sx={{
+                        mr: "calc(-1 * var(--ListItem-gap))",
+                        display: "flex",
+                        alignItems: "center",
+                      }}
+                    >
+                      <Empty is={!!detail.building_area}>
+                        {detail.building_area}平米
+                      </Empty>
+                      <KeyboardArrowRight />
+                    </Typography>
+                  </ListItemButton>
+                </ListItem>
+                <ListItem>
+                  <ListItemButton
+                    onClick={() => {
                       openDetailEditor("owner");
                     }}
                   >
@@ -646,7 +668,7 @@ export default function Detail({
               <ListItemContent>
                 <Typography level="title-md">详细信息</Typography>
                 <Typography textColor="text.tertiary">
-                  房屋装修/建筑面积/朝向/楼层/学位
+                  房屋装修/朝向/楼层/学位
                 </Typography>
               </ListItemContent>
             </AccordionSummary>
@@ -854,28 +876,7 @@ export default function Detail({
                     </Typography>
                   </ListItemButton>
                 </ListItem>
-                <ListItem>
-                  <ListItemButton
-                    onClick={() => {
-                      openDetailEditor("building_area");
-                    }}
-                  >
-                    <ListItemContent>建筑面积</ListItemContent>
-                    <Typography
-                      textColor="text.tertiary"
-                      sx={{
-                        mr: "calc(-1 * var(--ListItem-gap))",
-                        display: "flex",
-                        alignItems: "center",
-                      }}
-                    >
-                      <Empty is={!!detail.building_area}>
-                        {detail.building_area}平米
-                      </Empty>
-                      <KeyboardArrowRight />
-                    </Typography>
-                  </ListItemButton>
-                </ListItem>
+
                 <ListItem>
                   <ListItemButton
                     onClick={() => {

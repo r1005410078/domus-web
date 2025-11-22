@@ -71,10 +71,8 @@ import {
   EditViewMethod,
   EditPropertyManagementCompany,
 } from "../EditDetail";
-import { houseFormSchema } from "@/schema/house";
 import { useToast } from "@/lib/ToastProvider";
 import { getFirstError } from "@/utils";
-import { Edit } from "lucide-react";
 
 export interface Relation {
   purpose?: string;
@@ -259,6 +257,10 @@ export function Form({ defaultValues, value, onSubmit }: FormProps) {
                             value: "未知",
                           },
                           {
+                            label: "他售",
+                            value: "他售",
+                          },
+                          {
                             label: "他租",
                             value: "他租",
                           },
@@ -388,6 +390,18 @@ export function Form({ defaultValues, value, onSubmit }: FormProps) {
               />
 
               <form.Field
+                name="title"
+                children={(field) => {
+                  return (
+                    <EditHouseTitle
+                      value={field.state.value}
+                      onChange={field.handleChange}
+                    />
+                  );
+                }}
+              />
+
+              <form.Field
                 name="house_address"
                 children={(field) => {
                   return (
@@ -420,29 +434,6 @@ export function Form({ defaultValues, value, onSubmit }: FormProps) {
           </TabPanel>
           <TabPanel value={1}>
             <Stack direction="column" spacing={2}>
-              <form.Field
-                name="title"
-                children={(field) => {
-                  return (
-                    <EditHouseTitle
-                      value={field.state.value}
-                      onChange={field.handleChange}
-                    />
-                  );
-                }}
-              />
-              <form.Field
-                name="property_management_company"
-                children={(field) => {
-                  return (
-                    <EditPropertyManagementCompany
-                      value={field.state.value}
-                      onChange={field.handleChange}
-                    />
-                  );
-                }}
-              />
-
               <form.Field
                 name="floor_range"
                 children={(field) => {
@@ -737,7 +728,17 @@ export function Form({ defaultValues, value, onSubmit }: FormProps) {
                   }}
                 />
               )}
-
+              <form.Field
+                name="property_management_company"
+                children={(field) => {
+                  return (
+                    <EditPropertyManagementCompany
+                      value={field.state.value}
+                      onChange={field.handleChange}
+                    />
+                  );
+                }}
+              />
               <form.Field
                 name="property_tax"
                 children={(field) => (

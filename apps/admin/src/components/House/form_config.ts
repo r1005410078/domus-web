@@ -870,96 +870,6 @@ export const formConfig = [
     placeholder: "请输入",
   },
   {
-    label: "首付",
-    addonAfter: "%",
-    name: "down_payment",
-    type: "input",
-    relation: [
-      {
-        ref: "用途",
-        value: "车位",
-      },
-      {
-        ref: "用途",
-        value: "仓库",
-      },
-      {
-        ref: "用途",
-        value: "厂房",
-      },
-      {
-        ref: "用途",
-        value: "商铺",
-      },
-      {
-        ref: "用途",
-        value: "写字楼",
-      },
-      {
-        ref: "用途",
-        value: "住宅",
-      },
-      {
-        ref: "交易类型",
-        value: "出售",
-      },
-      {
-        ref: "用途",
-        value: "别墅",
-      },
-      {
-        ref: "用途",
-        value: "公寓",
-      },
-    ],
-    placeholder: "请输入",
-  },
-  {
-    label: "出售低价",
-    name: "sale_low_price",
-    addonAfter: "万元",
-    type: "input",
-    relation: [
-      {
-        ref: "用途",
-        value: "车位",
-      },
-      {
-        ref: "用途",
-        value: "仓库",
-      },
-      {
-        ref: "用途",
-        value: "厂房",
-      },
-      {
-        ref: "用途",
-        value: "商铺",
-      },
-      {
-        ref: "用途",
-        value: "写字楼",
-      },
-      {
-        ref: "用途",
-        value: "住宅",
-      },
-      {
-        ref: "交易类型",
-        value: "出售",
-      },
-      {
-        ref: "用途",
-        value: "别墅",
-      },
-      {
-        ref: "用途",
-        value: "公寓",
-      },
-    ],
-    placeholder: "请输入",
-  },
-  {
     label: "房屋类型",
     type: "select",
     name: "house_type",
@@ -1304,6 +1214,96 @@ export const formConfig = [
         value: "豪装",
       },
     ],
+  },
+  {
+    label: "首付",
+    addonAfter: "%",
+    name: "down_payment",
+    type: "input",
+    relation: [
+      {
+        ref: "用途",
+        value: "车位",
+      },
+      {
+        ref: "用途",
+        value: "仓库",
+      },
+      {
+        ref: "用途",
+        value: "厂房",
+      },
+      {
+        ref: "用途",
+        value: "商铺",
+      },
+      {
+        ref: "用途",
+        value: "写字楼",
+      },
+      {
+        ref: "用途",
+        value: "住宅",
+      },
+      {
+        ref: "交易类型",
+        value: "出售",
+      },
+      {
+        ref: "用途",
+        value: "别墅",
+      },
+      {
+        ref: "用途",
+        value: "公寓",
+      },
+    ],
+    placeholder: "请输入",
+  },
+  {
+    label: "出售低价",
+    name: "sale_low_price",
+    addonAfter: "万元",
+    type: "input",
+    relation: [
+      {
+        ref: "用途",
+        value: "车位",
+      },
+      {
+        ref: "用途",
+        value: "仓库",
+      },
+      {
+        ref: "用途",
+        value: "厂房",
+      },
+      {
+        ref: "用途",
+        value: "商铺",
+      },
+      {
+        ref: "用途",
+        value: "写字楼",
+      },
+      {
+        ref: "用途",
+        value: "住宅",
+      },
+      {
+        ref: "交易类型",
+        value: "出售",
+      },
+      {
+        ref: "用途",
+        value: "别墅",
+      },
+      {
+        ref: "用途",
+        value: "公寓",
+      },
+    ],
+    placeholder: "请输入",
   },
   {
     label: "满减年限",

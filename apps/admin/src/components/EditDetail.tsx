@@ -173,6 +173,7 @@ export interface FormChange<T> {
   transaction_type?: string;
   community_name?: string;
   required?: boolean;
+  defaultValue?: T;
 }
 
 const isShowRelation = (
@@ -599,7 +600,11 @@ export function EditApartmentType({
 // 房源标题
 registerHouseFormComponent("title", EditHouseTitle);
 
-export function EditHouseTitle({ value, onChange }: FormChange<string>) {
+export function EditHouseTitle({
+  value,
+  onChange,
+  defaultValue,
+}: FormChange<string>) {
   return (
     <FormControl required>
       <FormLabel>房源标题</FormLabel>
@@ -607,6 +612,7 @@ export function EditHouseTitle({ value, onChange }: FormChange<string>) {
         placeholder="请输入"
         name="title"
         value={value}
+        defaultValue={defaultValue}
         onChange={(e) => onChange(e.target.value)}
       />
     </FormControl>

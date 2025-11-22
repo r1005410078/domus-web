@@ -154,7 +154,10 @@ export default function LayoutFrame({
           },
         }}
         open={drawerAddOpen}
-        onClose={() => setDrawerAddOpen(false)}
+        onClose={(_, reason) => {
+          if (reason === "backdropClick") return;
+          setDrawerAddOpen(false);
+        }}
       >
         <ModalClose />
         <DialogTitle>添加房源</DialogTitle>
