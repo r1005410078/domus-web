@@ -373,12 +373,15 @@ export default function HouseTable({}: HouseTable) {
         }}
       >
         <ModalClose />
-        <DialogTitle>添加房源</DialogTitle>
+        <DialogTitle>{editItem?.id ? "编辑房源" : "添加房源"}</DialogTitle>
         <Box sx={{ height: "100%", width: { xs: "100%", md: "430px" } }}>
           <House.Form
             key={editItem?.id ?? "new"}
             value={editItem}
-            onSubmit={() => setEditItem(null)}
+            onSubmit={() => {
+              setEditItem(null);
+              openEditorHouse(false);
+            }}
           />
         </Box>
       </Drawer>

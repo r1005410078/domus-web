@@ -97,6 +97,7 @@ export function Form({ defaultValues, value, onSubmit }: FormProps) {
     onSubmit: async ({ value }) => {
       mutate(value as HouseForm);
       onSubmit?.();
+      form.reset();
     },
   });
 
