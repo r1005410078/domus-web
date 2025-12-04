@@ -19,40 +19,17 @@ import DialogTitle from "@mui/joy/DialogTitle";
 import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
 import DarkModeRoundedIcon from "@mui/icons-material/DarkModeRounded";
 import LightModeRoundedIcon from "@mui/icons-material/LightModeRounded";
-import BookRoundedIcon from "@mui/icons-material/BookRounded";
 import LanguageRoundedIcon from "@mui/icons-material/LanguageRounded";
 import SettingsRoundedIcon from "@mui/icons-material/SettingsRounded";
-import HelpRoundedIcon from "@mui/icons-material/HelpRounded";
-import OpenInNewRoundedIcon from "@mui/icons-material/OpenInNewRounded";
 import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
 import MenuRoundedIcon from "@mui/icons-material/MenuRounded";
 import Navigation, { NavigationProps } from "./Navigation";
 import { usePathname, useRouter } from "next/navigation";
 import Add from "@mui/icons-material/Add";
-import {
-  Calculator,
-  Calendar,
-  CreditCard,
-  Settings,
-  Smile,
-  User,
-} from "lucide-react";
-import {
-  CommandDialog,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-  CommandSeparator,
-  CommandShortcut,
-} from "@/components/ui/command";
 import { UserAvatar, UserInfomation } from "./UserAvatar";
 import Link from "next/link";
 import { useEditUserProfileModal } from "./EditUserProfile";
 import { isMobile } from "@/utils";
-import { useCommandDB } from "@/hooks/useCommandDB";
-import { EmptyState } from "./EmptyState";
 import { useCommandModal } from "@/hooks/useCommandModal";
 
 export interface HeaderProps {

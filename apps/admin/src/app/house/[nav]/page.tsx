@@ -3,15 +3,16 @@
 import * as React from "react";
 import LayoutFrame from "@/components/LayoutFrame";
 import MapsHomeWorkTwoToneIcon from "@mui/icons-material/MapsHomeWorkTwoTone";
+import SupportAgent from "@mui/icons-material/SupportAgent";
 import OutboxRoundedIcon from "@mui/icons-material/OutboxRounded";
 import DeckTwoToneIcon from "@mui/icons-material/DeckTwoTone";
 import TableViewTwoToneIcon from "@mui/icons-material/TableViewTwoTone";
 import Layout from "@/components/Layout";
-import HouseList from "@/components/HouseList";
 import dynamic from "next/dynamic";
-import { useParams, useRouter, useSearchParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import RentalAndSaleHouseList from "@/components/RentalAndSaleHouseList";
 import FavoritesHouseList from "@/components/FavoritesHouseList";
+import QuickNote from "@/components/QuickNote";
 
 const DynamicHouseTable = dynamic(() => import("@/components/HouseTable"), {
   loading: () => <p>加载中...</p>,
@@ -59,6 +60,11 @@ const tabBarItems = [
       },
     },
   },
+  {
+    label: "房源随手记",
+    key: "quick_note",
+    icon: <SupportAgent />,
+  },
 ];
 
 const transactionType = {
@@ -66,6 +72,7 @@ const transactionType = {
   rent: "出租",
   house: "房源",
   community: "小区",
+  quick_note: "房源随手记",
 };
 
 const gridTemplateColumns = {
@@ -82,6 +89,10 @@ const gridTemplateColumns = {
     md: "minmax(160px, 260px) 1fr",
   },
   community: {
+    xs: "1fr",
+    md: "minmax(160px, 260px) 1fr",
+  },
+  quick_note: {
     xs: "1fr",
     md: "minmax(160px, 260px) 1fr",
   },
@@ -141,6 +152,8 @@ export default function Home() {
                   <DynamicCommunityTable />
                 </Layout.Main>
               );
+            case "quick_note":
+              return <QuickNote />;
             default:
               const category_id = Number(nav);
               if (!Number.isNaN(category_id)) {
