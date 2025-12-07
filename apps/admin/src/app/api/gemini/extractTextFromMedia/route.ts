@@ -6,7 +6,7 @@ const GEMINI_API_KEY = process.env.API_KEY || "";
 /**
  * Extracts text from audio (transcription) or image (OCR/Description)
  */
-export const extractTextFromMedia = async (
+const extractTextFromMedia = async (
   mediaBlob: Buffer,
   mimeType: string
 ): Promise<string> => {

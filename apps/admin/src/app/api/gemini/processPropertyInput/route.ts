@@ -102,7 +102,7 @@ const propertySchema = {
   },
 };
 
-export const processPropertyInput = async (
+const processPropertyInput = async (
   textInput: string
 ): Promise<PropertyData[]> => {
   if (!GEMINI_API_KEY) {
