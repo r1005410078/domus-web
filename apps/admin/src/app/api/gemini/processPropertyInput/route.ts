@@ -1,5 +1,7 @@
 import { GoogleGenAI, Type } from "@google/genai";
-import { PropertyData } from "../../components/QuickNote/types";
+import { PropertyData } from "@/components/QuickNote/types";
+import { NextResponse } from "next/server";
+import { z } from "zod";
 
 const GEMINI_API_KEY = process.env.API_KEY || "";
 
@@ -18,10 +20,25 @@ const propertySchema = {
             description:
               "Name of the residential community (e.g., 天通苑, 阳光花园)",
           },
-          price: {
+          sale_price: {
             type: Type.NUMBER,
             description:
-              "Price value only. If text says '5000/month', put 5000.",
+              "Price of the property for sale (e.g., 100000, 150000)",
+          },
+          sale_low_price: {
+            type: Type.NUMBER,
+            description:
+              "Low price of the property for sale (e.g., 80000, 100000)",
+          },
+          rent_price: {
+            type: Type.NUMBER,
+            description:
+              "Price of the property for rent (e.g., 100000, 150000)",
+          },
+          rent_low_price: {
+            type: Type.NUMBER,
+            description:
+              "Low price of the property for rent (e.g., 80000, 100000)",
           },
           rentOrSale: {
             type: Type.STRING,
@@ -29,20 +46,38 @@ const propertySchema = {
             description: "Rent (出租) or Sale (出售)",
           },
           layout: {
-            type: Type.STRING,
-            description: "Layout description (e.g., 2室1厅, 3房2卫)",
+            type: Type.OBJECT,
+            properties: {
+              room: {
+                type: Type.NUMBER,
+                description: "Number of rooms (e.g., 2)",
+              },
+              hall: {
+                type: Type.NUMBER,
+                description: "Number of halls (e.g., 1)",
+              },
+              bathroom: {
+                type: Type.NUMBER,
+                description: "Number of bathrooms (e.g., 1)",
+              },
+              terrace: {
+                type: Type.NUMBER,
+                description: "Number of terraces (e.g., 1)",
+              },
+            },
           },
           area: {
             type: Type.NUMBER,
             description: "Size of the property in square meters",
           },
           floor: {
-            type: Type.STRING,
-            description: "Floor level (e.g., 中楼层, 5层)",
+            type: Type.NUMBER,
+            description: "Floor level (e.g., 1, 5)",
           },
           orientation: {
             type: Type.STRING,
-            description: "Facing direction (e.g., 南, 南北通透)",
+            description:
+              "Facing direction (e.g., 东西|南北|东|南|西|北|金角|银角|南北通透)",
           },
           contactName: {
             type: Type.STRING,
@@ -56,6 +91,10 @@ const propertySchema = {
             type: Type.STRING,
             description: "Any other details in Chinese",
           },
+          address: {
+            type: Type.STRING,
+            description: "Complete address (e.g., 2栋2单元5O3室)",
+          },
         },
         required: ["communityName", "rentOrSale"],
       },
@@ -64,9 +103,7 @@ const propertySchema = {
 };
 
 export const processPropertyInput = async (
-  textInput: string,
-  imageFile?: File | null,
-  audioBlob?: Blob | null
+  textInput: string
 ): Promise<PropertyData[]> => {
   if (!GEMINI_API_KEY) {
     throw new Error("API Key is missing");
@@ -94,28 +131,6 @@ export const processPropertyInput = async (
     parts.push({ text: prompt + `\n\n用户描述: ${textInput}` });
   } else {
     parts.push({ text: prompt });
-  }
-
-  // 2. Handle Image
-  if (imageFile) {
-    const base64Image = await fileToBase64(imageFile);
-    parts.push({
-      inlineData: {
-        mimeType: imageFile.type,
-        data: base64Image,
-      },
-    });
-  }
-
-  // 3. Handle Audio
-  if (audioBlob) {
-    const base64Audio = await blobToBase64(audioBlob);
-    parts.push({
-      inlineData: {
-        mimeType: audioBlob.type || "audio/webm",
-        data: base64Audio,
-      },
-    });
   }
 
   try {
@@ -147,72 +162,33 @@ export const processPropertyInput = async (
   }
 };
 
+const BodySchema = z.object({
+  textInput: z.string(),
+});
+
 /**
- * Extracts text from audio (transcription) or image (OCR/Description)
+测试数据
+瓜园小区，2栋2单元5O3室，面积123平方，三室两厅两卫，家电家具齐全，毫华装修，报价49.8万元。18255695238
+
+联富花园，4栋205室，面积96平米，两室两厅，精装，家具齐全，报价46.8万元。18255695238
+
+梦歺南苑，7号楼二单元，203室，面积111平方，三室二厅一卫，毫华装修，家电家具齐全，还有平台，报价56.8万元。18255695238
+
+金星小区，15栋502室，面积137平方，三室二厅二卫，毫华装修，家具齐全，报价49.8万元。18255695238
  */
-export const extractTextFromMedia = async (
-  mediaBlob: Blob,
-  mimeType: string
-): Promise<string> => {
-  if (!GEMINI_API_KEY) {
-    throw new Error("API Key is missing");
-  }
-
-  const ai = new GoogleGenAI({ apiKey: GEMINI_API_KEY });
-  const modelId = "gemini-2.5-flash";
-
-  const base64Data = await blobToBase64(mediaBlob);
-
-  const prompt = mimeType.startsWith("audio")
-    ? "Please transcribe this audio accurately into text. Output ONLY the transcription, no additional commentary."
-    : "Please analyze this image. If it contains text (like a flyer or screenshot), extract all text. If it is a photo of a property, describe the key visual details (e.g., layout, style, condition) that would be useful for a listing description. Output ONLY the extracted text or description.";
+export async function POST(req: Request) {
+  const json = await req.json();
+  const body = BodySchema.parse(json);
 
   try {
-    const response = await ai.models.generateContent({
-      model: modelId,
-      contents: {
-        parts: [
-          { text: prompt },
-          {
-            inlineData: {
-              mimeType: mimeType,
-              data: base64Data,
-            },
-          },
-        ],
-      },
+    const res = await processPropertyInput(body.textInput);
+    return NextResponse.json({
+      data: res,
     });
-
-    return response.text || "";
-  } catch (error) {
-    console.error("Gemini Media Extraction Error:", error);
-    throw error;
+  } catch (error: Error | any) {
+    return NextResponse.json({
+      success: false,
+      error: error.message,
+    });
   }
-};
-
-// Helper utils
-const fileToBase64 = (file: File): Promise<string> => {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = () => {
-      const result = reader.result as string;
-      const base64 = result.split(",")[1];
-      resolve(base64!);
-    };
-    reader.onerror = reject;
-    reader.readAsDataURL(file);
-  });
-};
-
-const blobToBase64 = (blob: Blob): Promise<string> => {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      const result = reader.result as string;
-      const base64 = result.split(",")[1];
-      resolve(base64!);
-    };
-    reader.onerror = reject;
-    reader.readAsDataURL(blob);
-  });
-};
+}

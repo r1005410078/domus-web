@@ -121,7 +121,12 @@ const HistoryList: React.FC<TaskLogProps> = ({
                       {item.extractedData.communityName || "未命名房源"}
                     </h4>
                     <p className="text-sm text-muted-foreground mt-1">
-                      {item.extractedData.layout} • {item.extractedData.area}m²
+                      {item.extractedData.layout.room}室
+                      {item.extractedData.layout.hall}厅
+                      {item.extractedData.layout.bathroom}卫
+                      {item.extractedData.layout.kitchen}厨
+                      {item.extractedData.layout.terrace}阳台 •{" "}
+                      {item.extractedData.area}m²
                     </p>
                     <p className="text-xs text-muted-foreground mt-2 line-clamp-2">
                       {item.description}
@@ -134,8 +139,9 @@ const HistoryList: React.FC<TaskLogProps> = ({
                         : "出售"}
                     </span>
                     <span className="font-bold text-lg">
-                      {item.extractedData.price
-                        ? `¥${item.extractedData.price}`
+                      {(item.extractedData.sale_price ??
+                      item.extractedData.rent_price)
+                        ? `¥${item.extractedData.sale_price ?? item.extractedData.rent_price}`
                         : "面议"}
                     </span>
                   </div>

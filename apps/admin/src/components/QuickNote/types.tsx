@@ -1,14 +1,26 @@
 export interface PropertyData {
   communityName: string;
-  price: number | string; // Allow flexibility for "Negotiable"
+  sale_price: number;
+  sale_low_price: number;
+  rent_price: number;
+  rent_low_price: number; // Allow flexibility for "Negotiable"
   rentOrSale: "Rent" | "Sale";
-  layout: string; // e.g., "2 Bedroom 1 Living Room"
+  layout: {
+    room: number;
+    // 厅
+    hall: number;
+    bathroom: number;
+    kitchen: number;
+    // 阳台
+    terrace?: number;
+  }; // e.g., "2 Bedroom 1 Living Room"
   area: number; // in square meters
-  floor: string; // e.g., "Middle Floor"
+  floor: number; // e.g., "Middle Floor"
   orientation: string; // e.g., "South"
   contactName: string;
   contactPhone: string;
   additionalNotes: string;
+  address: string;
 }
 
 export type TaskStatus = "success" | "failed" | "processing";
@@ -24,7 +36,6 @@ export interface TaskItem {
   // If Success
   extractedData?: PropertyData;
   isPublished?: boolean; // If user has confirmed/saved it
-  isTemplate?: boolean;
 
   // If Failed (Store input to allow Retry)
   sourceInput?: {

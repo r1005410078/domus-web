@@ -1240,6 +1240,10 @@ export function EditHouseOrientation({
           label: "银角",
           value: "银角",
         },
+        {
+          label: "南北通透",
+          value: "南北通透",
+        },
       ];
     }
 
