@@ -1,5 +1,5 @@
 import { GoogleGenAI, Type } from "@google/genai";
-import { PropertyData } from "../types";
+import { PropertyData } from "../../components/QuickNote/types";
 
 const GEMINI_API_KEY = process.env.API_KEY || "";
 
@@ -125,6 +125,9 @@ export const processPropertyInput = async (
       config: {
         responseMimeType: "application/json",
         responseSchema: propertySchema,
+        httpOptions: {
+          baseUrl: "https://api.openai-proxy.org/google",
+        },
       },
     });
 

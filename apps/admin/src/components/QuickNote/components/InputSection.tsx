@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { extractTextFromMedia } from "../services/geminiService";
+import { extractTextFromMedia } from "../../../app/services/geminiService";
 
 interface InputSectionProps {
   onProcess: (text: string, image: File | null, audio: Blob | null) => void;

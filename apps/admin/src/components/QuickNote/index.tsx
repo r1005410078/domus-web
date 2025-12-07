@@ -5,7 +5,7 @@ import { PropertyData, TaskItem, AppView } from "./types";
 import InputSection from "./components/InputSection";
 import PropertyForm from "./components/PropertyForm";
 import HistoryList from "./components/HistoryList";
-import { processPropertyInput } from "./services/geminiService";
+import { processPropertyInput } from "@/app/services/geminiService";
 
 const INITIAL_PROPERTY_DATA: PropertyData = {
   communityName: "",
