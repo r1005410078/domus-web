@@ -15,7 +15,7 @@ const extractTextFromMedia = async (
   }
 
   const ai = new GoogleGenAI({ apiKey: GEMINI_API_KEY });
-  const modelId = "gemini-2.5-flash";
+  const modelId = "gemini-2.5-flash-image";
   const base64Data = mediaBlob.toString("base64");
 
   const prompt = mimeType.startsWith("audio")

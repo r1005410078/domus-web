@@ -214,29 +214,6 @@ function QuickNote() {
     }
   };
 
-  const handleSaveForm = (asTemplate: boolean = false) => {
-    if (!editingTask) return;
-
-    setTasks((prev) =>
-      prev.map((t) => {
-        if (t.id === editingTask.id) {
-          return {
-            ...t,
-            extractedData: formData,
-            isPublished: !asTemplate,
-            isTemplate: asTemplate,
-            description: `${formData.communityName} ${formData.layout} ${formData.sale_price ?? formData.rent_price}元`,
-          };
-        }
-        return t;
-      })
-    );
-
-    setShowForm(false);
-    setEditingTask(null);
-    setFormData(INITIAL_PROPERTY_DATA);
-  };
-
   const logItems = tasks; // All history (processed, failed, published, unpublished)
   const unpublishedItems = tasks.filter(
     (h) => h.status === "success" && !h.isPublished
@@ -454,7 +431,26 @@ function QuickNote() {
         <Box sx={{ height: "100%", width: { xs: "100%", md: "430px" } }}>
           <House.Form
             key={formData.communityName}
-            onSubmit={() => setShowForm(false)}
+            onSubmit={() => {
+              if (!editingTask) return;
+              setTasks((prev) =>
+                prev.map((t) => {
+                  if (t.id === editingTask.id) {
+                    return {
+                      ...t,
+                      extractedData: formData,
+                      isPublished: true,
+                      description: `${formData.communityName} ${formData.layout} ${formData.sale_price ?? formData.rent_price}元`,
+                    };
+                  }
+                  return t;
+                })
+              );
+
+              setShowForm(false);
+              setEditingTask(null);
+              setFormData(INITIAL_PROPERTY_DATA);
+            }}
             defaultValues={defaultValues}
           />
         </Box>
