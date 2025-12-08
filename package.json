@@ -10,12 +10,12 @@
     "check-types": "turbo run check-types"
   },
   "dependencies": {
-    "@tanstack/react-query": "^5.81.5"
+    "@tanstack/react-query": "^5.90.12"
   },
   "devDependencies": {
-    "next": "15.3.4",
-    "prettier": "^3.6.2",
-    "turbo": "^2.5.5",
+    "next": "16.0.7",
+    "prettier": "^3.7.4",
+    "turbo": "^2.6.3",
     "typescript": "5.8.3"
   },
   "workspaces": [
