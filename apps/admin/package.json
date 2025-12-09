@@ -8,6 +8,9 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "react": "^19.2.1",
+    "next": "16.0.7",
+    "react-dom": "^19.2.1",
     "@ag-grid-community/locale": "34.1.2",
     "@amap/amap-jsapi-loader": "^1.0.1",
     "@amap/amap-jsapi-types": "^0.0.15",
@@ -41,12 +44,9 @@
     "lightgallery": "^2.8.3",
     "lucide-react": "^0.525.0",
     "nanoid": "^5.1.5",
-    "next": "16.0.7",
     "next-pwa": "^5.6.0",
-    "react": "^19.2.1",
     "react-color": "^2.19.3",
     "react-color-palette": "^7.3.0",
-    "react-dom": "^19.2.1",
     "react-photo-view": "^1.2.7",
     "react-transition-group": "^4.4.5",
     "tailwind-merge": "^3.3.1",

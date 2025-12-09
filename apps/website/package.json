@@ -9,9 +9,9 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "react": "19.1.0",
-    "react-dom": "19.1.0",
-    "next": "15.4.5",
+    "react": "^19.2.1",
+    "next": "16.0.7",
+    "react-dom": "^19.2.1",
     "@tanstack/react-query": "^5.81.5",
     "@mui/icons-material": "^7.1.2",
     "@mui/joy": "^5.0.0-beta.52",
