@@ -229,7 +229,7 @@ export default function Detail({
             }}
           >
             <Typography level="h4">
-              {apartmentTypeToString(detail.apartment_type) || "未知户型"}
+              {apartmentTypeToString(detail.apartment_type) || "未知"}
             </Typography>
             <Typography level="body-md">
               {floor_rangeToString(detail.floor_range)}
@@ -244,10 +244,10 @@ export default function Detail({
             }}
           >
             <Typography level="h4">
-              {detail.house_orientation ?? "朝向未知"}
+              {detail.house_orientation ?? "未知"}
             </Typography>
             <Typography level="body-md">
-              {detail.house_decoration ?? "装修未知"}
+              {detail.house_decoration ?? "未知装修"}
             </Typography>
           </Stack>
           <Stack
@@ -258,7 +258,9 @@ export default function Detail({
               alignItems: "center",
             }}
           >
-            <Typography level="h4">88.0 ㎡</Typography>
+            <Typography level="h4">
+              {detail.building_area ?? "未知"} ㎡
+            </Typography>
             <Typography level="body-md">
               {detail.building_year ?? "未知建筑年限"}/
               {detail.building_structure ?? "塔楼"}
@@ -402,7 +404,7 @@ export default function Detail({
                       }}
                     >
                       <Empty is={!!detail.building_area}>
-                        {detail.building_area}平米
+                        {detail.building_area ?? "未知"} ㎡
                       </Empty>
                       <KeyboardArrowRight />
                     </Typography>
@@ -893,7 +895,7 @@ export default function Detail({
                       }}
                     >
                       <Empty is={!!detail.use_area}>
-                        {detail.use_area}平米
+                        {detail.use_area ?? "未知"} ㎡
                       </Empty>
                       <KeyboardArrowRight />
                     </Typography>
