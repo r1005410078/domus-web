@@ -6,6 +6,7 @@ const nextConfig: NextConfig = {
   compiler: {
     styledComponents: true, // 如果用 styled-components
   },
+  turbopack: {},
   async rewrites() {
     return [
       {
