@@ -73,6 +73,7 @@ import {
 } from "../EditDetail";
 import { useToast } from "@/lib/ToastProvider";
 import { getFirstError } from "@/utils";
+import { houseFormSchema } from "@/schema/house";
 
 export interface Relation {
   purpose?: string;
@@ -86,7 +87,7 @@ export interface FormProps {
 }
 
 export function Form({ defaultValues, value, onSubmit }: FormProps) {
-  const { mutate } = useSaveHouse();
+  const { mutateAsync, isPending } = useSaveHouse();
   const { uploads } = useUploadFiles();
   const toast = useToast();
   const form = useForm({
@@ -95,9 +96,22 @@ export function Form({ defaultValues, value, onSubmit }: FormProps) {
     //   onChange: houseFormSchema as any,
     // },
     onSubmit: async ({ value }) => {
-      mutate(value as HouseForm);
-      onSubmit?.();
-      form.reset();
+      const res = houseFormSchema.safeParse(value);
+
+      if (!res.success) {
+        toast.showToast({
+          message: Object.values(
+            res.error.flatten((issue) => issue.message).fieldErrors
+          ).join(" "),
+          severity: "danger",
+        });
+        return;
+      }
+      const data = await mutateAsync(value as HouseForm);
+      if (data.data.code === 200) {
+        onSubmit?.();
+        form.reset();
+      }
     },
   });
 
@@ -403,6 +417,41 @@ export function Form({ defaultValues, value, onSubmit }: FormProps) {
               />
 
               <form.Field
+                name="building_area"
+                children={(field) => (
+                  <EditBuildingArea
+                    value={field.state.value}
+                    onChange={field.handleChange}
+                  />
+                )}
+              />
+
+              <form.Field
+                name="house_decoration"
+                children={(field) => {
+                  return (
+                    <EditHouseDecoration
+                      purpose={purpose}
+                      value={field.state.value}
+                      onChange={field.handleChange}
+                    />
+                  );
+                }}
+              />
+
+              <form.Field
+                name="floor_range"
+                children={(field) => {
+                  return (
+                    <EditFloorRange
+                      value={field.state.value}
+                      onChange={field.handleChange}
+                    />
+                  );
+                }}
+              />
+
+              <form.Field
                 name="house_address"
                 children={(field) => {
                   return (
@@ -435,18 +484,6 @@ export function Form({ defaultValues, value, onSubmit }: FormProps) {
           </TabPanel>
           <TabPanel value={1}>
             <Stack direction="column" spacing={2}>
-              <form.Field
-                name="floor_range"
-                children={(field) => {
-                  return (
-                    <EditFloorRange
-                      value={field.state.value}
-                      onChange={field.handleChange}
-                    />
-                  );
-                }}
-              />
-
               <form.Field
                 name="tags"
                 children={(field) => {
@@ -562,16 +599,6 @@ export function Form({ defaultValues, value, onSubmit }: FormProps) {
                 />
               )}
 
-              <form.Field
-                name="building_area"
-                children={(field) => (
-                  <EditBuildingArea
-                    value={field.state.value}
-                    onChange={field.handleChange}
-                  />
-                )}
-              />
-
               {isShowRelation([
                 { purpose: "写字楼" },
                 { purpose: "住宅" },
@@ -641,26 +668,6 @@ export function Form({ defaultValues, value, onSubmit }: FormProps) {
                     return (
                       <EditHouseOrientation
                         purpose={purpose}
-                        value={field.state.value}
-                        onChange={field.handleChange}
-                      />
-                    );
-                  }}
-                />
-              )}
-
-              {isShowRelation([
-                { purpose: "商铺" },
-                { purpose: "写字楼" },
-                { purpose: "住宅" },
-                { purpose: "别墅" },
-                { purpose: "公寓" },
-              ]) && (
-                <form.Field
-                  name="house_decoration"
-                  children={(field) => {
-                    return (
-                      <EditHouseDecoration
                         value={field.state.value}
                         onChange={field.handleChange}
                       />
@@ -954,7 +961,7 @@ export function Form({ defaultValues, value, onSubmit }: FormProps) {
           <Button variant="outlined" color="neutral">
             重置
           </Button>
-          <Button variant="solid" onClick={handleSubmit}>
+          <Button variant="solid" loading={isPending} onClick={handleSubmit}>
             保存
           </Button>
         </Stack>

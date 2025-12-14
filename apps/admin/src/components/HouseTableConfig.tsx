@@ -61,7 +61,6 @@ export const colDefs = [
     valueGetter: (params: any) =>
       emptyToString(params.data?.building_area, "平方米"),
   },
-
   {
     field: "floor_range",
     headerName: "楼层",

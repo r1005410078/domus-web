@@ -22,14 +22,17 @@ export const stairsSchema = z.object({
   rooms: z.string().optional(),
 });
 
-export const houseOwnerSchema = z.object({
-  id: z.string().optional(),
-  name: z.string("房主姓名不能空"),
-  phone: z.string("房主电话不能空"),
-  id_card: z.string().optional(),
-  id_card_images: z.array(z.string()).optional(),
-  description: z.string().optional(),
-});
+export const houseOwnerSchema = z.object(
+  {
+    id: z.string().optional(),
+    name: z.string("房主姓名不能空"),
+    phone: z.string("房主电话不能空"),
+    id_card: z.string().optional(),
+    id_card_images: z.array(z.string()).optional(),
+    description: z.string().optional(),
+  },
+  "联系人信息不能空"
+);
 
 export const fileInfoSchema = z.object({
   name: z.string(),
@@ -38,36 +41,39 @@ export const fileInfoSchema = z.object({
   url: z.string(),
 });
 
-export const communitySchema = z.object({
-  id: z.string(),
-  name: z.string(),
-  address: z.string(),
-  city: z.string(),
-  year_built: z.string().optional(),
-  description: z.string().optional(),
-  images: z.array(fileInfoSchema).optional(),
-  typecode: z.string(),
-  lat: z.number(),
-  lng: z.number(),
-  district: z.string().optional(),
-  adcode: z.string().optional(),
-  updated_at: z.string().optional(),
-  property_management_company: z.string().optional(),
-  remark: z.string().optional(),
-});
+export const communitySchema = z.object(
+  {
+    id: z.string(),
+    name: z.string(),
+    address: z.string(),
+    city: z.string(),
+    year_built: z.string().optional(),
+    description: z.string().optional(),
+    images: z.array(fileInfoSchema).optional(),
+    typecode: z.string(),
+    lat: z.number(),
+    lng: z.number(),
+    district: z.string().optional(),
+    adcode: z.string().optional(),
+    updated_at: z.string().optional(),
+    property_management_company: z.string().optional(),
+    remark: z.string().optional(),
+  },
+  "小区不能空"
+);
 
 export const houseFormSchema = z.object({
   id: z.string().optional(),
-  title: z.string().optional(),
+  title: z.string("标题不能空"),
   purpose: z.string("用途不能空"),
   transaction_type: z.string("交易类型不能空"),
   house_status: z.string("状态不能空"),
   floor_range: floorRangeSchema.optional(),
-  house_address: z.string(),
+  house_address: z.string("地址不能空"),
   // 户型
   apartment_type: apartmentTypeSchema.optional(),
   // 建筑面积
-  building_area: z.number().optional(),
+  building_area: z.number("建筑面积不能空"),
   // 使用面积
   use_area: z.number().optional(),
   // 楼层

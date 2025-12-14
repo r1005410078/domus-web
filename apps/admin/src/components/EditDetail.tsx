@@ -365,7 +365,7 @@ registerHouseFormComponent("sale_low_price", EditSaleLowPrice);
 
 export function EditSaleLowPrice({ value, onChange, sx }: FormChange<number>) {
   return (
-    <FormControl required sx={[...(Array.isArray(sx) ? sx : [sx])]}>
+    <FormControl sx={[...(Array.isArray(sx) ? sx : [sx])]}>
       <FormLabel>出售低价</FormLabel>
       <Input
         placeholder="请输入"
@@ -428,7 +428,7 @@ registerHouseFormComponent("down_payment", EditDownPayment);
 
 export function EditDownPayment({ value, onChange, sx }: FormChange<number>) {
   return (
-    <FormControl required sx={[...(Array.isArray(sx) ? sx : [sx])]}>
+    <FormControl sx={[...(Array.isArray(sx) ? sx : [sx])]}>
       <FormLabel>首付</FormLabel>
       <Input
         placeholder="请输入"
@@ -624,10 +624,11 @@ registerHouseFormComponent("floor_range", EditFloorRange);
 export function EditFloorRange({ value, onChange }: FormChange<FloorRange>) {
   return (
     <FormControl>
-      <FormLabel>楼层</FormLabel>
+      <FormLabel required>楼层</FormLabel>
       <Stack direction="row" spacing={2} useFlexGap sx={{ flexWrap: "wrap" }}>
         <FormControl>
           <Input
+            required
             style={{ width: "100px" }}
             placeholder="请输入"
             name="door_number_from"
@@ -939,8 +940,9 @@ registerHouseFormComponent("building_area", EditBuildingArea);
 export function EditBuildingArea({ value, onChange }: FormChange<number>) {
   return (
     <FormControl>
-      <FormLabel>建筑面积</FormLabel>
+      <FormLabel required>建筑面积</FormLabel>
       <Input
+        required
         placeholder="请输入"
         name="building_area"
         type="number"
@@ -1325,7 +1327,7 @@ export function EditHouseDecoration({
 
   return (
     <FormControl>
-      <FormLabel>装修</FormLabel>
+      <FormLabel required>装修</FormLabel>
       <Select
         name="house_decoration"
         value={value}

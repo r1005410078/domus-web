@@ -230,8 +230,9 @@ function HouseList({
                             </Chip>
                           ))}
                       </Stack>
-                      {((item.transaction_type === "出售" && item.sale_price) ||
-                        (item.transaction_type === "出租" &&
+                      {((["出售", "租售"].includes(item.transaction_type) &&
+                        item.sale_price) ||
+                        (["出租", "租售"].includes(item.transaction_type) &&
                           item.rent_price)) && (
                         <Typography
                           sx={{ fontSize: "lg", fontWeight: "lg" }}

@@ -119,7 +119,10 @@ export default function LayoutFrame({
         <ModalClose />
         <DialogTitle>添加房源</DialogTitle>
         <Box sx={{ height: "100%", width: { xs: "100%", md: "430px" } }}>
-          <House.Form onSubmit={() => setDrawerAddOpen(false)} />
+          <House.Form
+            key={drawerAddOpen.toString()}
+            onSubmit={() => setDrawerAddOpen(false)}
+          />
         </Box>
       </Drawer>
     </CssVarsProvider>
