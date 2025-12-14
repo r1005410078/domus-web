@@ -230,29 +230,10 @@ function HouseList({
                             </Chip>
                           ))}
                       </Stack>
-                      {((["出售", "租售"].includes(item.transaction_type) &&
-                        item.sale_price) ||
-                        (["出租", "租售"].includes(item.transaction_type) &&
-                          item.rent_price)) && (
-                        <Typography
-                          sx={{ fontSize: "lg", fontWeight: "lg" }}
-                          color="danger"
-                        >
-                          {item.transaction_type === "出售"
-                            ? (item.sale_price || "- ") + "万元"
-                            : (item.rent_price || "- ") + "元/月"}
-                          {item.transaction_type === "出售" && (
-                            <Typography level="body-xs" ml={1}>
-                              ¥
-                              {(
-                                (item.sale_price! * 10000) /
-                                (item.building_area ?? item.use_area ?? 1)
-                              ).toFixed(2)}
-                              元/平
-                            </Typography>
-                          )}
-                        </Typography>
-                      )}
+                      <HousePiceReview
+                        {...item}
+                        current_transaction_type={transactionType}
+                      />
                     </CardContent>
                   </Card>
                 </ListItem>
@@ -333,6 +314,53 @@ function HouseList({
       </Drawer>
     </>
   );
+}
+
+function HousePiceReview(props: {
+  transaction_type: string;
+  sale_price?: number;
+  rent_price?: number;
+  building_area?: number;
+  use_area?: number;
+  current_transaction_type?: string;
+}) {
+  const isSaleOrRent =
+    props.transaction_type === props.current_transaction_type ||
+    props.transaction_type === "租售";
+
+  if (
+    isSaleOrRent &&
+    props.sale_price &&
+    props.current_transaction_type === "出售"
+  ) {
+    return (
+      <Typography sx={{ fontSize: "lg", fontWeight: "lg" }} color="danger">
+        {(props.sale_price || "- ") + "万元"}
+        <Typography level="body-xs" ml={1}>
+          ¥
+          {(
+            (props.sale_price! * 10000) /
+            (props.building_area ?? props.use_area ?? 1)
+          ).toFixed(2)}
+          元/平
+        </Typography>
+      </Typography>
+    );
+  }
+
+  if (
+    isSaleOrRent &&
+    props.rent_price &&
+    props.current_transaction_type === "出租"
+  ) {
+    return (
+      <Typography sx={{ fontSize: "lg", fontWeight: "lg" }} color="danger">
+        {(props.rent_price || "- ") + "元/月"}
+      </Typography>
+    );
+  }
+
+  return null;
 }
 
 export default memo(HouseList);
